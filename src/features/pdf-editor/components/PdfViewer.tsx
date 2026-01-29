@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { useEditorStore } from '@/features/pdf-editor/store/editorStore';
-import { Download, Loader2 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import { toast } from 'sonner';
-import { burnSignaturesIntoPdf, downloadPdf } from '../utils/pdfProcessing';
-import { DraggableSignature } from './DraggableSignature';
-import { SignatureModal } from './SignatureModal';
+import { Button } from "@/components/ui/button";
+import { useEditorStore } from "@/features/pdf-editor/store/editorStore";
+import { Download, Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+import { toast } from "sonner";
+import { burnSignaturesIntoPdf, downloadPdf } from "../utils/pdfProcessing";
+import { DraggableSignature } from "./DraggableSignature";
+import { SignatureModal } from "./SignatureModal";
 
 // Configurar worker via CDN
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -39,21 +39,21 @@ export function PdfViewer() {
   // Resize observer
   useEffect(() => {
     const updateWidth = () => {
-      const container = document.getElementById('pdf-container-wrapper');
+      const container = document.getElementById("pdf-container-wrapper");
       if (container) {
         setContainerWidth(container.clientWidth - 48);
       }
     };
-    window.addEventListener('resize', updateWidth);
+    window.addEventListener("resize", updateWidth);
     setTimeout(updateWidth, 100);
-    return () => window.removeEventListener('resize', updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, [fileBuffer]);
 
   const handleAddSignature = (dataUrl: string) => {
     // Adicionar assinatura no centro da tela visível
     addSignature({
       id: crypto.randomUUID(),
-      type: 'image',
+      type: "image",
       content: dataUrl,
       x: 100, // Posição inicial arbitrária
       y: 100,
@@ -108,10 +108,10 @@ export function PdfViewer() {
       // Vamos modificar a função burnSignaturesIntoPdf para aceitar (renderedWidth)
 
       downloadPdf(pdfBytes, `assinado_${file.name}`);
-      toast.success('Download iniciado!');
+      toast.success("Download iniciado!");
     } catch (error) {
       console.error(error);
-      toast.error('Erro ao gerar PDF.');
+      toast.error("Erro ao gerar PDF.");
     } finally {
       setIsSaving(false);
     }
@@ -133,9 +133,9 @@ export function PdfViewer() {
 
       const pdfBytes = await burnSignaturesIntoPdf(fileBuffer, signatures, scaleFactor);
       downloadPdf(pdfBytes, `assinado_${file.name}`);
-      toast.success('PDF Assinado gerado com sucesso!');
+      toast.success("PDF Assinado gerado com sucesso!");
     } catch (e) {
-      toast.error('Erro ao processar PDF');
+      toast.error("Erro ao processar PDF");
     } finally {
       setIsSaving(false);
     }
@@ -146,22 +146,25 @@ export function PdfViewer() {
   return (
     <div id="pdf-container-wrapper" className="flex flex-col items-center w-full gap-4">
       {/* Toolbar Flutuante */}
-      <div className="sticky top-4 z-50 flex gap-2 bg-white/90 backdrop-blur shadow-lg p-2 rounded-full border border-slate-200">
+      <div className="sticky top-4 z-50 flex gap-2 bg-white/90 backdrop-blur shadow-lg p-2 rounded-full border border-slate-200 max-w-[95vw] overflow-hidden">
         <SignatureModal onConfirm={handleAddSignature} />
 
-        <div className="w-px bg-slate-200 mx-2" />
+        <div className="w-px bg-slate-200 mx-1" />
 
         <Button
           onClick={handleDownloadWithScale}
           disabled={isSaving || signatures.length === 0}
-          className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4"
         >
           {isSaving ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <Download className="h-4 w-4" />
           )}
-          {isSaving ? 'Processando...' : 'Baixar PDF Assinado'}
+          <span className="hidden sm:inline">
+            {isSaving ? "Processando..." : "Baixar PDF Assinado"}
+          </span>
+          <span className="inline sm:hidden">{isSaving ? "Salvar" : "Baixar"}</span>
         </Button>
       </div>
 
