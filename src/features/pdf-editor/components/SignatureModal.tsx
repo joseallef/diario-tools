@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,13 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Check, Eraser, PenLine, Type } from 'lucide-react';
-import { useCallback, useRef, useState } from 'react';
-import SignaturePad from 'signature_pad';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Check, Eraser, PenLine, Type } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
+import SignaturePad from "signature_pad";
 
 interface SignatureModalProps {
   onConfirm: (dataUrl: string) => void;
@@ -25,8 +25,8 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   const [open, setOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const signaturePadRef = useRef<SignaturePad | null>(null);
-  const [textSignature, setTextSignature] = useState('');
-  const [activeTab, setActiveTab] = useState('draw');
+  const [textSignature, setTextSignature] = useState("");
+  const [activeTab, setActiveTab] = useState("draw");
 
   // Estado para debug
   // const [debugInfo, setDebugInfo] = useState('Aguardando montagem...');
@@ -58,8 +58,8 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         signaturePadRef.current = new SignaturePad(canvas, {
           minWidth: 1,
           maxWidth: 3,
-          penColor: 'rgb(0, 0, 0)',
-          backgroundColor: 'rgba(255, 255, 255, 0)',
+          penColor: "rgb(0, 0, 0)",
+          backgroundColor: "rgba(255, 255, 255, 0)",
           velocityFilterWeight: 0.7,
         });
 
@@ -79,9 +79,9 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         }
       };
 
-      canvas.addEventListener('touchstart', preventScroll, { passive: false });
-      canvas.addEventListener('touchmove', preventScroll, { passive: false });
-      canvas.addEventListener('touchend', preventScroll, { passive: false });
+      canvas.addEventListener("touchstart", preventScroll, { passive: false });
+      canvas.addEventListener("touchmove", preventScroll, { passive: false });
+      canvas.addEventListener("touchend", preventScroll, { passive: false });
     } else {
       // Cleanup
       if (signaturePadRef.current) {
@@ -95,22 +95,22 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
+    const ctx = canvas?.getContext("2d");
     if (canvas && ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   };
 
   const handleConfirm = () => {
-    let dataUrl = '';
+    let dataUrl = "";
 
-    if (activeTab === 'draw' && canvasRef.current) {
+    if (activeTab === "draw" && canvasRef.current) {
       // Verifica se desenhou algo (simples check visual ou flag)
-      dataUrl = canvasRef.current.toDataURL('image/png');
-    } else if (activeTab === 'type' && textSignature) {
+      dataUrl = canvasRef.current.toDataURL("image/png");
+    } else if (activeTab === "type" && textSignature) {
       // Converter texto em imagem via Canvas temporário
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.font = '48px "Great Vibes", cursive'; // Fonte simulada por enquanto
         const textWidth = ctx.measureText(textSignature).width;
@@ -118,11 +118,11 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         canvas.height = 100;
 
         // Configurar novamente após resize
-        ctx.font = '48px cursive'; // Fallback para cursive nativa se Great Vibes não carregar
-        ctx.fillStyle = 'black';
-        ctx.textBaseline = 'middle';
+        ctx.font = "48px cursive"; // Fallback para cursive nativa se Great Vibes não carregar
+        ctx.fillStyle = "black";
+        ctx.textBaseline = "middle";
         ctx.fillText(textSignature, 20, 50);
-        dataUrl = canvas.toDataURL('image/png');
+        dataUrl = canvas.toDataURL("image/png");
       }
     }
 
@@ -130,7 +130,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
       onConfirm(dataUrl);
       setOpen(false);
       // Reset
-      setTextSignature('');
+      setTextSignature("");
       clearCanvas();
     }
   };
@@ -166,7 +166,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
               <canvas
                 ref={setCanvasRef}
                 className="block w-full h-full cursor-crosshair touch-none relative z-10"
-                style={{ touchAction: 'none' }}
+                style={{ touchAction: "none" }}
               />
               <Button
                 variant="ghost"
@@ -208,7 +208,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button onClick={handleConfirm} disabled={activeTab === 'draw' ? false : !textSignature}>
+          <Button onClick={handleConfirm} disabled={activeTab === "draw" ? false : !textSignature}>
             <Check className="mr-2 h-4 w-4" />
             Inserir Assinatura
           </Button>
