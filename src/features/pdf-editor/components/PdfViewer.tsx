@@ -26,6 +26,7 @@ export function PdfViewer() {
   } = useEditorStore();
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [realScale, setRealScale] = useState(1);
 
   // Refs para cálculo de coordenadas
   const pageRef = useRef<HTMLDivElement>(null);
@@ -36,18 +37,41 @@ export function PdfViewer() {
     return fileBuffer ? fileBuffer.slice(0) : null;
   }, [fileBuffer]);
 
-  // Resize observer
+  // Resize observer e cálculo de escala real
   useEffect(() => {
-    const updateWidth = () => {
+    const updateDimensions = () => {
       const container = document.getElementById("pdf-container-wrapper");
       if (container) {
         setContainerWidth(container.clientWidth - 48);
       }
+
+      // Calcular escala real (visual vs layout) para corrigir o drag
+      if (pageRef.current) {
+        const rect = pageRef.current.getBoundingClientRect();
+        // Se houver scale CSS ou zoom, rect.width será diferente de offsetWidth
+        // Mas offsetWidth pode ser 0 se hidden.
+        if (pageRef.current.offsetWidth > 0) {
+          const scale = rect.width / pageRef.current.offsetWidth;
+          // Pequena tolerância para evitar updates desnecessários
+          if (Math.abs(scale - 1) > 0.01) {
+            setRealScale(scale);
+          } else {
+            setRealScale(1);
+          }
+        }
+      }
     };
-    window.addEventListener("resize", updateWidth);
-    setTimeout(updateWidth, 100);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [fileBuffer]);
+
+    window.addEventListener("resize", updateDimensions);
+    // Executar periodicamente para garantir que pegamos o estado final da renderização
+    const interval = setInterval(updateDimensions, 1000);
+    setTimeout(updateDimensions, 100);
+
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+      clearInterval(interval);
+    };
+  }, [fileBuffer, numPages, currentPage]);
 
   const handleAddSignature = (dataUrl: string) => {
     // Adicionar assinatura no centro da tela visível
@@ -196,9 +220,7 @@ export function PdfViewer() {
               {signatures
                 .filter((s) => s.page === currentPage)
                 .map((sig) => (
-                  <div key={sig.id} className="pointer-events-auto">
-                    <DraggableSignature signature={sig} containerScale={1} />
-                  </div>
+                  <DraggableSignature key={sig.id} signature={sig} containerScale={realScale} />
                 ))}
             </div>
           </div>
