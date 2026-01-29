@@ -152,9 +152,9 @@ export function DraggableSignature({ signature, containerScale = 1 }: DraggableS
       onPointerUp={handleDragEnd}
       className={`absolute z-50 group select-none pointer-events-auto ${isDragging ? "cursor-grabbing" : "cursor-move"}`}
       style={{
-        width: size.width,
-        height: size.height,
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+        width: size.width * containerScale,
+        height: size.height * containerScale,
+        transform: `translate3d(${position.x * containerScale}px, ${position.y * containerScale}px, 0)`,
         touchAction: "none",
         willChange: "transform, width, height",
       }}

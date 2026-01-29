@@ -52,7 +52,7 @@ export function PdfEditorPage() {
           <div className="w-full flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-slate-200">
               <span className="font-medium text-slate-700 truncate max-w-[300px]">{file.name}</span>
-              <Button variant="destructive" size="sm" onClick={reset} className="gap-2">
+              <Button variant="destructive" size="sm" onClick={reset} className="gap-2 cursor-pointer">
                 <Trash2 className="h-4 w-4" />
                 Remover
               </Button>

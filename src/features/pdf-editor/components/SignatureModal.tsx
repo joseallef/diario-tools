@@ -27,11 +27,25 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   const signaturePadRef = useRef<SignaturePad | null>(null);
   const [textSignature, setTextSignature] = useState("");
   const [activeTab, setActiveTab] = useState("draw");
+  const [strokeWidth, setStrokeWidth] = useState<"thin" | "medium" | "thick">("medium");
 
-  // Estado para debug
-  // const [debugInfo, setDebugInfo] = useState('Aguardando montagem...');
+  // Configurações de espessura
+  const strokeOptions = {
+    thin: { minWidth: 0.5, maxWidth: 1.5 },
+    medium: { minWidth: 1, maxWidth: 3 },
+    thick: { minWidth: 2, maxWidth: 5 },
+  };
 
   // Variáveis de controle (refs para manter estado sem re-render)
+
+  // Atualizar espessura quando mudar
+  const updateStrokeWidth = (width: "thin" | "medium" | "thick") => {
+    setStrokeWidth(width);
+    if (signaturePadRef.current) {
+      signaturePadRef.current.minWidth = strokeOptions[width].minWidth;
+      signaturePadRef.current.maxWidth = strokeOptions[width].maxWidth;
+    }
+  };
 
   // Callback Ref: O React chama isso quando o elemento é montado
   const setCanvasRef = useCallback((node: HTMLCanvasElement | null) => {
@@ -56,8 +70,8 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
 
         // Inicializa a Lib
         signaturePadRef.current = new SignaturePad(canvas, {
-          minWidth: 1,
-          maxWidth: 3,
+          minWidth: strokeOptions[strokeWidth].minWidth,
+          maxWidth: strokeOptions[strokeWidth].maxWidth,
           penColor: "rgb(0, 0, 0)",
           backgroundColor: "rgba(255, 255, 255, 0)",
           velocityFilterWeight: 0.7,
@@ -139,7 +153,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="gap-2">
+          <Button className="gap-2 cursor-pointer">
             <PenLine className="h-4 w-4" />
             Adicionar Assinatura
           </Button>
@@ -171,16 +185,42 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-2 right-2 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 z-50 bg-white/80 backdrop-blur-sm shadow-sm"
+                className="absolute top-2 right-2 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 z-50 bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer"
                 onClick={clearCanvas}
                 title="Limpar"
               >
                 <Eraser className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-xs text-center text-slate-400">
-              Desenhe sua assinatura acima usando o mouse ou o dedo.
-            </p>
+            <div className="flex items-center justify-between mt-2">
+              <div className="flex gap-2 items-center">
+                <span className="text-xs text-slate-500 font-medium">Espessura:</span>
+                <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+                  <button
+                    onClick={() => updateStrokeWidth("thin")}
+                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "thin" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
+                    title="Fina"
+                  >
+                    <div className="w-4 h-0.5 bg-slate-800 rounded-full" />
+                  </button>
+                  <button
+                    onClick={() => updateStrokeWidth("medium")}
+                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "medium" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
+                    title="Média"
+                  >
+                    <div className="w-4 h-1 bg-slate-800 rounded-full" />
+                  </button>
+                  <button
+                    onClick={() => updateStrokeWidth("thick")}
+                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "thick" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
+                    title="Grossa"
+                  >
+                    <div className="w-4 h-1.5 bg-slate-800 rounded-full" />
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-slate-400">Desenhe sua assinatura acima.</p>
+            </div>
           </TabsContent>
 
           <TabsContent value="type" className="space-y-4 py-4">
@@ -205,10 +245,14 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         </Tabs>
 
         <div className="flex justify-end gap-2 mt-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="outline" onClick={() => setOpen(false)} className="cursor-pointer">
             Cancelar
           </Button>
-          <Button onClick={handleConfirm} disabled={activeTab === "draw" ? false : !textSignature}>
+          <Button
+            onClick={handleConfirm}
+            disabled={activeTab === "draw" ? false : !textSignature}
+            className="cursor-pointer"
+          >
             <Check className="mr-2 h-4 w-4" />
             Inserir Assinatura
           </Button>

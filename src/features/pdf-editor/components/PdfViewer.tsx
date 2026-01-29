@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useEditorStore } from "@/features/pdf-editor/store/editorStore";
-import { Download, Loader2 } from "lucide-react";
+import { Download, Loader2, Minus, Plus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { toast } from "sonner";
@@ -27,6 +27,7 @@ export function PdfViewer() {
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [isSaving, setIsSaving] = useState(false);
   const [realScale, setRealScale] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   // Refs para cálculo de coordenadas
   const pageRef = useRef<HTMLDivElement>(null);
@@ -167,9 +168,12 @@ export function PdfViewer() {
 
   if (!fileBuffer) return null;
 
+  const handleZoomIn = () => setZoomLevel((prev) => Math.min(prev + 0.25, 3));
+  const handleZoomOut = () => setZoomLevel((prev) => Math.max(prev - 0.25, 0.5));
+
   return (
     <div id="pdf-container-wrapper" className="flex flex-col items-center w-full gap-4">
-      {/* Toolbar Flutuante */}
+      {/* Toolbar Flutuante Superior - Ações Principais */}
       <div className="sticky top-4 z-50 flex gap-2 bg-white/90 backdrop-blur shadow-lg p-2 rounded-full border border-slate-200 max-w-[95vw] overflow-hidden">
         <SignatureModal onConfirm={handleAddSignature} />
 
@@ -178,7 +182,7 @@ export function PdfViewer() {
         <Button
           onClick={handleDownloadWithScale}
           disabled={isSaving || signatures.length === 0}
-          className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4"
+          className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 cursor-pointer"
         >
           {isSaving ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -189,6 +193,31 @@ export function PdfViewer() {
             {isSaving ? "Processando..." : "Baixar PDF Assinado"}
           </span>
           <span className="inline sm:hidden">{isSaving ? "Salvar" : "Baixar"}</span>
+        </Button>
+      </div>
+
+      {/* Toolbar Flutuante Inferior - Zoom Controls */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-white/90 backdrop-blur shadow-lg border border-slate-200 p-1.5 rounded-full">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 rounded-full hover:bg-slate-100 cursor-pointer"
+          onClick={handleZoomOut}
+          disabled={zoomLevel <= 0.5}
+        >
+          <Minus className="h-4 w-4" />
+        </Button>
+        <span className="text-xs font-medium w-10 text-center select-none tabular-nums">
+          {Math.round(zoomLevel * 100)}%
+        </span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 rounded-full hover:bg-slate-100 cursor-pointer"
+          onClick={handleZoomIn}
+          disabled={zoomLevel >= 3}
+        >
+          <Plus className="h-4 w-4" />
         </Button>
       </div>
 
@@ -208,7 +237,7 @@ export function PdfViewer() {
           <div className="relative" ref={pageRef}>
             <Page
               pageNumber={currentPage}
-              width={containerWidth > 0 ? Math.min(containerWidth, 800) : undefined}
+              width={containerWidth > 0 ? Math.min(containerWidth, 800) * zoomLevel : undefined}
               renderTextLayer={false}
               renderAnnotationLayer={false}
               className="bg-white"
@@ -220,7 +249,11 @@ export function PdfViewer() {
               {signatures
                 .filter((s) => s.page === currentPage)
                 .map((sig) => (
-                  <DraggableSignature key={sig.id} signature={sig} containerScale={realScale} />
+                  <DraggableSignature
+                    key={sig.id}
+                    signature={sig}
+                    containerScale={realScale * zoomLevel}
+                  />
                 ))}
             </div>
           </div>
@@ -233,6 +266,7 @@ export function PdfViewer() {
             variant="outline"
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage(currentPage - 1)}
+            className="cursor-pointer"
           >
             Anterior
           </Button>
@@ -243,6 +277,7 @@ export function PdfViewer() {
             variant="outline"
             disabled={currentPage >= numPages}
             onClick={() => setCurrentPage(currentPage + 1)}
+            className="cursor-pointer"
           >
             Próxima
           </Button>
