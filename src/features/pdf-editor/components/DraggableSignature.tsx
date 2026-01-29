@@ -171,24 +171,24 @@ export function DraggableSignature({ signature, containerScale = 1 }: DraggableS
       {/* Hitbox Layer - Z-Index 10 - Garante captura do clique em cima da imagem + Feedback Visual */}
       <div className="absolute inset-0 z-10 bg-transparent hover:bg-black/5 transition-colors cursor-move rounded-sm" />
 
-      {/* Borda de Foco/Hover */}
+      {/* Borda de Foco/Hover - Sempre visível em touch devices ou quando ativo */}
       <div
-        className={`absolute inset-0 border-2 border-primary rounded-md transition-opacity pointer-events-none z-20 ${isDragging || isResizing ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+        className={`absolute inset-0 border-2 border-primary rounded-md transition-opacity pointer-events-none z-20 ${isDragging || isResizing ? "opacity-100" : "opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"}`}
       />
 
-      {/* Botão de Remover */}
+      {/* Botão de Remover - Sempre visível em touch devices */}
       <button
         onPointerDown={(e) => {
           e.stopPropagation();
           removeSignature(signature.id);
         }}
-        className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-md z-50 hover:bg-red-600 cursor-pointer"
+        className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity shadow-md z-50 hover:bg-red-600 cursor-pointer"
       >
         <X className="h-3 w-3" />
       </button>
 
       {/* Handle de Drag (Visual aid - Esquerda) */}
-      <div className="absolute -left-4 top-1/2 -translate-y-1/2 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+      <div className="absolute -left-4 top-1/2 -translate-y-1/2 text-slate-400 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity pointer-events-none z-50">
         <GripVertical className="h-4 w-4" />
       </div>
 
@@ -197,7 +197,7 @@ export function DraggableSignature({ signature, containerScale = 1 }: DraggableS
         onPointerDown={handleResizeStart}
         onPointerMove={handleResizeMove}
         onPointerUp={handleResizeEnd}
-        className="absolute -bottom-2 -right-2 w-6 h-6 bg-white border-2 border-primary rounded-full flex items-center justify-center cursor-nwse-resize z-50 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity touch-manipulation"
+        className="absolute -bottom-2 -right-2 w-6 h-6 bg-white border-2 border-primary rounded-full flex items-center justify-center cursor-nwse-resize z-50 shadow-sm opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity touch-none"
       >
         <Maximize2 className="h-3 w-3 text-primary rotate-90" />
       </div>
