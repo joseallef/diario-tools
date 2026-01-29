@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Dropzone } from '@/features/file-upload/Dropzone';
-import { useEditorStore } from '@/features/pdf-editor/store/editorStore';
-import { Loader2, Trash2 } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { Button } from "@/components/ui/button";
+import { Dropzone } from "@/features/file-upload/Dropzone";
+import { useEditorStore } from "@/features/pdf-editor/store/editorStore";
+import { Loader2, Trash2 } from "lucide-react";
+import dynamic from "next/dynamic";
 
-import { PrivacyBadge } from '@/components/PrivacyBadge';
+import { PrivacyBadge } from "@/components/PrivacyBadge";
 
 // Importação Dinâmica com SSR desativado para evitar erro DOMMatrix
 const PdfViewer = dynamic(
-  () => import('@/features/pdf-editor/components/PdfViewer').then((mod) => mod.PdfViewer),
-  { 
+  () => import("@/features/pdf-editor/components/PdfViewer").then((mod) => mod.PdfViewer),
+  {
     ssr: false,
     loading: () => (
       <div className="flex flex-col items-center gap-2 mt-20">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="text-sm text-slate-500">Carregando editor...</span>
       </div>
-    )
+    ),
   }
 );
 
@@ -32,7 +32,7 @@ export default function Home() {
           Assinador de PDF Seguro
         </h1>
       </div>
-      
+
       <div className="mb-8">
         <PrivacyBadge />
       </div>

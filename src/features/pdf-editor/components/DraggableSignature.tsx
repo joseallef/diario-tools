@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Signature, useEditorStore } from '@/features/pdf-editor/store/editorStore';
-import { GripVertical, X } from 'lucide-react';
-import { useRef } from 'react';
-import Draggable from 'react-draggable';
+import { Signature, useEditorStore } from "@/features/pdf-editor/store/editorStore";
+import { GripVertical, X } from "lucide-react";
+import { useRef } from "react";
+import Draggable from "react-draggable";
 
 interface DraggableSignatureProps {
   signature: Signature;

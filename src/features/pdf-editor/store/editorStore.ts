@@ -1,8 +1,8 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export interface Signature {
   id: string;
-  type: 'image' | 'text' | 'draw';
+  type: "image" | "text" | "draw";
   content: string; // Base64 ou URL
   x: number;
   y: number;
