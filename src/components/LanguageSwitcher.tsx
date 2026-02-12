@@ -21,7 +21,6 @@ export function LanguageSwitcher() {
   const [open, setOpen] = useState(false);
 
   const handleLanguageChange = (newLocale: string) => {
-    // @ts-expect-error -- We know the locale is valid from the list
     router.replace(pathname, { locale: newLocale });
     setOpen(false);
   };

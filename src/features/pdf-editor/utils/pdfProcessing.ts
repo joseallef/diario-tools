@@ -67,7 +67,8 @@ export async function burnSignaturesIntoPdf(
 export function downloadPdf(data: Uint8Array, filename: string) {
   // Casting 'data' as any to avoid TypeScript error:
   // "Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'"
-  const blob = new Blob([data], { type: "application/pdf" });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const blob = new Blob([data as any], { type: "application/pdf" });
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
