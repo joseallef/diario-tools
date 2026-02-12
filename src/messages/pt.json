@@ -1,0 +1,93 @@
+{
+  "HomePage": {
+    "seo": {
+      "title": "Assinador de PDF Seguro - Grátis e Sem Login",
+      "description": "Ferramenta online gratuita para assinar PDFs. Processamento 100% local, seguro e sem necessidade de cadastro."
+    },
+    "howTo": {
+      "title": "Como Assinar PDF Online Grátis",
+      "description": "Nossa ferramenta permite assinar documentos PDF diretamente no seu navegador, sem a necessidade de instalar programas ou fazer upload dos seus arquivos para servidores desconhecidos. Siga os passos abaixo:",
+      "steps": {
+        "step1": {
+          "title": "Carregue o PDF:",
+          "description": "Arraste e solte seu arquivo na área indicada acima."
+        },
+        "step2": {
+          "title": "Crie sua Assinatura:",
+          "description": "Use o mouse, touch ou teclado para criar sua assinatura personalizada."
+        },
+        "step3": {
+          "title": "Posicione:",
+          "description": "Arraste a assinatura para o local correto no documento."
+        },
+        "step4": {
+          "title": "Baixe:",
+          "description": "Clique em \"Baixar PDF Assinado\" para salvar o arquivo instantaneamente."
+        }
+      }
+    },
+    "features": {
+      "title": "Por que usar nosso Assinador de PDF?",
+      "items": {
+        "privacy": {
+          "title": "Privacidade Total",
+          "description": "Seus arquivos nunca saem do seu computador. Todo o processamento é feito localmente no seu navegador."
+        },
+        "noSignup": {
+          "title": "Sem Cadastro",
+          "description": "Não exigimos e-mail, login ou cartão de crédito. É só abrir e usar."
+        },
+        "fast": {
+          "title": "Rápido e Leve",
+          "description": "Otimizado para carregar instantaneamente, mesmo em conexões lentas."
+        },
+        "compatibility": {
+          "title": "Compatibilidade",
+          "description": "Funciona no Chrome, Edge, Firefox e Safari, tanto no computador quanto no celular."
+        }
+      }
+    },
+    "faq": {
+      "title": "Perguntas Frequentes (FAQ)",
+      "items": {
+        "free": {
+          "question": "O serviço é realmente gratuito?",
+          "answer": "Sim! Nossa ferramenta de assinatura de PDF é 100% gratuita para uso pessoal e profissional."
+        },
+        "saved": {
+          "question": "Meus documentos ficam salvos?",
+          "answer": "Não. Nossa tecnologia \"Local-First\" garante que o arquivo nunca seja enviado para nossos servidores. Ele é processado na memória do seu dispositivo e descartado assim que você fecha a página."
+        }
+      }
+    }
+  },
+  "PdfEditorPage": {
+    "title": "Assinador de PDF Seguro",
+    "loading": "Carregando editor...",
+    "upload": {
+      "title": "Carregue seu documento",
+      "description": "Seus arquivos são processados localmente e nunca saem do seu dispositivo."
+    },
+    "remove": "Remover"
+  },
+  "Dropzone": {
+    "dragActive": "Solte o PDF aqui",
+    "dragInactive": "Clique ou arraste seu PDF",
+    "maxSize": "Arquivos de até 50MB",
+    "errorType": "Por favor, envie apenas arquivos PDF.",
+    "successUpload": "PDF carregado com sucesso!",
+    "errorRead": "Erro ao ler o arquivo."
+  },
+  "PrivacyBadge": {
+    "trigger": "Processamento 100% Local",
+    "title": "Privacidade Garantida",
+    "description": "Seus documentos não são enviados para nenhum servidor. Todo o processamento acontece na memória do seu navegador."
+  },
+  "LanguageSwitcher": {
+    "label": "Alterar idioma"
+  },
+  "Header": {
+    "appName": "Diário Tools",
+    "description": "Ferramentas para o dia a dia"
+  }
+}

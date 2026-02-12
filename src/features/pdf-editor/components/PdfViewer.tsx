@@ -88,62 +88,8 @@ export function PdfViewer() {
     });
   };
 
-  const handleDownload = async () => {
-    if (!fileBuffer || !file) return;
-
-    try {
-      setIsSaving(true);
-      // Calcular fator de escala: (Tamanho Real PDF) / (Tamanho Renderizado na Tela)
-      // O react-pdf retorna o viewport original no onLoadSuccess da Page, mas vamos simplificar:
-      // Se a página está renderizada com width X e o PDF tem width Y.
-
-      // Vamos pegar o objeto PDFPageProxy do react-pdf para ter as dimensões reais
-      // Mas por simplicidade, vamos passar 1 por enquanto e ajustar na lógica de processamento
-      // ou melhor: Capturar a largura real via evento onLoadSuccess da Page
-
-      // Fator de escala simples se soubermos a largura original.
-      // Como fallback, vamos assumir que o react-pdf renderizou na largura containerWidth
-      // e precisamos descobrir a largura original do PDF.
-
-      // Correção: Precisamos do PDFDocumentProxy para pegar as dimensões reais.
-      // Vamos fazer isso dentro do `burnSignaturesIntoPdf` carregando o doc novamente.
-      // Mas precisamos passar a relação de aspecto.
-
-      // Solução Robusta: Passar para o `burnSignaturesIntoPdf` a largura em PIXELS que a página tem na tela AGORA.
-      // A função lá dentro compara com a largura em POINTS do PDF e calcula o ratio.
-
-      const currentRenderedWidth = pageRef.current?.clientWidth || containerWidth;
-
-      // Passamos scaleFactor como inverso: Quantos Points de PDF valem 1 Pixel de Tela?
-      // Na verdade, passamos a largura renderizada e deixamos o utilitário calcular.
-
-      // Vamos alterar a assinatura do método burn para aceitar renderedWidth
-      // Mas aqui vamos calcular manualmente o ratio aproximado
-      // Ratio = (PDF Points Width) / (Rendered Pixels Width)
-      // Como não temos o PDF Points Width aqui fácil (sem acessar o objeto interno do react-pdf),
-      // Vamos passar o Rendered Width para a função e ela carrega o PDF e descobre.
-
-      const pdfBytes = await burnSignaturesIntoPdf(
-        fileBuffer,
-        signatures,
-        0 // 0 indica que vamos calcular dentro da função baseada na largura da página
-      );
-
-      // Hack temporário: A função burn precisa saber a largura renderizada para calcular o ratio
-      // Vamos modificar a função burnSignaturesIntoPdf para aceitar (renderedWidth)
-
-      downloadPdf(pdfBytes, `assinado_${file.name}`);
-      toast.success("Download iniciado!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao gerar PDF.");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   // Callback quando a página carrega para capturar dimensões reais se possível
-  const onPageLoadSuccess = (page: any) => {
+  const onPageLoadSuccess = (page: { originalWidth: number }) => {
     setPdfPageWidth(page.originalWidth);
   };
 
@@ -159,7 +105,7 @@ export function PdfViewer() {
       const pdfBytes = await burnSignaturesIntoPdf(fileBuffer, signatures, scaleFactor);
       downloadPdf(pdfBytes, `assinado_${file.name}`);
       toast.success("PDF Assinado gerado com sucesso!");
-    } catch (e) {
+    } catch {
       toast.error("Erro ao processar PDF");
     } finally {
       setIsSaving(false);

@@ -1,40 +1,42 @@
-'use client';
+"use client";
 
-import { Card } from '@/components/ui/card';
-import { useEditorStore } from '@/features/pdf-editor/store/editorStore';
-import { cn } from '@/lib/utils';
-import { File as FileIcon, Upload } from 'lucide-react';
-import { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { toast } from 'sonner';
+import { Card } from "@/components/ui/card";
+import { useEditorStore } from "@/features/pdf-editor/store/editorStore";
+import { cn } from "@/lib/utils";
+import { File as FileIcon, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
 
 export function Dropzone() {
   const { setFile } = useEditorStore();
+  const t = useTranslations("Dropzone");
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (!file) return;
 
-      if (file.type !== 'application/pdf') {
-        toast.error('Por favor, envie apenas arquivos PDF.');
+      if (file.type !== "application/pdf") {
+        toast.error(t("errorType"));
         return;
       }
 
       try {
         const buffer = await file.arrayBuffer();
         setFile(file, buffer);
-        toast.success('PDF carregado com sucesso!');
-      } catch (error) {
-        toast.error('Erro ao ler o arquivo.');
+        toast.success(t("successUpload"));
+      } catch {
+        toast.error(t("errorRead"));
       }
     },
-    [setFile]
+    [setFile, t]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'application/pdf': ['.pdf'] },
+    accept: { "application/pdf": [".pdf"] },
     multiple: false,
   });
 
@@ -42,8 +44,8 @@ export function Dropzone() {
     <Card
       {...getRootProps()}
       className={cn(
-        'flex w-full max-w-md flex-col items-center justify-center gap-4 p-10 text-center transition-colors cursor-pointer border-2 border-dashed',
-        isDragActive ? 'border-primary bg-primary/5' : 'border-slate-200 hover:bg-slate-50'
+        "flex w-full max-w-md flex-col items-center justify-center gap-4 p-10 text-center transition-colors cursor-pointer border-2 border-dashed",
+        isDragActive ? "border-primary bg-primary/5" : "border-slate-200 hover:bg-slate-50"
       )}
     >
       <input {...getInputProps()} />
@@ -56,9 +58,9 @@ export function Dropzone() {
       </div>
       <div>
         <p className="text-lg font-medium text-slate-900">
-          {isDragActive ? 'Solte o PDF aqui' : 'Clique ou arraste seu PDF'}
+          {isDragActive ? t("dragActive") : t("dragInactive")}
         </p>
-        <p className="text-sm text-slate-500 mt-1">Arquivos de até 50MB</p>
+        <p className="text-sm text-slate-500 mt-1">{t("maxSize")}</p>
       </div>
     </Card>
   );

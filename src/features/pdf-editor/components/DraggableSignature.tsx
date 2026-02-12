@@ -30,7 +30,8 @@ export function DraggableSignature({ signature, containerScale = 1 }: DraggableS
       setPosition({ x: signature.x, y: signature.y });
       setSize({ width: signature.width, height: signature.height });
     }
-  }, [signature.x, signature.y, signature.width, signature.height, isDragging, isResizing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature.x, signature.y, signature.width, signature.height]);
 
   // --- Lógica de DRAG ---
   const handleDragStart = (e: React.PointerEvent) => {

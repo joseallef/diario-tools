@@ -48,62 +48,62 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   };
 
   // Callback Ref: O React chama isso quando o elemento é montado
-  const setCanvasRef = useCallback((node: HTMLCanvasElement | null) => {
-    if (node !== null) {
-      canvasRef.current = node;
+  const setCanvasRef = useCallback(
+    (node: HTMLCanvasElement | null) => {
+      if (node !== null) {
+        canvasRef.current = node;
 
-      const canvas = node;
+        const canvas = node;
 
-      // Inicialização Segura com SignaturePad
-      const init = () => {
-        const parent = canvas.parentElement;
-        const width = parent?.clientWidth || 300;
-        const height = parent?.clientHeight || 150;
+        // Inicialização Segura com SignaturePad
+        const init = () => {
+          const parent = canvas.parentElement;
+          const width = parent?.clientWidth || 300;
+          const height = parent?.clientHeight || 150;
 
-        canvas.width = width;
-        canvas.height = height;
+          canvas.width = width;
+          canvas.height = height;
 
-        // Limpa instância anterior se houver
-        if (signaturePadRef.current) {
-          signaturePadRef.current.off();
-        }
+          // Limpa instância anterior se houver
+          if (signaturePadRef.current) {
+            signaturePadRef.current.off();
+          }
 
-        // Inicializa a Lib
-        signaturePadRef.current = new SignaturePad(canvas, {
-          minWidth: strokeOptions[strokeWidth].minWidth,
-          maxWidth: strokeOptions[strokeWidth].maxWidth,
-          penColor: "rgb(0, 0, 0)",
-          backgroundColor: "rgba(255, 255, 255, 0)",
-          velocityFilterWeight: 0.7,
+          // Inicializa a Lib
+          signaturePadRef.current = new SignaturePad(canvas, {
+            minWidth: strokeOptions[strokeWidth].minWidth,
+            maxWidth: strokeOptions[strokeWidth].maxWidth,
+            penColor: "rgb(0, 0, 0)",
+            backgroundColor: "rgba(255, 255, 255, 0)",
+            velocityFilterWeight: 0.7,
+          });
+
+          // setDebugInfo(`SignaturePad Ready: ${width}x${height}`);
+        };
+
+        // Delay minúsculo para garantir layout
+        requestAnimationFrame(() => {
+          init();
+          setTimeout(init, 300);
         });
 
-        // setDebugInfo(`SignaturePad Ready: ${width}x${height}`);
-      };
+        // Bloqueia scroll no canvas (Mobile fix essencial)
+        const preventScroll = (e: TouchEvent) => {
+          if (e.target === canvas) {
+            e.preventDefault();
+          }
+        };
 
-      // Delay minúsculo para garantir layout
-      requestAnimationFrame(() => {
-        init();
-        setTimeout(init, 300);
-      });
-
-      // Bloqueia scroll no canvas (Mobile fix essencial)
-      const preventScroll = (e: TouchEvent) => {
-        if (e.target === canvas) {
-          e.preventDefault();
-        }
-      };
-
-      canvas.addEventListener("touchstart", preventScroll, { passive: false });
-      canvas.addEventListener("touchmove", preventScroll, { passive: false });
-      canvas.addEventListener("touchend", preventScroll, { passive: false });
-    } else {
-      // Cleanup
-      if (signaturePadRef.current) {
-        signaturePadRef.current.off();
-        signaturePadRef.current = null;
+        canvas.addEventListener("touchstart", preventScroll, { passive: false });
+        canvas.addEventListener("touchmove", preventScroll, { passive: false });
+        canvas.addEventListener("touchend", preventScroll, { passive: false });
+      } else {
+        // Cleanup
       }
-    }
-  }, []); // Dependências vazias = só cria uma vez
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  ); // Dependências vazias = só cria uma vez
 
   // Removemos o useEffect antigo completamente
 

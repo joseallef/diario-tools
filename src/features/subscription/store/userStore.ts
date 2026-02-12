@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-export type PlanTier = 'free' | 'pro' | 'enterprise';
+export type PlanTier = "free" | "pro" | "enterprise";
 
 interface UserState {
   plan: PlanTier;
@@ -11,7 +11,7 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>((set) => ({
-  plan: 'free', // Padrão inicial
+  plan: "free", // Padrão inicial
   isAuthenticated: false,
   setUserPlan: (plan) => set({ plan }),
   setIsAuthenticated: (status) => set({ isAuthenticated: status }),

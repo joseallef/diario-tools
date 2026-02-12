@@ -1,0 +1,93 @@
+{
+  "HomePage": {
+    "seo": {
+      "title": "Secure PDF Signer - Free & No Login",
+      "description": "Free online tool to sign PDFs. 100% local processing, secure and no registration required."
+    },
+    "howTo": {
+      "title": "How to Sign PDF Online for Free",
+      "description": "Our tool allows you to sign PDF documents directly in your browser, without the need to install software or upload your files to unknown servers. Follow the steps below:",
+      "steps": {
+        "step1": {
+          "title": "Upload PDF:",
+          "description": "Drag and drop your file in the area above."
+        },
+        "step2": {
+          "title": "Create Signature:",
+          "description": "Use mouse, touch or keyboard to create your custom signature."
+        },
+        "step3": {
+          "title": "Position:",
+          "description": "Drag the signature to the correct place in the document."
+        },
+        "step4": {
+          "title": "Download:",
+          "description": "Click \"Download Signed PDF\" to save the file instantly."
+        }
+      }
+    },
+    "features": {
+      "title": "Why use our PDF Signer?",
+      "items": {
+        "privacy": {
+          "title": "Total Privacy",
+          "description": "Your files never leave your computer. All processing is done locally in your browser."
+        },
+        "noSignup": {
+          "title": "No Registration",
+          "description": "We don't require email, login or credit card. Just open and use."
+        },
+        "fast": {
+          "title": "Fast & Lightweight",
+          "description": "Optimized to load instantly, even on slow connections."
+        },
+        "compatibility": {
+          "title": "Compatibility",
+          "description": "Works on Chrome, Edge, Firefox and Safari, on both desktop and mobile."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions (FAQ)",
+      "items": {
+        "free": {
+          "question": "Is the service really free?",
+          "answer": "Yes! Our PDF signature tool is 100% free for personal and professional use."
+        },
+        "saved": {
+          "question": "Are my documents saved?",
+          "answer": "No. Our \"Local-First\" technology ensures the file is never sent to our servers. It is processed in your device's memory and discarded as soon as you close the page."
+        }
+      }
+    }
+  },
+  "PdfEditorPage": {
+    "title": "Secure PDF Signer",
+    "loading": "Loading editor...",
+    "upload": {
+      "title": "Upload your document",
+      "description": "Your files are processed locally and never leave your device."
+    },
+    "remove": "Remove"
+  },
+  "Dropzone": {
+    "dragActive": "Drop the PDF here",
+    "dragInactive": "Click or drag your PDF",
+    "maxSize": "Files up to 50MB",
+    "errorType": "Please upload only PDF files.",
+    "successUpload": "PDF uploaded successfully!",
+    "errorRead": "Error reading file."
+  },
+  "PrivacyBadge": {
+    "trigger": "100% Local Processing",
+    "title": "Privacy Guaranteed",
+    "description": "Your documents are never sent to any server. All processing happens in your browser memory."
+  },
+  "LanguageSwitcher": {
+    "label": "Change language"
+  },
+  "Header": {
+    "appName": "Daily Tools",
+    "description": "Tools for everyday life"
+  }
+}
