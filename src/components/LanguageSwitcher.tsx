@@ -14,7 +14,7 @@ const FlagBR = () => (
     viewBox="0 0 72 50"
     width="20"
     height="14"
-    className="rounded-sm shadow-sm"
+    className="shadow-sm"
   >
     <rect width="72" height="50" fill="#009c3b" />
     <path d="M36 4.2L67.8 25 36 45.8 4.2 25z" fill="#ffdf00" />
@@ -29,7 +29,7 @@ const FlagUS = () => (
     viewBox="0 0 72 50"
     width="20"
     height="14"
-    className="rounded-sm shadow-sm"
+    className="shadow-sm"
   >
     <rect width="72" height="50" fill="#b22234" />
     <path d="M0 7.7h72M0 23.1h72M0 38.5h72" stroke="#fff" strokeWidth="3.8" />
@@ -71,7 +71,7 @@ export function LanguageSwitcher() {
           className="gap-2 text-slate-600 hover:text-slate-900 cursor-pointer"
           aria-label={t("label")}
         >
-          {currentLang ? <currentLang.Icon /> : <Globe className="h-4 w-4" />}
+          <Globe className="h-4 w-4" />
           <span className="hidden sm:inline-block">{currentLang?.label}</span>
         </Button>
       </PopoverTrigger>
