@@ -68,7 +68,25 @@
       "title": "Carregue seu documento",
       "description": "Seus arquivos são processados localmente e nunca saem do seu dispositivo."
     },
-    "remove": "Remover"
+    "remove": "Remover",
+    "viewer": {
+      "download": {
+        "processing": "Processando...",
+        "ready": "Baixar PDF Assinado",
+        "processingShort": "Salvar",
+        "readyShort": "Baixar"
+      },
+      "toast": {
+        "success": "PDF Assinado gerado com sucesso!",
+        "error": "Erro ao processar PDF"
+      },
+      "loading": "Renderizando PDF...",
+      "pagination": {
+        "prev": "Anterior",
+        "next": "Próxima",
+        "label": "Página {current} de {total}"
+      }
+    }
   },
   "Dropzone": {
     "dragActive": "Solte o PDF aqui",
@@ -82,6 +100,32 @@
     "trigger": "Processamento 100% Local",
     "title": "Privacidade Garantida",
     "description": "Seus documentos não são enviados para nenhum servidor. Todo o processamento acontece na memória do seu navegador."
+  },
+  "SignatureModal": {
+    "trigger": "Adicionar Assinatura",
+    "title": "Criar Assinatura",
+    "description": "Escolha como deseja assinar o documento.",
+    "tabs": {
+      "draw": "Desenhar",
+      "type": "Digitar"
+    },
+    "thickness": {
+      "label": "Espessura:",
+      "hint": "Desenhe sua assinatura acima.",
+      "thin": "Fina",
+      "medium": "Média",
+      "thick": "Grossa"
+    },
+    "type": {
+      "label": "Seu Nome",
+      "placeholder": "Ex: João Silva",
+      "preview": "Visualização da assinatura"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "confirm": "Inserir Assinatura",
+      "clear": "Limpar"
+    }
   },
   "LanguageSwitcher": {
     "label": "Alterar idioma"

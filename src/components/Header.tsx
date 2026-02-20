@@ -1,13 +1,21 @@
+"use client";
+
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Link } from "@/i18n/routing";
 import { FileSignature } from "lucide-react";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
+
+const ThemeToggle = dynamic(
+  () => import("@/components/ThemeToggle").then((mod) => mod.ThemeToggle),
+  { ssr: false }
+);
 
 export function Header() {
   const t = useTranslations("Header");
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
@@ -15,17 +23,18 @@ export function Header() {
               <FileSignature className="h-5 w-5 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-slate-900 leading-none">
+              <span className="text-lg font-bold tracking-tight text-foreground leading-none">
                 {t("appName")}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium leading-none">
+              <span className="text-[10px] text-muted-foreground font-medium leading-none">
                 {t("description")}
               </span>
             </div>
           </Link>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
           <LanguageSwitcher />
         </div>
       </div>

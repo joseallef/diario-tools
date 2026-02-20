@@ -68,7 +68,25 @@
       "title": "Upload your document",
       "description": "Your files are processed locally and never leave your device."
     },
-    "remove": "Remove"
+    "remove": "Remove",
+    "viewer": {
+      "download": {
+        "processing": "Processing...",
+        "ready": "Download Signed PDF",
+        "processingShort": "Save",
+        "readyShort": "Download"
+      },
+      "toast": {
+        "success": "Signed PDF generated successfully!",
+        "error": "Error processing PDF"
+      },
+      "loading": "Rendering PDF...",
+      "pagination": {
+        "prev": "Previous",
+        "next": "Next",
+        "label": "Page {current} of {total}"
+      }
+    }
   },
   "Dropzone": {
     "dragActive": "Drop the PDF here",
@@ -82,6 +100,32 @@
     "trigger": "100% Local Processing",
     "title": "Privacy Guaranteed",
     "description": "Your documents are never sent to any server. All processing happens in your browser memory."
+  },
+  "SignatureModal": {
+    "trigger": "Add Signature",
+    "title": "Create Signature",
+    "description": "Choose how you want to sign the document.",
+    "tabs": {
+      "draw": "Draw",
+      "type": "Type"
+    },
+    "thickness": {
+      "label": "Thickness:",
+      "hint": "Draw your signature above.",
+      "thin": "Thin",
+      "medium": "Medium",
+      "thick": "Thick"
+    },
+    "type": {
+      "label": "Your Name",
+      "placeholder": "e.g. John Smith",
+      "preview": "Signature preview"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "confirm": "Insert Signature",
+      "clear": "Clear"
+    }
   },
   "LanguageSwitcher": {
     "label": "Change language"

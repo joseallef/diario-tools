@@ -45,11 +45,11 @@ export function Dropzone() {
       {...getRootProps()}
       className={cn(
         "flex w-full max-w-md flex-col items-center justify-center gap-4 p-10 text-center transition-colors cursor-pointer border-2 border-dashed",
-        isDragActive ? "border-primary bg-primary/5" : "border-slate-200 hover:bg-slate-50"
+        isDragActive ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
       )}
     >
       <input {...getInputProps()} />
-      <div className="rounded-full bg-slate-100 p-4">
+      <div className="rounded-full bg-muted p-4">
         {isDragActive ? (
           <FileIcon className="h-8 w-8 text-primary animate-bounce" />
         ) : (
@@ -57,10 +57,10 @@ export function Dropzone() {
         )}
       </div>
       <div>
-        <p className="text-lg font-medium text-slate-900">
+        <p className="text-lg font-medium text-foreground">
           {isDragActive ? t("dragActive") : t("dragInactive")}
         </p>
-        <p className="text-sm text-slate-500 mt-1">{t("maxSize")}</p>
+        <p className="text-sm text-muted-foreground mt-1">{t("maxSize")}</p>
       </div>
     </Card>
   );

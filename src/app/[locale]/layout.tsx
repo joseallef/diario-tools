@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "../globals.css";
 
@@ -80,12 +81,14 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className={`${inter.className} antialiased min-h-screen bg-slate-50 flex flex-col`}>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${inter.className} antialiased min-h-screen flex flex-col`}>
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <div className="flex-1">{children}</div>
-          <Toaster />
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+            <Header />
+            <div className="flex-1">{children}</div>
+            <Toaster />
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>

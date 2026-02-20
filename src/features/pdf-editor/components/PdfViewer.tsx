@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useEditorStore } from "@/features/pdf-editor/store/editorStore";
 import { Download, Loader2, Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { toast } from "sonner";
@@ -28,6 +29,7 @@ export function PdfViewer() {
   const [isSaving, setIsSaving] = useState(false);
   const [realScale, setRealScale] = useState(1);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const t = useTranslations("PdfEditorPage.viewer");
 
   // Refs para cálculo de coordenadas
   const pageRef = useRef<HTMLDivElement>(null);
@@ -104,9 +106,9 @@ export function PdfViewer() {
 
       const pdfBytes = await burnSignaturesIntoPdf(fileBuffer, signatures, scaleFactor);
       downloadPdf(pdfBytes, `assinado_${file.name}`);
-      toast.success("PDF Assinado gerado com sucesso!");
+      toast.success(t("toast.success"));
     } catch {
-      toast.error("Erro ao processar PDF");
+      toast.error(t("toast.error"));
     } finally {
       setIsSaving(false);
     }
@@ -120,15 +122,16 @@ export function PdfViewer() {
   return (
     <div id="pdf-container-wrapper" className="flex flex-col items-center w-full gap-4">
       {/* Toolbar Flutuante Superior - Ações Principais */}
-      <div className="sticky top-4 z-50 flex gap-2 bg-white/90 backdrop-blur shadow-lg p-2 rounded-full border border-slate-200 max-w-[95vw] overflow-hidden">
+      <div className="sticky top-4 z-50 flex gap-2 bg-background/90 backdrop-blur shadow-lg p-2 rounded-full border border-border max-w-[95vw] overflow-hidden">
         <SignatureModal onConfirm={handleAddSignature} />
 
-        <div className="w-px bg-slate-200 mx-1" />
+        <div className="w-px bg-border mx-1" />
 
         <Button
           onClick={handleDownloadWithScale}
           disabled={isSaving || signatures.length === 0}
-          className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 cursor-pointer"
+          variant="default"
+          className="gap-2 px-4 cursor-pointer"
         >
           {isSaving ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -136,18 +139,20 @@ export function PdfViewer() {
             <Download className="h-4 w-4" />
           )}
           <span className="hidden sm:inline">
-            {isSaving ? "Processando..." : "Baixar PDF Assinado"}
+            {isSaving ? t("download.processing") : t("download.ready")}
           </span>
-          <span className="inline sm:hidden">{isSaving ? "Salvar" : "Baixar"}</span>
+          <span className="inline sm:hidden">
+            {isSaving ? t("download.processingShort") : t("download.readyShort")}
+          </span>
         </Button>
       </div>
 
       {/* Toolbar Flutuante Inferior - Zoom Controls */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-white/90 backdrop-blur shadow-lg border border-slate-200 p-1.5 rounded-full">
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-background/90 backdrop-blur shadow-lg border border-border p-1.5 rounded-full">
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-full hover:bg-slate-100 cursor-pointer"
+          className="h-8 w-8 rounded-full hover:bg-muted cursor-pointer"
           onClick={handleZoomOut}
           disabled={zoomLevel <= 0.5}
         >
@@ -159,7 +164,7 @@ export function PdfViewer() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-full hover:bg-slate-100 cursor-pointer"
+          className="h-8 w-8 rounded-full hover:bg-muted cursor-pointer"
           onClick={handleZoomIn}
           disabled={zoomLevel >= 3}
         >
@@ -167,14 +172,14 @@ export function PdfViewer() {
         </Button>
       </div>
 
-      <div className="bg-slate-100 p-8 rounded-xl min-h-[600px] overflow-auto w-full flex justify-center shadow-inner">
+      <div className="bg-muted p-8 rounded-xl min-h-[600px] overflow-auto w-full flex justify-center shadow-inner">
         <Document
           file={safeFileBuffer}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
           loading={
             <div className="flex flex-col items-center gap-2 mt-20">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <span className="text-sm text-slate-500">Renderizando PDF...</span>
+              <span className="text-sm text-muted-foreground">{t("loading")}</span>
             </div>
           }
           className="shadow-xl relative"
@@ -186,7 +191,7 @@ export function PdfViewer() {
               width={containerWidth > 0 ? Math.min(containerWidth, 800) * zoomLevel : undefined}
               renderTextLayer={false}
               renderAnnotationLayer={false}
-              className="bg-white"
+              className="bg-card"
               onLoadSuccess={onPageLoadSuccess}
             />
 
@@ -207,17 +212,17 @@ export function PdfViewer() {
       </div>
 
       {numPages > 1 && (
-        <div className="flex gap-4 items-center bg-white p-2 rounded-lg border shadow-sm">
+        <div className="flex gap-4 items-center bg-card p-2 rounded-lg border border-border shadow-sm">
           <Button
             variant="outline"
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage(currentPage - 1)}
             className="cursor-pointer"
           >
-            Anterior
+            {t("pagination.prev")}
           </Button>
-          <span className="text-sm font-medium">
-            Página {currentPage} de {numPages}
+          <span className="text-sm font-medium text-foreground">
+            {t("pagination.label", { current: currentPage, total: numPages })}
           </span>
           <Button
             variant="outline"
@@ -225,7 +230,7 @@ export function PdfViewer() {
             onClick={() => setCurrentPage(currentPage + 1)}
             className="cursor-pointer"
           >
-            Próxima
+            {t("pagination.next")}
           </Button>
         </div>
       )}

@@ -17,7 +17,7 @@ export function PrivacyBadge() {
           type="button"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200 cursor-pointer select-none hover:bg-green-100 transition-colors active:scale-95 touch-manipulation focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer select-none transition-colors active:scale-95 touch-manipulation focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 border bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-emerald-900/40 dark:text-emerald-100 dark:border-emerald-700 dark:hover:bg-emerald-900 dark:focus:ring-emerald-400 dark:focus:ring-offset-0"
         >
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>{t("trigger")}</span>
@@ -29,8 +29,8 @@ export function PrivacyBadge() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <p className="font-semibold mb-1 text-sm text-slate-900">{t("title")}</p>
-        <p className="text-xs text-slate-500 leading-relaxed">{t("description")}</p>
+        <p className="font-semibold mb-1 text-sm text-foreground">{t("title")}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">{t("description")}</p>
       </PopoverContent>
     </Popover>
   );

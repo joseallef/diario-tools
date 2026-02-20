@@ -55,10 +55,10 @@ export default function Home() {
       <PdfEditorPage />
 
       {/* Conteúdo SEO - Visível para usuários e crawlers, posicionado abaixo da dobra */}
-      <section className="bg-white py-16 px-4 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto space-y-12 text-slate-700">
+      <section className="bg-background py-16 px-4 border-t border-border">
+        <div className="max-w-4xl mx-auto space-y-12 text-muted-foreground">
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-slate-900">{t("howTo.title")}</h2>
+            <h2 className="text-2xl font-bold text-foreground">{t("howTo.title")}</h2>
             <p>{t("howTo.description")}</p>
             <ol className="list-decimal pl-5 space-y-2 marker:font-bold">
               <li>
@@ -77,40 +77,48 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-slate-900">{t("features.title")}</h2>
+            <h2 className="text-2xl font-bold text-foreground">{t("features.title")}</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <h3 className="font-semibold text-slate-900 mb-2">
+              <div className="p-4 bg-card border border-border rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">
                   {t("features.items.privacy.title")}
                 </h3>
-                <p className="text-sm">{t("features.items.privacy.description")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("features.items.privacy.description")}
+                </p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <h3 className="font-semibold text-slate-900 mb-2">
+              <div className="p-4 bg-card border border-border rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">
                   {t("features.items.noSignup.title")}
                 </h3>
-                <p className="text-sm">{t("features.items.noSignup.description")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("features.items.noSignup.description")}
+                </p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <h3 className="font-semibold text-slate-900 mb-2">
+              <div className="p-4 bg-card border border-border rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">
                   {t("features.items.fast.title")}
                 </h3>
-                <p className="text-sm">{t("features.items.fast.description")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("features.items.fast.description")}
+                </p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <h3 className="font-semibold text-slate-900 mb-2">
+              <div className="p-4 bg-card border border-border rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">
                   {t("features.items.compatibility.title")}
                 </h3>
-                <p className="text-sm">{t("features.items.compatibility.description")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("features.items.compatibility.description")}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-slate-900">{t("faq.title")}</h2>
+            <h2 className="text-2xl font-bold text-foreground">{t("faq.title")}</h2>
             <div className="space-y-4">
-              <details className="group border border-slate-200 rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-slate-900">
+              <details className="group border border-border bg-card rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-foreground">
                   <span>{t("faq.items.free.question")}</span>
                   <span className="group-open:-rotate-180 transition-transform duration-300">
                     <svg
@@ -129,11 +137,13 @@ export default function Home() {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-4 leading-relaxed text-slate-600">{t("faq.items.free.answer")}</p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {t("faq.items.free.answer")}
+                </p>
               </details>
 
-              <details className="group border border-slate-200 rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-slate-900">
+              <details className="group border border-border bg-card rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-foreground">
                   <span>{t("faq.items.saved.question")}</span>
                   <span className="group-open:-rotate-180 transition-transform duration-300">
                     <svg
@@ -152,7 +162,9 @@ export default function Home() {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-4 leading-relaxed text-slate-600">{t("faq.items.saved.answer")}</p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {t("faq.items.saved.answer")}
+                </p>
               </details>
             </div>
           </div>

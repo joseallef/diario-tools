@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, Eraser, PenLine, Type } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
 
@@ -28,6 +29,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   const [textSignature, setTextSignature] = useState("");
   const [activeTab, setActiveTab] = useState("draw");
   const [strokeWidth, setStrokeWidth] = useState<"thin" | "medium" | "thick">("medium");
+  const t = useTranslations("SignatureModal");
 
   // Configurações de espessura
   const strokeOptions = {
@@ -155,28 +157,28 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         {trigger || (
           <Button className="gap-2 cursor-pointer">
             <PenLine className="h-4 w-4" />
-            Adicionar Assinatura
+            {t("trigger")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Criar Assinatura</DialogTitle>
-          <DialogDescription>Escolha como deseja assinar o documento.</DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="draw" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 bg-muted">
             <TabsTrigger value="draw" className="gap-2">
-              <PenLine className="h-4 w-4" /> Desenhar
+              <PenLine className="h-4 w-4" /> {t("tabs.draw")}
             </TabsTrigger>
             <TabsTrigger value="type" className="gap-2">
-              <Type className="h-4 w-4" /> Digitar
+              <Type className="h-4 w-4" /> {t("tabs.type")}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="draw" className="space-y-4 py-4">
-            <div className="relative rounded-lg border-2 border-slate-300 bg-white h-[200px] w-full overflow-hidden">
+            <div className="relative rounded-lg border-2 border-border bg-card h-[200px] w-full overflow-hidden">
               <canvas
                 ref={setCanvasRef}
                 className="block w-full h-full cursor-crosshair touch-none relative z-10"
@@ -185,60 +187,68 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-2 right-2 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 z-50 bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer"
+                className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 z-50 bg-background/80 backdrop-blur-sm shadow-sm cursor-pointer"
                 onClick={clearCanvas}
-                title="Limpar"
+                title={t("actions.clear")}
               >
                 <Eraser className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex items-center justify-between mt-2">
               <div className="flex gap-2 items-center">
-                <span className="text-xs text-slate-500 font-medium">Espessura:</span>
-                <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+                <span className="text-xs text-muted-foreground font-medium">
+                  {t("thickness.label")}
+                </span>
+                <div className="flex gap-1 bg-muted p-1 rounded-lg">
                   <button
                     onClick={() => updateStrokeWidth("thin")}
-                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "thin" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
-                    title="Fina"
+                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
+                      strokeWidth === "thin" ? "bg-background shadow-sm ring-1 ring-border" : ""
+                    }`}
+                    title={t("thickness.thin")}
                   >
-                    <div className="w-4 h-0.5 bg-slate-800 rounded-full" />
+                    <div className="w-4 h-0.5 bg-foreground rounded-full" />
                   </button>
                   <button
                     onClick={() => updateStrokeWidth("medium")}
-                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "medium" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
-                    title="Média"
+                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
+                      strokeWidth === "medium" ? "bg-background shadow-sm ring-1 ring-border" : ""
+                    }`}
+                    title={t("thickness.medium")}
                   >
-                    <div className="w-4 h-1 bg-slate-800 rounded-full" />
+                    <div className="w-4 h-1 bg-foreground rounded-full" />
                   </button>
                   <button
                     onClick={() => updateStrokeWidth("thick")}
-                    className={`p-1.5 rounded-md hover:bg-white transition-all ${strokeWidth === "thick" ? "bg-white shadow-sm ring-1 ring-slate-200" : ""}`}
-                    title="Grossa"
+                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
+                      strokeWidth === "thick" ? "bg-background shadow-sm ring-1 ring-border" : ""
+                    }`}
+                    title={t("thickness.thick")}
                   >
-                    <div className="w-4 h-1.5 bg-slate-800 rounded-full" />
+                    <div className="w-4 h-1.5 bg-foreground rounded-full" />
                   </button>
                 </div>
               </div>
-              <p className="text-xs text-slate-400">Desenhe sua assinatura acima.</p>
+              <p className="text-xs text-muted-foreground">{t("thickness.hint")}</p>
             </div>
           </TabsContent>
 
           <TabsContent value="type" className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="signature-text">Seu Nome</Label>
+              <Label htmlFor="signature-text">{t("type.label")}</Label>
               <Input
                 id="signature-text"
-                placeholder="Ex: João Silva"
+                placeholder={t("type.placeholder")}
                 value={textSignature}
                 onChange={(e) => setTextSignature(e.target.value)}
                 className="text-lg"
               />
             </div>
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-8 text-center min-h-[120px] flex items-center justify-center">
+            <div className="rounded-lg border border-border bg-muted p-8 text-center min-h-[120px] flex items-center justify-center">
               {textSignature ? (
-                <span className="text-4xl font-[cursive]">{textSignature}</span>
+                <span className="text-4xl font-[cursive] text-foreground">{textSignature}</span>
               ) : (
-                <span className="text-slate-300 italic">Visualização da assinatura</span>
+                <span className="text-muted-foreground italic">{t("type.preview")}</span>
               )}
             </div>
           </TabsContent>
@@ -246,7 +256,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
 
         <div className="flex justify-end gap-2 mt-2">
           <Button variant="outline" onClick={() => setOpen(false)} className="cursor-pointer">
-            Cancelar
+            {t("actions.cancel")}
           </Button>
           <Button
             onClick={handleConfirm}
@@ -254,7 +264,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
             className="cursor-pointer"
           >
             <Check className="mr-2 h-4 w-4" />
-            Inserir Assinatura
+            {t("actions.confirm")}
           </Button>
         </div>
       </DialogContent>

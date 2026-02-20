@@ -35,7 +35,7 @@ export function PdfEditorPage() {
   return (
     <main className="flex w-full flex-col items-center p-4 md:p-12">
       <div className="z-10 w-full max-w-5xl items-center justify-between text-sm lg:flex mb-8">
-        <h1 className="w-full text-center text-3xl font-bold text-slate-900">{t("title")}</h1>
+        <h1 className="w-full text-center text-3xl font-bold text-foreground">{t("title")}</h1>
       </div>
 
       <div className="mb-8">
@@ -46,15 +46,17 @@ export function PdfEditorPage() {
         {!file ? (
           <div className="flex flex-col gap-6 text-center items-center">
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-slate-800">{t("upload.title")}</h2>
-              <p className="text-sm text-slate-500">{t("upload.description")}</p>
+              <h2 className="text-xl font-semibold text-foreground">{t("upload.title")}</h2>
+              <p className="text-sm text-muted-foreground">{t("upload.description")}</p>
             </div>
             <Dropzone />
           </div>
         ) : (
           <div className="w-full flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-slate-200">
-              <span className="font-medium text-slate-700 truncate max-w-[300px]">{file.name}</span>
+            <div className="flex justify-between items-center bg-card p-4 rounded-lg shadow-sm border border-border">
+              <span className="font-medium text-foreground truncate max-w-[300px]">
+                {file.name}
+              </span>
               <Button
                 variant="destructive"
                 size="sm"
