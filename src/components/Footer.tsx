@@ -1,8 +1,8 @@
 "use client";
 
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { Link } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
-import { FileSignature } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
@@ -14,10 +14,8 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-md space-y-3">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <FileSignature className="h-4 w-4 text-primary-foreground" />
-              </div>
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <BrandLogo className="h-8 w-8 shrink-0 drop-shadow-sm" />
               <span className="text-base font-bold text-foreground">{siteConfig.name}</span>
             </Link>
             <p className="text-sm leading-relaxed text-muted-foreground">{t("tagline")}</p>
