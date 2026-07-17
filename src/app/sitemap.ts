@@ -1,13 +1,22 @@
+import { getLocaleUrl } from "@/config/site";
 import { routing } from "@/i18n/routing";
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://diario.tools";
+  const lastModified = new Date();
+  const languages = Object.fromEntries(
+    routing.locales.map((locale) => [locale, getLocaleUrl(locale)])
+  ) as Record<string, string>;
+
+  languages["x-default"] = getLocaleUrl(routing.defaultLocale);
 
   return routing.locales.map((locale) => ({
-    url: locale === routing.defaultLocale ? baseUrl : `${baseUrl}/${locale}`,
-    lastModified: new Date(),
-    changeFrequency: "daily",
-    priority: 1,
+    url: getLocaleUrl(locale),
+    lastModified,
+    changeFrequency: "weekly" as const,
+    priority: locale === routing.defaultLocale ? 1 : 0.9,
+    alternates: {
+      languages,
+    },
   }));
 }

@@ -1,68 +1,86 @@
 {
   "HomePage": {
     "seo": {
-      "title": "Secure PDF Signer - Free & No Login",
-      "description": "Free online tool to sign PDFs. 100% local processing, secure and no registration required."
+      "title": "Sign PDF Online Free | No Login & 100% Private",
+      "description": "Sign PDF online for free in your browser. No signup, no server uploads. Fast, secure and private e-signatures with AssinarPDF.",
+      "ogTitle": "Sign PDF Online Free — Fast, Secure & No Login",
+      "ogDescription": "Add your signature to any PDF right in the browser. 100% local processing: your files never leave your device."
     },
     "howTo": {
-      "title": "How to Sign PDF Online for Free",
-      "description": "Our tool allows you to sign PDF documents directly in your browser, without the need to install software or upload your files to unknown servers. Follow the steps below:",
+      "title": "How to sign a PDF online for free",
+      "description": "With AssinarPDF you sign PDF documents in your browser — no software to install and no cloud uploads. Follow these 4 steps:",
       "steps": {
         "step1": {
-          "title": "Upload PDF:",
-          "description": "Drag and drop your file in the area above."
+          "title": "Upload the PDF:",
+          "description": "Drag and drop your file into the area above, or click to select it."
         },
         "step2": {
-          "title": "Create Signature:",
-          "description": "Use mouse, touch or keyboard to create your custom signature."
+          "title": "Create your signature:",
+          "description": "Draw with mouse or touch, or type your name to generate a signature."
         },
         "step3": {
-          "title": "Position:",
-          "description": "Drag the signature to the correct place in the document."
+          "title": "Position on the document:",
+          "description": "Drag the signature to the right place on any page of the PDF."
         },
         "step4": {
-          "title": "Download:",
-          "description": "Click \"Download Signed PDF\" to save the file instantly."
+          "title": "Download the signed PDF:",
+          "description": "Click \"Download Signed PDF\" and save the file to your device instantly."
         }
       }
     },
     "features": {
-      "title": "Why use our PDF Signer?",
+      "title": "Why sign PDFs with AssinarPDF?",
       "items": {
         "privacy": {
-          "title": "Total Privacy",
-          "description": "Your files never leave your computer. All processing is done locally in your browser."
+          "title": "Total privacy",
+          "description": "Your files never leave your computer. All processing happens locally in the browser — zero uploads."
         },
         "noSignup": {
-          "title": "No Registration",
-          "description": "We don't require email, login or credit card. Just open and use."
+          "title": "No registration",
+          "description": "We don't ask for email, login, or a credit card. Open, sign, and download. Done."
         },
         "fast": {
-          "title": "Fast & Lightweight",
-          "description": "Optimized to load instantly, even on slow connections."
+          "title": "Fast & lightweight",
+          "description": "Built to work instantly, even on slower connections or mobile networks."
         },
         "compatibility": {
-          "title": "Compatibility",
-          "description": "Works on Chrome, Edge, Firefox and Safari, on both desktop and mobile."
+          "title": "Works everywhere",
+          "description": "Chrome, Edge, Firefox, and Safari — on desktop or mobile, with nothing to install."
         }
       }
     },
     "faq": {
-      "title": "Frequently Asked Questions (FAQ)",
+      "title": "Frequently asked questions about signing PDFs",
       "items": {
         "free": {
-          "question": "Is the service really free?",
-          "answer": "Yes! Our PDF signature tool is 100% free for personal and professional use."
+          "question": "Is AssinarPDF really free?",
+          "answer": "Yes. You can sign PDFs online 100% free for personal and professional use — no signup and no credit card."
         },
         "saved": {
-          "question": "Are my documents saved?",
-          "answer": "No. Our \"Local-First\" technology ensures the file is never sent to our servers. It is processed in your device's memory and discarded as soon as you close the page."
+          "question": "Are my documents saved on your servers?",
+          "answer": "No. Our local-first approach means the file is never sent to our servers. The PDF is processed in your browser memory and discarded when you close the page."
+        },
+        "install": {
+          "question": "Do I need to install any software?",
+          "answer": "No. AssinarPDF runs entirely in the browser. Just open the site, load your PDF, sign, and download — no installs or extensions."
+        },
+        "mobile": {
+          "question": "Can I sign a PDF on my phone?",
+          "answer": "Yes. The tool is responsive and works on smartphones and tablets. You can draw your signature with your finger on a touch screen."
+        },
+        "legal": {
+          "question": "Is the signature legally valid?",
+          "answer": "AssinarPDF creates a visual electronic signature on the PDF (an image of your signature). That covers many everyday workflows (internal contracts, receipts, authorizations). For acts that require a qualified digital certificate (e.g. ICP-Brasil in Brazil), use a certificate-based solution."
+        },
+        "size": {
+          "question": "What is the maximum file size?",
+          "answer": "You can upload PDFs up to 50 MB. Larger files may take longer to render because all processing happens on your device."
         }
       }
     }
   },
   "PdfEditorPage": {
-    "title": "Secure PDF Signer",
+    "title": "Sign PDF online",
     "loading": "Loading editor...",
     "upload": {
       "title": "Upload your document",
@@ -94,7 +112,7 @@
     "maxSize": "Files up to 50MB",
     "errorType": "Please upload only PDF files.",
     "successUpload": "PDF uploaded successfully!",
-    "errorRead": "Error reading file."
+    "errorRead": "Error reading the file."
   },
   "PrivacyBadge": {
     "trigger": "100% Local Processing",
@@ -131,7 +149,18 @@
     "label": "Change language"
   },
   "Header": {
-    "appName": "Daily Tools",
-    "description": "Tools for everyday life"
+    "appName": "AssinarPDF",
+    "description": "Sign PDFs online · free & secure"
+  },
+  "Footer": {
+    "tagline": "Sign PDFs online for free, with total privacy and no signup. 100% browser-side processing.",
+    "privacy": "Your documents are never uploaded to our servers.",
+    "navLabel": "Footer navigation",
+    "links": {
+      "howTo": "How to sign",
+      "features": "Features",
+      "faq": "FAQ"
+    },
+    "rights": "Free electronic PDF signature tool."
   }
 }

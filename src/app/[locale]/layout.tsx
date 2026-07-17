@@ -1,72 +1,101 @@
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  getLanguageAlternates,
+  getLocaleUrl,
+  getOgLocale,
+  siteConfig,
+} from "@/config/site";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Assinar PDF Grátis | Ferramenta Segura e Sem Login",
-    template: "%s | Assinador PDF Seguro",
-  },
-  description:
-    "Assine documentos PDF online gratuitamente e com segurança total. Seus arquivos são processados no navegador e nunca enviados para servidores. Sem cadastro.",
-  keywords: [
-    "assinar pdf",
-    "assinatura digital grátis",
-    "assinar pdf online",
-    "assinatura eletrônica",
-    "editar pdf",
-    "pdf signer",
-    "ferramenta pdf segura",
-  ],
-  authors: [{ name: "Diário Tools" }],
-  creator: "Diário Tools",
-  publisher: "Diário Tools",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: "https://diario.tools",
-    siteName: "Assinador PDF Seguro",
-    title: "Assinar PDF Grátis - Rápido, Seguro e Sem Login",
-    description:
-      "Assine documentos PDF online gratuitamente. Sem cadastro, sem upload para servidor. Processamento 100% seguro no seu navegador.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Assinador PDF Seguro Preview",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Assinar PDF Grátis - Rápido e Seguro",
-    description: "Assine PDFs direto no navegador. Privacidade total, sem upload de arquivos.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "HomePage.seo" });
+  const canonical = getLocaleUrl(locale);
+  const keywords =
+    locale === "en" ? [...siteConfig.keywords.en] : [...siteConfig.keywords.pt];
+
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: t("title"),
+      template: `%s | ${siteConfig.name}`,
+    },
+    description: t("description"),
+    keywords,
+    applicationName: siteConfig.name,
+    authors: [{ name: siteConfig.org, url: siteConfig.url }],
+    creator: siteConfig.org,
+    publisher: siteConfig.org,
+    category: "productivity",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    alternates: {
+      canonical,
+      languages: getLanguageAlternates(),
+    },
+    openGraph: {
+      type: "website",
+      locale: getOgLocale(locale),
+      url: canonical,
+      siteName: siteConfig.name,
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      images: [
+        {
+          url: new URL("/opengraph-image", siteConfig.url).toString(),
+          width: 1200,
+          height: 630,
+          alt: `${siteConfig.name} — ${t("ogTitle")}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      images: [new URL("/opengraph-image", siteConfig.url).toString()],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
+    other: {
+      "theme-color": "#0f766e",
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/icon", sizes: "48x48", type: "image/png" },
+        { url: "/icon1", sizes: "192x192", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
+      shortcut: ["/favicon.svg"],
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -75,8 +104,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const { locale } = await params;
   const messages = await getMessages();
 
@@ -87,6 +114,7 @@ export default async function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
             <Header />
             <div className="flex-1">{children}</div>
+            <Footer />
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>

@@ -1,7 +1,11 @@
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getLanguageAlternates, getLocaleUrl, siteConfig } from "@/config/site";
 import { PdfEditorPage } from "@/features/pdf-editor/components/PdfEditorPage";
-import { Metadata } from "next";
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+
+const FAQ_KEYS = ["free", "saved", "install", "mobile", "legal", "size"] as const;
+const STEP_KEYS = ["step1", "step2", "step3", "step4"] as const;
 
 export async function generateMetadata({
   params,
@@ -10,166 +14,209 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "HomePage.seo" });
+  const canonical = getLocaleUrl(locale);
 
   return {
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: "https://diario.tools",
-      languages: {
-        pt: "https://diario.tools/pt",
-        en: "https://diario.tools/en",
-      },
+      canonical,
+      languages: getLanguageAlternates(),
+    },
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      url: canonical,
     },
   };
 }
 
-export default function Home() {
-  const t = useTranslations("HomePage");
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "HomePage" });
+  const pageUrl = getLocaleUrl(locale);
 
-  // JSON-LD could also be localized if needed, but schema.org is language agnostic mostly.
-  // We can inject localized description though.
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Assinador PDF Seguro",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "BRL",
+  const faqEntities = FAQ_KEYS.map((key) => ({
+    "@type": "Question" as const,
+    name: t(`faq.items.${key}.question`),
+    acceptedAnswer: {
+      "@type": "Answer" as const,
+      text: t(`faq.items.${key}.answer`),
     },
-    description: t("seo.description"),
-    featureList: "Assinatura digital, Edição de PDF, Processamento Local, Sem Login, Zero Upload",
-    inLanguage: "pt-BR, en-US",
-  };
+  }));
+
+  const howToSteps = STEP_KEYS.map((key, index) => ({
+    "@type": "HowToStep" as const,
+    position: index + 1,
+    name: t(`howTo.steps.${key}.title`).replace(/:$/, ""),
+    text: `${t(`howTo.steps.${key}.title`)} ${t(`howTo.steps.${key}.description`)}`,
+  }));
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      inLanguage: locale === "en" ? "en-US" : "pt-BR",
+      publisher: {
+        "@type": "Organization",
+        name: siteConfig.org,
+        url: siteConfig.url,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: siteConfig.name,
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "PDF Signer",
+      operatingSystem: "Web Browser",
+      url: pageUrl,
+      image: `${siteConfig.url}/opengraph-image`,
+      description: t("seo.description"),
+      inLanguage: locale === "en" ? "en-US" : "pt-BR",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "BRL",
+        availability: "https://schema.org/InStock",
+      },
+      featureList: [
+        locale === "en" ? "Electronic PDF signature" : "Assinatura eletrônica de PDF",
+        locale === "en" ? "Local browser processing" : "Processamento local no navegador",
+        locale === "en" ? "No login required" : "Sem login",
+        locale === "en" ? "Zero file upload" : "Zero upload de arquivos",
+        locale === "en" ? "Draw or type signature" : "Desenhar ou digitar assinatura",
+      ],
+      publisher: {
+        "@type": "Organization",
+        name: siteConfig.org,
+        url: siteConfig.url,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: t("howTo.title"),
+      description: t("howTo.description"),
+      totalTime: "PT2M",
+      supply: [
+        {
+          "@type": "HowToSupply",
+          name: locale === "en" ? "PDF document" : "Documento PDF",
+        },
+      ],
+      tool: [
+        {
+          "@type": "HowToTool",
+          name: siteConfig.name,
+        },
+      ],
+      step: howToSteps,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqEntities,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: siteConfig.org,
+      url: siteConfig.url,
+      brand: {
+        "@type": "Brand",
+        name: siteConfig.name,
+      },
+    },
+  ];
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
-      <PdfEditorPage />
+      <main>
+        <PdfEditorPage />
 
-      {/* Conteúdo SEO - Visível para usuários e crawlers, posicionado abaixo da dobra */}
-      <section className="bg-background py-16 px-4 border-t border-border">
-        <div className="max-w-4xl mx-auto space-y-12 text-muted-foreground">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">{t("howTo.title")}</h2>
-            <p>{t("howTo.description")}</p>
-            <ol className="list-decimal pl-5 space-y-2 marker:font-bold">
-              <li>
-                <strong>{t("howTo.steps.step1.title")}</strong> {t("howTo.steps.step1.description")}
-              </li>
-              <li>
-                <strong>{t("howTo.steps.step2.title")}</strong> {t("howTo.steps.step2.description")}
-              </li>
-              <li>
-                <strong>{t("howTo.steps.step3.title")}</strong> {t("howTo.steps.step3.description")}
-              </li>
-              <li>
-                <strong>{t("howTo.steps.step4.title")}</strong> {t("howTo.steps.step4.description")}
-              </li>
-            </ol>
-          </div>
+        <section className="border-t border-border bg-background px-4 py-16">
+          <div className="mx-auto max-w-4xl space-y-12 text-muted-foreground">
+            <div id="como-assinar" className="scroll-mt-24 space-y-4">
+              <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                {t("howTo.title")}
+              </h2>
+              <p className="text-base leading-relaxed">{t("howTo.description")}</p>
+              <ol className="list-decimal space-y-2 pl-5 marker:font-bold">
+                {STEP_KEYS.map((key) => (
+                  <li key={key}>
+                    <strong>{t(`howTo.steps.${key}.title`)}</strong>{" "}
+                    {t(`howTo.steps.${key}.description`)}
+                  </li>
+                ))}
+              </ol>
+            </div>
 
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">{t("features.title")}</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-4 bg-card border border-border rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">
-                  {t("features.items.privacy.title")}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {t("features.items.privacy.description")}
-                </p>
+            <div id="recursos" className="scroll-mt-24 space-y-4">
+              <h2 className="text-2xl font-bold text-foreground">{t("features.title")}</h2>
+              <div className="grid gap-6 md:grid-cols-2">
+                {(["privacy", "noSignup", "fast", "compatibility"] as const).map((key) => (
+                  <article
+                    key={key}
+                    className="rounded-lg border border-border bg-card p-4"
+                  >
+                    <h3 className="mb-2 font-semibold text-foreground">
+                      {t(`features.items.${key}.title`)}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t(`features.items.${key}.description`)}
+                    </p>
+                  </article>
+                ))}
               </div>
-              <div className="p-4 bg-card border border-border rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">
-                  {t("features.items.noSignup.title")}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {t("features.items.noSignup.description")}
-                </p>
-              </div>
-              <div className="p-4 bg-card border border-border rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">
-                  {t("features.items.fast.title")}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {t("features.items.fast.description")}
-                </p>
-              </div>
-              <div className="p-4 bg-card border border-border rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">
-                  {t("features.items.compatibility.title")}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {t("features.items.compatibility.description")}
-                </p>
+            </div>
+
+            <div id="faq" className="scroll-mt-24 space-y-4">
+              <h2 className="text-2xl font-bold text-foreground">{t("faq.title")}</h2>
+              <div className="space-y-4">
+                {FAQ_KEYS.map((key) => (
+                  <details
+                    key={key}
+                    className="group rounded-lg border border-border bg-card p-4 [&_summary::-webkit-details-marker]:hidden"
+                  >
+                    <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-foreground">
+                      <span>{t(`faq.items.${key}.question`)}</span>
+                      <span className="transition-transform duration-300 group-open:-rotate-180">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </span>
+                    </summary>
+                    <p className="mt-4 leading-relaxed text-muted-foreground">
+                      {t(`faq.items.${key}.answer`)}
+                    </p>
+                  </details>
+                ))}
               </div>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">{t("faq.title")}</h2>
-            <div className="space-y-4">
-              <details className="group border border-border bg-card rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-foreground">
-                  <span>{t("faq.items.free.question")}</span>
-                  <span className="group-open:-rotate-180 transition-transform duration-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-                <p className="mt-4 leading-relaxed text-muted-foreground">
-                  {t("faq.items.free.answer")}
-                </p>
-              </details>
-
-              <details className="group border border-border bg-card rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between gap-1.5 font-medium text-foreground">
-                  <span>{t("faq.items.saved.question")}</span>
-                  <span className="group-open:-rotate-180 transition-transform duration-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-                <p className="mt-4 leading-relaxed text-muted-foreground">
-                  {t("faq.items.saved.answer")}
-                </p>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   );
 }

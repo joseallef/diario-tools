@@ -2,14 +2,14 @@ import { BrandIconMark } from "@/components/brand/BrandIconMark";
 import { ImageResponse } from "next/og";
 
 export const size = {
-  width: 48,
-  height: 48,
+  width: 192,
+  height: 192,
 };
 export const contentType = "image/png";
 
-/** 48×48 circular favicon — Google Search preferred minimum size. */
+/** High-DPI / PWA circular icon. */
 export default function Icon() {
-  return new ImageResponse(<BrandIconMark size={48} />, {
+  return new ImageResponse(<BrandIconMark size={192} />, {
     ...size,
   });
 }
