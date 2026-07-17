@@ -14,11 +14,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  DEFAULT_SIGNATURE_FONT,
+  getSignatureFont,
+  SIGNATURE_FONTS,
+  signatureFontVariablesClassName,
+  type SignatureFontId,
+} from "@/features/pdf-editor/config/signatureFonts";
+import {
   getImageDimensions,
   renderTypedSignature,
   sizeCanvasForHiDpi,
   trimTransparentPng,
 } from "@/features/pdf-editor/utils/signatureImage";
+import { cn } from "@/lib/utils";
 import { Check, Eraser, Loader2, PenLine, Type } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -45,11 +53,15 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   const padHostRef = useRef<HTMLDivElement>(null);
   const signaturePadRef = useRef<SignaturePad | null>(null);
   const [textSignature, setTextSignature] = useState("");
+  const [fontId, setFontId] = useState<SignatureFontId>(DEFAULT_SIGNATURE_FONT);
   const [activeTab, setActiveTab] = useState("draw");
   const [strokeWidth, setStrokeWidth] = useState<"thin" | "medium" | "thick">("medium");
   const [isEmpty, setIsEmpty] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const t = useTranslations("SignatureModal");
+
+  const selectedFont = getSignatureFont(fontId);
+  const previewText = textSignature.trim() || t("type.sample");
 
   const destroyPad = useCallback(() => {
     signaturePadRef.current?.off();
@@ -115,6 +127,17 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
     }
   }, [strokeWidth]);
 
+  useEffect(() => {
+    if (!open || activeTab !== "type") return;
+    const loads = SIGNATURE_FONTS.map((font) => {
+      const style = font.fontStyle ?? "normal";
+      return document.fonts
+        .load(`${style} 400 48px ${font.family}`)
+        .catch(() => undefined);
+    });
+    void Promise.all(loads);
+  }, [open, activeTab]);
+
   const clearCanvas = () => {
     signaturePadRef.current?.clear();
     setIsEmpty(true);
@@ -122,6 +145,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
 
   const resetForm = () => {
     setTextSignature("");
+    setFontId(DEFAULT_SIGNATURE_FONT);
     setActiveTab("draw");
     setStrokeWidth("medium");
     setIsEmpty(true);
@@ -146,7 +170,13 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
         dataUrl = await trimTransparentPng(pad.toDataURL("image/png"));
         type = "draw";
       } else if (textSignature.trim()) {
-        dataUrl = renderTypedSignature(textSignature.trim());
+        const font = getSignatureFont(fontId);
+        dataUrl = await renderTypedSignature(
+          textSignature.trim(),
+          font.family,
+          font.renderScale,
+          font.fontStyle ?? "normal"
+        );
         if (!dataUrl) return;
         dataUrl = await trimTransparentPng(dataUrl);
         type = "text";
@@ -182,43 +212,42 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn("sm:max-w-lg", signatureFontVariablesClassName)}>
         <DialogHeader>
-          <DialogTitle>{t("title")}</DialogTitle>
-          <DialogDescription>{t("description")}</DialogDescription>
+          <DialogTitle className="text-base sm:text-lg">{t("title")}</DialogTitle>
+          <DialogDescription className="text-xs sm:text-sm">{t("description")}</DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid h-11 w-full grid-cols-2 gap-1 rounded-xl bg-muted/80 p-1">
+          <TabsList className="grid h-9 w-full grid-cols-2 gap-0.5 rounded-lg bg-muted/80 p-0.5 sm:h-11 sm:gap-1 sm:rounded-xl sm:p-1">
             <TabsTrigger
               value="draw"
-              className="h-9 gap-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20"
+              className="h-8 gap-1.5 rounded-md text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20 sm:h-9 sm:gap-2 sm:rounded-lg"
             >
-              <PenLine className="h-4 w-4" />
+              <PenLine className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {t("tabs.draw")}
             </TabsTrigger>
             <TabsTrigger
               value="type"
-              className="h-9 gap-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20"
+              className="h-8 gap-1.5 rounded-md text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20 sm:h-9 sm:gap-2 sm:rounded-lg"
             >
-              <Type className="h-4 w-4" />
+              <Type className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {t("tabs.type")}
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="draw" className="space-y-4 py-4">
-            {/* Always white pad — readable in dark mode, matches exported ink */}
+          <TabsContent value="draw" className="mt-0 space-y-2.5 py-2.5 sm:space-y-4 sm:py-4">
             <div
               ref={padHostRef}
-              className="relative h-[220px] w-full overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white shadow-inner transition-colors hover:border-primary/40"
+              className="relative h-[148px] w-full overflow-hidden rounded-lg border-2 border-dashed border-slate-300 bg-white shadow-inner transition-colors hover:border-primary/40 sm:h-[220px] sm:rounded-xl"
             >
               <canvas
                 ref={canvasRef}
                 className="block h-full w-full cursor-crosshair touch-none"
                 style={{ touchAction: "none" }}
               />
-              <div className="pointer-events-none absolute inset-x-8 bottom-6 border-b border-slate-200" />
-              <div className="absolute top-2 right-2 z-10">
+              <div className="pointer-events-none absolute inset-x-6 bottom-4 border-b border-slate-200 sm:inset-x-8 sm:bottom-6" />
+              <div className="absolute top-1.5 right-1.5 z-10 sm:top-2 sm:right-2">
                 <IconAction
                   label={t("actions.clear")}
                   variant="danger"
@@ -230,13 +259,13 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                 </IconAction>
               </div>
               {isEmpty && (
-                <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-slate-400">
+                <p className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 text-center text-xs text-slate-400 sm:text-sm">
                   {t("thickness.hint")}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-muted-foreground">
                   {t("thickness.label")}
@@ -244,7 +273,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                 <div
                   role="group"
                   aria-label={t("thickness.label")}
-                  className="flex gap-1 rounded-lg bg-muted p-1"
+                  className="flex gap-0.5 rounded-md bg-muted p-0.5 sm:gap-1 sm:rounded-lg sm:p-1"
                 >
                   {(["thin", "medium", "thick"] as const).map((key) => (
                     <HandleTooltip key={key} label={t(`thickness.${key}`)} side="top">
@@ -253,7 +282,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                         aria-label={t(`thickness.${key}`)}
                         aria-pressed={strokeWidth === key}
                         onClick={() => setStrokeWidth(key)}
-                        className={`cursor-pointer rounded-md p-2 transition-all hover:bg-background hover:shadow-sm hover:ring-1 hover:ring-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-95 ${
+                        className={`cursor-pointer rounded-md p-1.5 transition-all hover:bg-background hover:shadow-sm hover:ring-1 hover:ring-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-95 sm:p-2 ${
                           strokeWidth === key
                             ? "bg-background text-primary shadow-sm ring-1 ring-primary/30"
                             : "text-muted-foreground"
@@ -272,46 +301,110 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
             </div>
           </TabsContent>
 
-          <TabsContent value="type" className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="signature-text">{t("type.label")}</Label>
+          <TabsContent value="type" className="mt-0 space-y-2.5 py-2.5 sm:space-y-4 sm:py-4">
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="signature-text" className="text-xs sm:text-sm">
+                {t("type.label")}
+              </Label>
               <Input
                 id="signature-text"
                 placeholder={t("type.placeholder")}
                 value={textSignature}
                 onChange={(e) => setTextSignature(e.target.value)}
-                className="text-lg"
+                className="h-9 text-base sm:h-10 sm:text-lg"
                 autoComplete="name"
               />
             </div>
-            {/* White preview matches final black ink on PDF */}
-            <div className="flex min-h-[140px] items-center justify-center rounded-xl border border-slate-200 bg-white p-8 text-center shadow-inner">
-              {textSignature.trim() ? (
-                <span
-                  className="text-4xl text-black"
-                  style={{ fontFamily: '"Segoe Script", "Apple Chancery", cursive' }}
-                >
-                  {textSignature}
-                </span>
-              ) : (
-                <span className="italic text-slate-400">{t("type.preview")}</span>
-              )}
+
+            <div className="relative h-[88px] shrink-0 overflow-hidden rounded-md border border-border bg-muted [--sig-preview-size:1.55rem] sm:h-[148px] sm:rounded-lg sm:[--sig-preview-size:2.05rem]">
+              <div className="absolute inset-0 flex items-center justify-center px-4 text-center sm:px-6">
+                {textSignature.trim() ? (
+                  <span
+                    className="max-w-full px-1 text-foreground transition-[font-family,font-size] duration-200"
+                    style={{
+                      fontFamily: selectedFont.cssVar,
+                      fontStyle: selectedFont.fontStyle ?? "normal",
+                      fontSize: `calc(${selectedFont.previewScale} * var(--sig-preview-size))`,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {textSignature}
+                  </span>
+                ) : (
+                  <span className="text-sm italic text-muted-foreground sm:text-base">
+                    {t("type.preview")}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-1.5 sm:space-y-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                {t("type.fontLabel")}
+              </span>
+
+              <div
+                role="listbox"
+                aria-label={t("type.fontLabel")}
+                className="grid grid-cols-3 gap-1.5 sm:gap-2"
+              >
+                {SIGNATURE_FONTS.map((font) => {
+                  const active = fontId === font.id;
+                  return (
+                    <button
+                      key={font.id}
+                      type="button"
+                      role="option"
+                      aria-selected={active}
+                      onClick={() => setFontId(font.id)}
+                      className={cn(
+                        "relative flex h-[64px] cursor-pointer flex-col overflow-hidden rounded-md border bg-card p-1.5 text-left transition-all sm:h-[88px] sm:rounded-lg sm:p-3",
+                        "hover:bg-background hover:shadow-sm hover:ring-1 hover:ring-primary/25",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-[0.98]",
+                        active
+                          ? "border-primary bg-background text-primary shadow-sm ring-1 ring-primary/30"
+                          : "border-border text-muted-foreground"
+                      )}
+                    >
+                      <span className="relative z-10 truncate text-[10px] font-medium sm:text-xs">
+                        {t(`type.fonts.${font.id}`)}
+                      </span>
+                      <div className="absolute inset-x-1.5 bottom-1 top-5 flex items-center sm:inset-x-3 sm:bottom-2 sm:top-7">
+                        <span
+                          className="block max-w-full truncate text-foreground [--sig-sample-size:0.95rem] sm:[--sig-sample-size:1.25rem]"
+                          style={{
+                            fontFamily: font.cssVar,
+                            fontStyle: font.fontStyle ?? "normal",
+                            fontSize: `calc(${font.previewScale} * var(--sig-sample-size))`,
+                            lineHeight: 1,
+                          }}
+                        >
+                          {previewText}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </TabsContent>
         </Tabs>
 
-        <div className="mt-2 flex justify-end gap-2">
+        <div className="mt-1 flex justify-end gap-2 sm:mt-2">
           <Button
             variant="outline"
+            size="sm"
+            className="sm:h-9 sm:px-4 sm:text-sm"
             onClick={() => handleOpenChange(false)}
             disabled={isSubmitting}
           >
             {t("actions.cancel")}
           </Button>
           <Button
+            size="sm"
             onClick={handleConfirm}
             disabled={!canConfirm}
-            className="min-w-[10.5rem]"
+            className="min-w-[8.5rem] sm:h-9 sm:min-w-[10.5rem] sm:px-4 sm:text-sm"
           >
             {isSubmitting ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

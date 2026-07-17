@@ -171,7 +171,23 @@
     "type": {
       "label": "Your Name",
       "placeholder": "e.g. John Smith",
-      "preview": "Signature preview"
+      "preview": "Signature preview",
+      "fontLabel": "Style:",
+      "sample": "Signature",
+      "fonts": {
+        "elegant": "Elegant",
+        "allura": "Delicate",
+        "brush": "Brush",
+        "script": "Script",
+        "classic": "Classic",
+        "smooth": "Smooth",
+        "pacific": "Rounded",
+        "casual": "Casual",
+        "print": "Print",
+        "document": "Document",
+        "garamond": "Garamond",
+        "sans": "Modern"
+      }
     },
     "actions": {
       "cancel": "Cancel",

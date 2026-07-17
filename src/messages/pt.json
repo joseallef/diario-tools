@@ -171,7 +171,23 @@
     "type": {
       "label": "Seu Nome",
       "placeholder": "Ex: João Silva",
-      "preview": "Visualização da assinatura"
+      "preview": "Visualização da assinatura",
+      "fontLabel": "Estilo:",
+      "sample": "Assinatura",
+      "fonts": {
+        "elegant": "Elegante",
+        "allura": "Delicada",
+        "brush": "Pincel",
+        "script": "Manuscrita",
+        "classic": "Clássica",
+        "smooth": "Fluida",
+        "pacific": "Arredondada",
+        "casual": "Casual",
+        "print": "Impressa",
+        "document": "Documento",
+        "garamond": "Garamond",
+        "sans": "Moderna"
+      }
     },
     "actions": {
       "cancel": "Cancelar",

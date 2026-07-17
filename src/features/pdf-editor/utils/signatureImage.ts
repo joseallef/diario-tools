@@ -101,22 +101,48 @@ export function getImageDimensions(dataUrl: string): Promise<{ width: number; he
 }
 
 /** Render a typed signature as a high-resolution transparent PNG. */
-export function renderTypedSignature(text: string): string {
+export async function renderTypedSignature(
+  text: string,
+  fontFamily: string,
+  renderScale = 1,
+  fontStyle: "normal" | "italic" = "normal"
+): Promise<string> {
   const ratio = getSignaturePixelRatio();
-  const fontSize = 96;
-  const font = `${fontSize}px "Segoe Script", "Apple Chancery", "Comic Sans MS", cursive`;
+  const fontSize = Math.round(96 * renderScale);
+  const cssFont = `${fontStyle} 400 ${fontSize}px ${fontFamily}`;
+
+  try {
+    await document.fonts.load(cssFont);
+    await document.fonts.ready;
+  } catch {
+    // Fall through — browser may still paint with a fallback face
+  }
 
   const measure = document.createElement("canvas");
   const measureCtx = measure.getContext("2d");
   if (!measureCtx) return "";
 
-  measureCtx.font = font;
+  measureCtx.font = cssFont;
   const metrics = measureCtx.measureText(text);
   const textWidth = Math.ceil(metrics.width);
-  const ascent = Math.ceil(metrics.actualBoundingBoxAscent || fontSize * 0.8);
-  const descent = Math.ceil(metrics.actualBoundingBoxDescent || fontSize * 0.3);
-  const padX = Math.round(fontSize * 0.35);
-  const padY = Math.round(fontSize * 0.25);
+
+  // Script faces (f, l, g…) often exceed actualBoundingBox — prefer font box + cushion
+  const ascent = Math.ceil(
+    Math.max(
+      metrics.actualBoundingBoxAscent || 0,
+      metrics.fontBoundingBoxAscent || 0,
+      fontSize * 0.95
+    )
+  );
+  const descent = Math.ceil(
+    Math.max(
+      metrics.actualBoundingBoxDescent || 0,
+      metrics.fontBoundingBoxDescent || 0,
+      fontSize * 0.35
+    )
+  );
+  const padX = Math.round(fontSize * 0.4);
+  const padY = Math.round(fontSize * 0.4);
 
   const cssW = textWidth + padX * 2;
   const cssH = ascent + descent + padY * 2;
@@ -128,7 +154,7 @@ export function renderTypedSignature(text: string): string {
   if (!ctx) return "";
 
   ctx.scale(ratio, ratio);
-  ctx.font = font;
+  ctx.font = cssFont;
   ctx.fillStyle = "#000000";
   ctx.textBaseline = "alphabetic";
   ctx.fillText(text, padX, padY + ascent);
