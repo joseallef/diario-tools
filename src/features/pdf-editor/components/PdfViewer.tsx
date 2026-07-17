@@ -321,59 +321,65 @@ export function PdfViewer() {
               <span className="text-sm text-muted-foreground">{t("loading")}</span>
             </div>
           }
-          className="relative flex justify-center shadow-xl"
+          className="relative shadow-xl"
         >
-          <div
-            ref={pageRef}
-            className={`relative ${pendingSignature ? "cursor-crosshair" : ""}`}
-            onClick={(e) => {
-              // Clicks on signatures / their chrome must not clear selection
-              if ((e.target as HTMLElement).closest("[data-signature]")) {
-                return;
-              }
-
-              if (pendingSignature) {
-                placeSignatureAt(e.clientX, e.clientY);
-                return;
-              }
-
-              setSelectedSignatureId(null);
-            }}
-          >
-            <Page
-              pageNumber={currentPage}
-              width={pageRenderWidth}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-              className="bg-white"
-              onLoadSuccess={onPageLoadSuccess}
-            />
-
-            {/* Ghost preview following intent while in placement mode */}
-            {pendingSignature && pageSize.width > 0 && (
-              <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-                <div className="rounded-lg border-2 border-dashed border-primary/50 bg-primary/5 px-4 py-8 text-center">
-                  <p className="text-sm font-medium text-primary">{t("placement.clickHere")}</p>
-                </div>
-              </div>
-            )}
-
+          {/*
+            min-w-full + w-fit: center when page fits; when zoomed wider than
+            the host, grow from the left so scrollLeft can reach the start.
+          */}
+          <div className="mx-auto flex w-fit min-w-full justify-center">
             <div
-              className={`absolute inset-0 z-10 overflow-visible ${
-                pendingSignature ? "pointer-events-none" : "pointer-events-none"
-              }`}
+              ref={pageRef}
+              className={`relative ${pendingSignature ? "cursor-crosshair" : ""}`}
+              onClick={(e) => {
+                // Clicks on signatures / their chrome must not clear selection
+                if ((e.target as HTMLElement).closest("[data-signature]")) {
+                  return;
+                }
+
+                if (pendingSignature) {
+                  placeSignatureAt(e.clientX, e.clientY);
+                  return;
+                }
+
+                setSelectedSignatureId(null);
+              }}
             >
-              {pageSize.width > 0 &&
-                pageSignatures.map((sig) => (
-                  <DraggableSignature
-                    key={sig.id}
-                    signature={sig}
-                    pageWidth={pageSize.width}
-                    pageHeight={pageSize.height}
-                    isSelected={selectedSignatureId === sig.id}
-                    interactive={!pendingSignature}
-                  />
-                ))}
+              <Page
+                pageNumber={currentPage}
+                width={pageRenderWidth}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                className="bg-white"
+                onLoadSuccess={onPageLoadSuccess}
+              />
+
+              {/* Ghost preview following intent while in placement mode */}
+              {pendingSignature && pageSize.width > 0 && (
+                <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+                  <div className="rounded-lg border-2 border-dashed border-primary/50 bg-primary/5 px-4 py-8 text-center">
+                    <p className="text-sm font-medium text-primary">{t("placement.clickHere")}</p>
+                  </div>
+                </div>
+              )}
+
+              <div
+                className={`absolute inset-0 z-10 overflow-visible ${
+                  pendingSignature ? "pointer-events-none" : "pointer-events-none"
+                }`}
+              >
+                {pageSize.width > 0 &&
+                  pageSignatures.map((sig) => (
+                    <DraggableSignature
+                      key={sig.id}
+                      signature={sig}
+                      pageWidth={pageSize.width}
+                      pageHeight={pageSize.height}
+                      isSelected={selectedSignatureId === sig.id}
+                      interactive={!pendingSignature}
+                    />
+                  ))}
+              </div>
             </div>
           </div>
         </Document>

@@ -353,8 +353,9 @@ export function DraggableSignature({
         // Don't collapse chrome while a transform gesture is active
         if (mode !== "none") return;
         // Still inside a child (toolbar/bridge) — keep alive
-        const related = e.relatedTarget as Node | null;
-        if (related && e.currentTarget.contains(related)) return;
+        // relatedTarget can be Window/non-Node; contains() requires a Node
+        const related = e.relatedTarget;
+        if (related instanceof Node && e.currentTarget.contains(related)) return;
         handleHoverLeave();
       }}
       className={`absolute z-50 select-none group ${

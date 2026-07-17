@@ -301,8 +301,8 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
             </div>
           </TabsContent>
 
-          <TabsContent value="type" className="mt-0 space-y-2.5 py-2.5 sm:space-y-4 sm:py-4">
-            <div className="space-y-1.5 sm:space-y-2">
+          <TabsContent value="type" className="mt-0 space-y-2.5 py-2.5 sm:space-y-3 sm:py-3">
+            <div className="space-y-1.5">
               <Label htmlFor="signature-text" className="text-xs sm:text-sm">
                 {t("type.label")}
               </Label>
@@ -311,13 +311,13 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                 placeholder={t("type.placeholder")}
                 value={textSignature}
                 onChange={(e) => setTextSignature(e.target.value)}
-                className="h-9 text-base sm:h-10 sm:text-lg"
+                className="h-9 text-base sm:h-9 sm:text-base"
                 autoComplete="name"
               />
             </div>
 
-            <div className="relative h-[88px] shrink-0 overflow-hidden rounded-md border border-border bg-muted [--sig-preview-size:1.55rem] sm:h-[148px] sm:rounded-lg sm:[--sig-preview-size:2.05rem]">
-              <div className="absolute inset-0 flex items-center justify-center px-4 text-center sm:px-6">
+            <div className="relative h-[88px] shrink-0 overflow-hidden rounded-md border border-border bg-muted [--sig-preview-size:1.55rem] sm:h-[108px] sm:[--sig-preview-size:1.7rem]">
+              <div className="absolute inset-0 flex items-center justify-center px-4 text-center sm:px-5">
                 {textSignature.trim() ? (
                   <span
                     className="max-w-full px-1 text-foreground transition-[font-family,font-size] duration-200"
@@ -331,14 +331,14 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                     {textSignature}
                   </span>
                 ) : (
-                  <span className="text-sm italic text-muted-foreground sm:text-base">
+                  <span className="text-sm italic text-muted-foreground">
                     {t("type.preview")}
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="space-y-1.5 sm:space-y-2">
+            <div className="space-y-1.5">
               <span className="text-xs font-medium text-muted-foreground">
                 {t("type.fontLabel")}
               </span>
@@ -346,7 +346,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
               <div
                 role="listbox"
                 aria-label={t("type.fontLabel")}
-                className="grid grid-cols-3 gap-1.5 sm:gap-2"
+                className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 sm:gap-1.5"
               >
                 {SIGNATURE_FONTS.map((font) => {
                   const active = fontId === font.id;
@@ -358,7 +358,7 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                       aria-selected={active}
                       onClick={() => setFontId(font.id)}
                       className={cn(
-                        "relative flex h-[64px] cursor-pointer flex-col overflow-hidden rounded-md border bg-card p-1.5 text-left transition-all sm:h-[88px] sm:rounded-lg sm:p-3",
+                        "relative flex h-[64px] cursor-pointer flex-col overflow-hidden rounded-md border bg-card p-1.5 text-left transition-all sm:h-[68px] sm:p-2",
                         "hover:bg-background hover:shadow-sm hover:ring-1 hover:ring-primary/25",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-[0.98]",
                         active
@@ -366,12 +366,12 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                           : "border-border text-muted-foreground"
                       )}
                     >
-                      <span className="relative z-10 truncate text-[10px] font-medium sm:text-xs">
+                      <span className="relative z-10 truncate text-[10px] font-medium sm:text-[11px]">
                         {t(`type.fonts.${font.id}`)}
                       </span>
-                      <div className="absolute inset-x-1.5 bottom-1 top-5 flex items-center sm:inset-x-3 sm:bottom-2 sm:top-7">
+                      <div className="absolute inset-x-1.5 bottom-1 top-5 flex items-center sm:inset-x-2 sm:bottom-1.5 sm:top-5">
                         <span
-                          className="block max-w-full truncate text-foreground [--sig-sample-size:0.95rem] sm:[--sig-sample-size:1.25rem]"
+                          className="block max-w-full truncate text-foreground [--sig-sample-size:0.95rem] sm:[--sig-sample-size:1.05rem]"
                           style={{
                             fontFamily: font.cssVar,
                             fontStyle: font.fontStyle ?? "normal",
