@@ -9,227 +9,266 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { HandleTooltip, IconAction } from "@/components/ui/icon-action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Eraser, PenLine, Type } from "lucide-react";
+import {
+  getImageDimensions,
+  renderTypedSignature,
+  sizeCanvasForHiDpi,
+  trimTransparentPng,
+} from "@/features/pdf-editor/utils/signatureImage";
+import { Check, Eraser, Loader2, PenLine, Type } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
 
 interface SignatureModalProps {
-  onConfirm: (dataUrl: string) => void;
+  onConfirm: (payload: {
+    dataUrl: string;
+    type: "draw" | "text";
+    aspectRatio: number;
+  }) => void;
   trigger?: React.ReactNode;
 }
+
+const strokeOptions = {
+  thin: { minWidth: 0.5, maxWidth: 1.5 },
+  medium: { minWidth: 1.2, maxWidth: 2.8 },
+  thick: { minWidth: 2.2, maxWidth: 4.5 },
+} as const;
 
 export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
   const [open, setOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const padHostRef = useRef<HTMLDivElement>(null);
   const signaturePadRef = useRef<SignaturePad | null>(null);
   const [textSignature, setTextSignature] = useState("");
   const [activeTab, setActiveTab] = useState("draw");
   const [strokeWidth, setStrokeWidth] = useState<"thin" | "medium" | "thick">("medium");
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const t = useTranslations("SignatureModal");
 
-  // Configurações de espessura
-  const strokeOptions = {
-    thin: { minWidth: 0.5, maxWidth: 1.5 },
-    medium: { minWidth: 1, maxWidth: 3 },
-    thick: { minWidth: 2, maxWidth: 5 },
-  };
+  const destroyPad = useCallback(() => {
+    signaturePadRef.current?.off();
+    signaturePadRef.current = null;
+  }, []);
 
-  // Variáveis de controle (refs para manter estado sem re-render)
+  const strokeWidthRef = useRef(strokeWidth);
+  strokeWidthRef.current = strokeWidth;
 
-  // Atualizar espessura quando mudar
-  const updateStrokeWidth = (width: "thin" | "medium" | "thick") => {
-    setStrokeWidth(width);
-    if (signaturePadRef.current) {
-      signaturePadRef.current.minWidth = strokeOptions[width].minWidth;
-      signaturePadRef.current.maxWidth = strokeOptions[width].maxWidth;
+  const initPad = useCallback(() => {
+    const canvas = canvasRef.current;
+    const host = padHostRef.current;
+    if (!canvas || !host) return;
+
+    const width = host.clientWidth || 360;
+    const height = host.clientHeight || 200;
+    const hadDrawing = signaturePadRef.current && !signaturePadRef.current.isEmpty();
+    const previousData = hadDrawing ? signaturePadRef.current!.toData() : null;
+
+    sizeCanvasForHiDpi(canvas, width, height);
+    destroyPad();
+
+    const widthKey = strokeWidthRef.current;
+    const pad = new SignaturePad(canvas, {
+      minWidth: strokeOptions[widthKey].minWidth,
+      maxWidth: strokeOptions[widthKey].maxWidth,
+      penColor: "#000000",
+      backgroundColor: "rgba(255,255,255,0)",
+      velocityFilterWeight: 0.7,
+      throttle: 8,
+    });
+
+    pad.addEventListener("endStroke", () => setIsEmpty(pad.isEmpty()));
+    pad.addEventListener("beginStroke", () => setIsEmpty(false));
+    signaturePadRef.current = pad;
+
+    if (previousData?.length) {
+      pad.fromData(previousData);
+      setIsEmpty(pad.isEmpty());
+    } else {
+      setIsEmpty(true);
     }
-  };
+  }, [destroyPad]);
 
-  // Callback Ref: O React chama isso quando o elemento é montado
-  const setCanvasRef = useCallback(
-    (node: HTMLCanvasElement | null) => {
-      if (node !== null) {
-        canvasRef.current = node;
+  useEffect(() => {
+    if (!open || activeTab !== "draw") return;
 
-        const canvas = node;
+    const frame = requestAnimationFrame(() => initPad());
+    const onResize = () => initPad();
+    window.addEventListener("resize", onResize);
 
-        // Inicialização Segura com SignaturePad
-        const init = () => {
-          const parent = canvas.parentElement;
-          const width = parent?.clientWidth || 300;
-          const height = parent?.clientHeight || 150;
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+      destroyPad();
+    };
+  }, [open, activeTab, initPad, destroyPad]);
 
-          canvas.width = width;
-          canvas.height = height;
-
-          // Limpa instância anterior se houver
-          if (signaturePadRef.current) {
-            signaturePadRef.current.off();
-          }
-
-          // Inicializa a Lib
-          signaturePadRef.current = new SignaturePad(canvas, {
-            minWidth: strokeOptions[strokeWidth].minWidth,
-            maxWidth: strokeOptions[strokeWidth].maxWidth,
-            penColor: "rgb(0, 0, 0)",
-            backgroundColor: "rgba(255, 255, 255, 0)",
-            velocityFilterWeight: 0.7,
-          });
-
-          // setDebugInfo(`SignaturePad Ready: ${width}x${height}`);
-        };
-
-        // Delay minúsculo para garantir layout
-        requestAnimationFrame(() => {
-          init();
-          setTimeout(init, 300);
-        });
-
-        // Bloqueia scroll no canvas (Mobile fix essencial)
-        const preventScroll = (e: TouchEvent) => {
-          if (e.target === canvas) {
-            e.preventDefault();
-          }
-        };
-
-        canvas.addEventListener("touchstart", preventScroll, { passive: false });
-        canvas.addEventListener("touchmove", preventScroll, { passive: false });
-        canvas.addEventListener("touchend", preventScroll, { passive: false });
-      } else {
-        // Cleanup
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  ); // Dependências vazias = só cria uma vez
-
-  // Removemos o useEffect antigo completamente
+  useEffect(() => {
+    if (signaturePadRef.current) {
+      signaturePadRef.current.minWidth = strokeOptions[strokeWidth].minWidth;
+      signaturePadRef.current.maxWidth = strokeOptions[strokeWidth].maxWidth;
+    }
+  }, [strokeWidth]);
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (canvas && ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    signaturePadRef.current?.clear();
+    setIsEmpty(true);
   };
 
-  const handleConfirm = () => {
-    let dataUrl = "";
+  const resetForm = () => {
+    setTextSignature("");
+    setActiveTab("draw");
+    setStrokeWidth("medium");
+    setIsEmpty(true);
+    setIsSubmitting(false);
+    clearCanvas();
+  };
 
-    if (activeTab === "draw" && canvasRef.current) {
-      // Verifica se desenhou algo (simples check visual ou flag)
-      dataUrl = canvasRef.current.toDataURL("image/png");
-    } else if (activeTab === "type" && textSignature) {
-      // Converter texto em imagem via Canvas temporário
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.font = '48px "Great Vibes", cursive'; // Fonte simulada por enquanto
-        const textWidth = ctx.measureText(textSignature).width;
-        canvas.width = textWidth + 40;
-        canvas.height = 100;
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (!next) resetForm();
+  };
 
-        // Configurar novamente após resize
-        ctx.font = "48px cursive"; // Fallback para cursive nativa se Great Vibes não carregar
-        ctx.fillStyle = "black";
-        ctx.textBaseline = "middle";
-        ctx.fillText(textSignature, 20, 50);
-        dataUrl = canvas.toDataURL("image/png");
+  const handleConfirm = async () => {
+    setIsSubmitting(true);
+    try {
+      let dataUrl = "";
+      let type: "draw" | "text" = "draw";
+
+      if (activeTab === "draw") {
+        const pad = signaturePadRef.current;
+        if (!pad || pad.isEmpty()) return;
+        dataUrl = await trimTransparentPng(pad.toDataURL("image/png"));
+        type = "draw";
+      } else if (textSignature.trim()) {
+        dataUrl = renderTypedSignature(textSignature.trim());
+        if (!dataUrl) return;
+        dataUrl = await trimTransparentPng(dataUrl);
+        type = "text";
+      } else {
+        return;
       }
-    }
 
-    if (dataUrl) {
-      onConfirm(dataUrl);
-      setOpen(false);
-      // Reset
-      setTextSignature("");
-      clearCanvas();
+      const { width, height } = await getImageDimensions(dataUrl);
+      onConfirm({
+        dataUrl,
+        type,
+        aspectRatio: width / Math.max(height, 1),
+      });
+      handleOpenChange(false);
+    } catch {
+      // empty trim / load errors — keep modal open
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const canConfirm =
+    !isSubmitting &&
+    (activeTab === "draw" ? !isEmpty : textSignature.trim().length > 0);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="gap-2 cursor-pointer">
+          <Button className="gap-2 shadow-sm hover:shadow-md">
             <PenLine className="h-4 w-4" />
             {t("trigger")}
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
           <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="draw" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-muted">
-            <TabsTrigger value="draw" className="gap-2">
-              <PenLine className="h-4 w-4" /> {t("tabs.draw")}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid h-11 w-full grid-cols-2 gap-1 rounded-xl bg-muted/80 p-1">
+            <TabsTrigger
+              value="draw"
+              className="h-9 gap-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20"
+            >
+              <PenLine className="h-4 w-4" />
+              {t("tabs.draw")}
             </TabsTrigger>
-            <TabsTrigger value="type" className="gap-2">
-              <Type className="h-4 w-4" /> {t("tabs.type")}
+            <TabsTrigger
+              value="type"
+              className="h-9 gap-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:hover:bg-background data-[state=inactive]:hover:text-primary data-[state=inactive]:hover:ring-1 data-[state=inactive]:hover:ring-primary/20"
+            >
+              <Type className="h-4 w-4" />
+              {t("tabs.type")}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="draw" className="space-y-4 py-4">
-            <div className="relative rounded-lg border-2 border-border bg-card h-[200px] w-full overflow-hidden">
+            {/* Always white pad — readable in dark mode, matches exported ink */}
+            <div
+              ref={padHostRef}
+              className="relative h-[220px] w-full overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-white shadow-inner transition-colors hover:border-primary/40"
+            >
               <canvas
-                ref={setCanvasRef}
-                className="block w-full h-full cursor-crosshair touch-none relative z-10"
+                ref={canvasRef}
+                className="block h-full w-full cursor-crosshair touch-none"
                 style={{ touchAction: "none" }}
               />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 z-50 bg-background/80 backdrop-blur-sm shadow-sm cursor-pointer"
-                onClick={clearCanvas}
-                title={t("actions.clear")}
-              >
-                <Eraser className="h-4 w-4" />
-              </Button>
+              <div className="pointer-events-none absolute inset-x-8 bottom-6 border-b border-slate-200" />
+              <div className="absolute top-2 right-2 z-10">
+                <IconAction
+                  label={t("actions.clear")}
+                  variant="danger"
+                  size="sm"
+                  className="bg-white/95 shadow-sm"
+                  onClick={clearCanvas}
+                >
+                  <Eraser className="h-3.5 w-3.5" />
+                </IconAction>
+              </div>
+              {isEmpty && (
+                <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-slate-400">
+                  {t("thickness.hint")}
+                </p>
+              )}
             </div>
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex gap-2 items-center">
-                <span className="text-xs text-muted-foreground font-medium">
+
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-muted-foreground">
                   {t("thickness.label")}
                 </span>
-                <div className="flex gap-1 bg-muted p-1 rounded-lg">
-                  <button
-                    onClick={() => updateStrokeWidth("thin")}
-                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
-                      strokeWidth === "thin" ? "bg-background shadow-sm ring-1 ring-border" : ""
-                    }`}
-                    title={t("thickness.thin")}
-                  >
-                    <div className="w-4 h-0.5 bg-foreground rounded-full" />
-                  </button>
-                  <button
-                    onClick={() => updateStrokeWidth("medium")}
-                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
-                      strokeWidth === "medium" ? "bg-background shadow-sm ring-1 ring-border" : ""
-                    }`}
-                    title={t("thickness.medium")}
-                  >
-                    <div className="w-4 h-1 bg-foreground rounded-full" />
-                  </button>
-                  <button
-                    onClick={() => updateStrokeWidth("thick")}
-                    className={`p-1.5 rounded-md hover:bg-background transition-all ${
-                      strokeWidth === "thick" ? "bg-background shadow-sm ring-1 ring-border" : ""
-                    }`}
-                    title={t("thickness.thick")}
-                  >
-                    <div className="w-4 h-1.5 bg-foreground rounded-full" />
-                  </button>
+                <div
+                  role="group"
+                  aria-label={t("thickness.label")}
+                  className="flex gap-1 rounded-lg bg-muted p-1"
+                >
+                  {(["thin", "medium", "thick"] as const).map((key) => (
+                    <HandleTooltip key={key} label={t(`thickness.${key}`)} side="top">
+                      <button
+                        type="button"
+                        aria-label={t(`thickness.${key}`)}
+                        aria-pressed={strokeWidth === key}
+                        onClick={() => setStrokeWidth(key)}
+                        className={`cursor-pointer rounded-md p-2 transition-all hover:bg-background hover:shadow-sm hover:ring-1 hover:ring-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-95 ${
+                          strokeWidth === key
+                            ? "bg-background text-primary shadow-sm ring-1 ring-primary/30"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        <div
+                          className={`w-5 rounded-full bg-current ${
+                            key === "thin" ? "h-0.5" : key === "medium" ? "h-1" : "h-1.5"
+                          }`}
+                        />
+                      </button>
+                    </HandleTooltip>
+                  ))}
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">{t("thickness.hint")}</p>
             </div>
           </TabsContent>
 
@@ -242,28 +281,43 @@ export function SignatureModal({ onConfirm, trigger }: SignatureModalProps) {
                 value={textSignature}
                 onChange={(e) => setTextSignature(e.target.value)}
                 className="text-lg"
+                autoComplete="name"
               />
             </div>
-            <div className="rounded-lg border border-border bg-muted p-8 text-center min-h-[120px] flex items-center justify-center">
-              {textSignature ? (
-                <span className="text-4xl font-[cursive] text-foreground">{textSignature}</span>
+            {/* White preview matches final black ink on PDF */}
+            <div className="flex min-h-[140px] items-center justify-center rounded-xl border border-slate-200 bg-white p-8 text-center shadow-inner">
+              {textSignature.trim() ? (
+                <span
+                  className="text-4xl text-black"
+                  style={{ fontFamily: '"Segoe Script", "Apple Chancery", cursive' }}
+                >
+                  {textSignature}
+                </span>
               ) : (
-                <span className="text-muted-foreground italic">{t("type.preview")}</span>
+                <span className="italic text-slate-400">{t("type.preview")}</span>
               )}
             </div>
           </TabsContent>
         </Tabs>
 
-        <div className="flex justify-end gap-2 mt-2">
-          <Button variant="outline" onClick={() => setOpen(false)} className="cursor-pointer">
+        <div className="mt-2 flex justify-end gap-2">
+          <Button
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+            disabled={isSubmitting}
+          >
             {t("actions.cancel")}
           </Button>
           <Button
             onClick={handleConfirm}
-            disabled={activeTab === "draw" ? false : !textSignature}
-            className="cursor-pointer"
+            disabled={!canConfirm}
+            className="min-w-[10.5rem]"
           >
-            <Check className="mr-2 h-4 w-4" />
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Check className="mr-2 h-4 w-4" />
+            )}
             {t("actions.confirm")}
           </Button>
         </div>

@@ -102,7 +102,41 @@
       "pagination": {
         "prev": "Previous",
         "next": "Next",
-        "label": "Page {current} of {total}"
+        "label": "Page {current} of {total}",
+        "pageShort": "Pg. {page}"
+      },
+      "placement": {
+        "title": "Place your signature",
+        "hint": "Click where you want it on the page. You can drag, resize, and rotate afterward.",
+        "clickHere": "Click anywhere on the page",
+        "toast": "Signature ready",
+        "placed": "Signature placed! Drag, resize, or rotate to fine-tune.",
+        "cancel": "Cancel placement"
+      },
+      "transform": {
+        "aria": "Signature — drag to move",
+        "pageBadge": "Pg. {page}",
+        "remove": "Remove signature",
+        "removeHint": "Deletes this signature from the document",
+        "resize": "Resize",
+        "resizeHint": "Drag a corner to make it larger or smaller",
+        "rotate": "Rotate signature",
+        "rotateHint": "Drag to tilt · Shift = 15°",
+        "rotateLeft": "Rotate left",
+        "rotateLeftHint": "−5° · shortcut [",
+        "rotateRight": "Rotate right",
+        "rotateRightHint": "+5° · shortcut ]",
+        "resetRotation": "Reset tilt",
+        "resetRotationHint": "Back to 0° · shortcut 0",
+        "angleLabel": "Current tilt",
+        "moveHint": "Drag the signature to reposition"
+      },
+      "controls": {
+        "zoomOut": "Zoom out",
+        "zoomIn": "Zoom in",
+        "zoomLevel": "Zoom {level}%",
+        "cancelPlacement": "Cancel placement",
+        "cancelPlacementHint": "Discard pending signature · Esc"
       }
     }
   },
@@ -122,14 +156,14 @@
   "SignatureModal": {
     "trigger": "Add Signature",
     "title": "Create Signature",
-    "description": "Choose how you want to sign the document.",
+    "description": "Draw or type, then click the PDF to place it.",
     "tabs": {
       "draw": "Draw",
       "type": "Type"
     },
     "thickness": {
       "label": "Thickness:",
-      "hint": "Draw your signature above.",
+      "hint": "Draw with your mouse or finger",
       "thin": "Thin",
       "medium": "Medium",
       "thick": "Thick"
@@ -141,12 +175,18 @@
     },
     "actions": {
       "cancel": "Cancel",
-      "confirm": "Insert Signature",
+      "confirm": "Use signature",
       "clear": "Clear"
     }
   },
   "LanguageSwitcher": {
     "label": "Change language"
+  },
+  "ThemeToggle": {
+    "toLight": "Light theme",
+    "toLightHint": "Switch to light appearance",
+    "toDark": "Dark theme",
+    "toDarkHint": "Switch to dark appearance"
   },
   "Header": {
     "appName": "AssinarPDF",

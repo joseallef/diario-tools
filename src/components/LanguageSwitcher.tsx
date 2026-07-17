@@ -68,8 +68,9 @@ export function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className="gap-2 text-muted-foreground hover:text-foreground cursor-pointer"
+          className="cursor-pointer gap-2 text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary hover:ring-1 hover:ring-primary/20"
           aria-label={t("label")}
+          title={t("label")}
         >
           <Globe className="h-4 w-4" />
           <span className="hidden sm:inline-block">{currentLang?.label}</span>

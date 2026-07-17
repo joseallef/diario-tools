@@ -4,6 +4,6 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // Match only internationalized pathnames
+  // Only locale routes — never touch /sitemap.xml, /robots.txt, icons, etc.
   matcher: ["/", "/(pt|en)/:path*"],
 };

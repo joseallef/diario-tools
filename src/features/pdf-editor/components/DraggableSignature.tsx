@@ -1,207 +1,577 @@
 "use client";
 
+import { HandleTooltip, IconAction } from "@/components/ui/icon-action";
 import { Signature, useEditorStore } from "@/features/pdf-editor/store/editorStore";
-import { GripVertical, Maximize2, X } from "lucide-react";
+import { RotateCcw, RotateCw, Trash2, Undo2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+
+type Corner = "nw" | "ne" | "sw" | "se";
+type TransformMode = "none" | "drag" | "resize" | "rotate";
 
 interface DraggableSignatureProps {
   signature: Signature;
-  containerScale: number;
+  pageWidth: number;
+  pageHeight: number;
+  isSelected: boolean;
+  interactive?: boolean;
 }
 
-export function DraggableSignature({ signature, containerScale = 1 }: DraggableSignatureProps) {
-  const { removeSignature, updateSignature } = useEditorStore();
+const CORNER_CURSOR: Record<Corner, string> = {
+  nw: "nwse-resize",
+  se: "nwse-resize",
+  ne: "nesw-resize",
+  sw: "nesw-resize",
+};
 
-  // Estado local para controle preciso de Posição e Tamanho
-  const [position, setPosition] = useState({ x: signature.x, y: signature.y });
-  const [size, setSize] = useState({ width: signature.width, height: signature.height });
+const CORNER_CLASS: Record<Corner, string> = {
+  nw: "-left-1.5 -top-1.5",
+  ne: "-right-1.5 -top-1.5",
+  sw: "-left-1.5 -bottom-1.5",
+  se: "-right-1.5 -bottom-1.5",
+};
 
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+function normalizeAngle(deg: number) {
+  let a = deg % 360;
+  if (a > 180) a -= 360;
+  if (a < -180) a += 360;
+  return a;
+}
 
-  // Refs para cálculo de delta
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-  const initialPosRef = useRef<{ x: number; y: number } | null>(null);
-  const initialSizeRef = useRef<{ width: number; height: number } | null>(null);
+function snapAngle(deg: number, shiftKey: boolean) {
+  const step = shiftKey ? 15 : 5;
+  const snapped = Math.round(deg / step) * step;
+  // Magnetic snap to horizontal near 0°
+  if (Math.abs(normalizeAngle(snapped)) < (shiftKey ? 3 : 2.5)) return 0;
+  return normalizeAngle(snapped);
+}
 
-  // Sincronizar estado se mudar externamente
+function screenToLocal(dx: number, dy: number, rotationDeg: number) {
+  const θ = (-rotationDeg * Math.PI) / 180;
+  const cos = Math.cos(θ);
+  const sin = Math.sin(θ);
+  return {
+    x: dx * cos - dy * sin,
+    y: dx * sin + dy * cos,
+  };
+}
+
+export function DraggableSignature({
+  signature,
+  pageWidth,
+  pageHeight,
+  isSelected,
+  interactive = true,
+}: DraggableSignatureProps) {
+  const { removeSignature, updateSignature, setSelectedSignatureId } = useEditorStore();
+  const t = useTranslations("PdfEditorPage.viewer.transform");
+
+  const [norm, setNorm] = useState({
+    x: signature.x,
+    y: signature.y,
+    width: signature.width,
+    height: signature.height,
+  });
+  const [rotation, setRotation] = useState(signature.rotation ?? 0);
+  const [mode, setMode] = useState<TransformMode>("none");
+  const [activeCorner, setActiveCorner] = useState<Corner | null>(null);
+  const [justPlaced, setJustPlaced] = useState(true);
+
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  const initialNormRef = useRef(norm);
+  const initialRotationRef = useRef(rotation);
+  const startAngleRef = useRef(0);
+  const normRef = useRef(norm);
+  const rotationRef = useRef(rotation);
+  normRef.current = norm;
+  rotationRef.current = rotation;
+
+  const boxRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!isDragging && !isResizing) {
-      setPosition({ x: signature.x, y: signature.y });
-      setSize({ width: signature.width, height: signature.height });
+    if (mode === "none") {
+      setNorm({
+        x: signature.x,
+        y: signature.y,
+        width: signature.width,
+        height: signature.height,
+      });
+      setRotation(signature.rotation ?? 0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signature.x, signature.y, signature.width, signature.height]);
+  }, [
+    signature.x,
+    signature.y,
+    signature.width,
+    signature.height,
+    signature.rotation,
+    mode,
+  ]);
 
-  // --- Lógica de DRAG ---
-  const handleDragStart = (e: React.PointerEvent) => {
-    if (isResizing) return;
-    e.preventDefault();
-    e.stopPropagation();
+  useEffect(() => {
+    const timer = setTimeout(() => setJustPlaced(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
-    setIsDragging(true);
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-    initialPosRef.current = { x: position.x, y: position.y };
+  const px = {
+    x: norm.x * pageWidth,
+    y: norm.y * pageHeight,
+    width: norm.width * pageWidth,
+    height: norm.height * pageHeight,
   };
 
-  const handleDragMove = (e: React.PointerEvent) => {
-    if (!isDragging || !dragStartRef.current || !initialPosRef.current) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const deltaX = (e.clientX - dragStartRef.current.x) / containerScale;
-    const deltaY = (e.clientY - dragStartRef.current.y) / containerScale;
-
-    let newX = initialPosRef.current.x + deltaX;
-    let newY = initialPosRef.current.y + deltaY;
-
-    // Bounds
-    const element = e.currentTarget as HTMLElement;
-    const parent = element.offsetParent as HTMLElement;
-
-    if (parent) {
-      const parentWidth = parent.clientWidth;
-      const parentHeight = parent.clientHeight;
-      const maxX = parentWidth - size.width;
-      const maxY = parentHeight - size.height;
-
-      newX = Math.max(0, Math.min(newX, maxX));
-      newY = Math.max(0, Math.min(newY, maxY));
-    }
-
-    setPosition({ x: newX, y: newY });
+  const clampNorm = (next: typeof norm) => {
+    const width = Math.min(Math.max(next.width, 0.06), 0.95);
+    const height = Math.min(Math.max(next.height, 0.03), 0.5);
+    return {
+      width,
+      height,
+      x: Math.min(Math.max(next.x, 0), 1 - width),
+      y: Math.min(Math.max(next.y, 0), 1 - height),
+    };
   };
 
-  const handleDragEnd = (e: React.PointerEvent) => {
-    if (!isDragging) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    setIsDragging(false);
-    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-
-    updateSignature(signature.id, { x: position.x, y: position.y });
-    dragStartRef.current = null;
-    initialPosRef.current = null;
-  };
-
-  // --- Lógica de RESIZE ---
-  const handleResizeStart = (e: React.PointerEvent) => {
-    e.preventDefault();
-    e.stopPropagation(); // Importante: Não propagar para o Drag
-
-    setIsResizing(true);
-    // Captura no botão de resize, mas o evento de move pode ser global ou no botão.
-    // Melhor capturar no botão.
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-    initialSizeRef.current = { width: size.width, height: size.height };
-  };
-
-  const handleResizeMove = (e: React.PointerEvent) => {
-    if (!isResizing || !dragStartRef.current || !initialSizeRef.current) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const deltaX = (e.clientX - dragStartRef.current.x) / containerScale;
-    // Não usamos deltaY direto para manter aspect ratio, mas calculamos baseado no X
-
-    const aspectRatio = initialSizeRef.current.width / initialSizeRef.current.height;
-
-    let newWidth = initialSizeRef.current.width + deltaX;
-    // Limites mínimos
-    newWidth = Math.max(30, newWidth);
-
-    // Calcular altura proporcional
-    const newHeight = newWidth / aspectRatio;
-
-    // TODO: Limites máximos (não sair da página) poderiam ser adicionados aqui
-    // Mas resize geralmente permite crescer e o drag ajusta depois.
-    // Vamos apenas garantir que não quebre o layout.
-
-    setSize({ width: newWidth, height: newHeight });
-  };
-
-  const handleResizeEnd = (e: React.PointerEvent) => {
-    if (!isResizing) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    setIsResizing(false);
-    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-
+  const commitAll = () => {
+    const latest = normRef.current;
     updateSignature(signature.id, {
-      width: size.width,
-      height: size.height,
+      x: latest.x,
+      y: latest.y,
+      width: latest.width,
+      height: latest.height,
+      rotation: rotationRef.current,
     });
-
-    dragStartRef.current = null;
-    initialSizeRef.current = null;
   };
+
+  const applyResizeFromCorner = (corner: Corner, localDxPx: number, localDyPx: number) => {
+    const init = initialNormRef.current;
+    const aspect = signature.aspectRatio;
+    const pageAspect = pageWidth / pageHeight;
+
+    // Convert pixel deltas in local space to norm deltas
+    const dW = localDxPx / pageWidth;
+    const dH = localDyPx / pageHeight;
+
+    // Anchor = opposite corner stays fixed
+    let nextW = init.width;
+    let nextH = init.height;
+    let nextX = init.x;
+    let nextY = init.y;
+
+    // Use the dominant axis for aspect-locked resize (feels natural when rotated)
+    const projected =
+      Math.abs(localDxPx) >= Math.abs(localDyPx)
+        ? localDxPx
+        : localDyPx * aspect * (pageHeight / pageWidth);
+
+    const deltaW =
+      corner === "se" || corner === "ne"
+        ? projected / pageWidth
+        : -projected / pageWidth;
+
+    nextW = init.width + deltaW;
+    nextH = (nextW * pageAspect) / aspect;
+
+    // Reposition so the opposite corner stays put
+    if (corner === "se") {
+      nextX = init.x;
+      nextY = init.y;
+    } else if (corner === "sw") {
+      nextX = init.x + init.width - nextW;
+      nextY = init.y;
+    } else if (corner === "ne") {
+      nextX = init.x;
+      nextY = init.y + init.height - nextH;
+    } else {
+      // nw
+      nextX = init.x + init.width - nextW;
+      nextY = init.y + init.height - nextH;
+    }
+
+    // Suppress unused warning for dW/dH when using projected — keep for clarity
+    void dW;
+    void dH;
+
+    const clamped = clampNorm({ x: nextX, y: nextY, width: nextW, height: nextH });
+    normRef.current = clamped;
+    setNorm(clamped);
+  };
+
+  const handleDragStart = (e: React.PointerEvent) => {
+    if (mode === "resize" || mode === "rotate") return;
+    if ((e.target as HTMLElement).closest("[data-handle]")) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSignatureId(signature.id);
+    setMode("drag");
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+    initialNormRef.current = { ...norm };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!pointerStartRef.current) return;
+
+    if (mode === "drag") {
+      e.preventDefault();
+      e.stopPropagation();
+      const dx = (e.clientX - pointerStartRef.current.x) / pageWidth;
+      const dy = (e.clientY - pointerStartRef.current.y) / pageHeight;
+      const next = clampNorm({
+        ...initialNormRef.current,
+        x: initialNormRef.current.x + dx,
+        y: initialNormRef.current.y + dy,
+      });
+      normRef.current = next;
+      setNorm(next);
+      return;
+    }
+
+    if (mode === "resize" && activeCorner) {
+      e.preventDefault();
+      e.stopPropagation();
+      const screenDx = e.clientX - pointerStartRef.current.x;
+      const screenDy = e.clientY - pointerStartRef.current.y;
+      const local = screenToLocal(screenDx, screenDy, initialRotationRef.current);
+      applyResizeFromCorner(activeCorner, local.x, local.y);
+      return;
+    }
+
+    if (mode === "rotate" && boxRef.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = boxRef.current.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
+      // atan2 0° is east; our handle is north → offset by 90°
+      const absolute = angle + 90;
+      let next = normalizeAngle(
+        initialRotationRef.current + (absolute - startAngleRef.current)
+      );
+      next = snapAngle(next, e.shiftKey);
+      rotationRef.current = next;
+      setRotation(next);
+    }
+  };
+
+  const handlePointerEnd = (e: React.PointerEvent) => {
+    if (mode === "none") return;
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      /* already released */
+    }
+    commitAll();
+    setMode("none");
+    setActiveCorner(null);
+    pointerStartRef.current = null;
+  };
+
+  const startResize = (corner: Corner) => (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSignatureId(signature.id);
+    setMode("resize");
+    setActiveCorner(corner);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+    initialNormRef.current = { ...norm };
+    initialRotationRef.current = rotation;
+  };
+
+  const startRotate = (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!boxRef.current) return;
+    setSelectedSignatureId(signature.id);
+    setMode("rotate");
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+    initialRotationRef.current = rotation;
+
+    const rect = boxRef.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    startAngleRef.current =
+      (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI + 90;
+  };
+
+  const nudgeRotation = (delta: number) => {
+    const next = snapAngle(normalizeAngle(rotation + delta), false);
+    rotationRef.current = next;
+    setRotation(next);
+    updateSignature(signature.id, { rotation: next });
+  };
+
+  const resetRotation = () => {
+    rotationRef.current = 0;
+    setRotation(0);
+    updateSignature(signature.id, { rotation: 0 });
+  };
+
+  const [isHovering, setIsHovering] = useState(false);
+  const hoverLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearHoverTimer = () => {
+    if (hoverLeaveTimer.current) {
+      clearTimeout(hoverLeaveTimer.current);
+      hoverLeaveTimer.current = null;
+    }
+  };
+
+  useEffect(() => () => clearHoverTimer(), []);
+
+  const handleHoverEnter = () => {
+    clearHoverTimer();
+    setIsHovering(true);
+  };
+
+  const handleHoverLeave = () => {
+    clearHoverTimer();
+    // Grace period so the cursor can cross the gap into the toolbar
+    hoverLeaveTimer.current = setTimeout(() => setIsHovering(false), 600);
+  };
+
+  const showChrome =
+    isSelected || isHovering || mode !== "none" || justPlaced;
 
   return (
     <div
+      ref={boxRef}
+      data-signature={signature.id}
       onPointerDown={handleDragStart}
-      onPointerMove={handleDragMove}
-      onPointerUp={handleDragEnd}
-      className={`absolute z-50 group select-none pointer-events-auto ${isDragging ? "cursor-grabbing" : "cursor-move"}`}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerEnd}
+      onClick={(e) => e.stopPropagation()}
+      onMouseEnter={handleHoverEnter}
+      onMouseLeave={handleHoverLeave}
+      onPointerEnter={handleHoverEnter}
+      onPointerLeave={(e) => {
+        // Don't collapse chrome while a transform gesture is active
+        if (mode !== "none") return;
+        // Still inside a child (toolbar/bridge) — keep alive
+        const related = e.relatedTarget as Node | null;
+        if (related && e.currentTarget.contains(related)) return;
+        handleHoverLeave();
+      }}
+      className={`absolute z-50 select-none group ${
+        interactive ? "pointer-events-auto" : "pointer-events-none"
+      } ${mode === "drag" ? "cursor-grabbing" : "cursor-grab"} ${
+        justPlaced ? "animate-in zoom-in-95 fade-in duration-300" : ""
+      }`}
       style={{
-        width: size.width * containerScale,
-        height: size.height * containerScale,
-        transform: `translate3d(${position.x * containerScale}px, ${position.y * containerScale}px, 0)`,
+        left: px.x,
+        top: px.y,
+        width: px.width,
+        height: px.height,
+        transform: `rotate(${rotation}deg)`,
+        transformOrigin: "center center",
         touchAction: "none",
-        willChange: "transform, width, height",
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={t("aria")}
+      onKeyDown={(e) => {
+        if (e.key === "Delete" || e.key === "Backspace") {
+          e.preventDefault();
+          removeSignature(signature.id);
+        }
+        if (e.key === "[") {
+          e.preventDefault();
+          nudgeRotation(-5);
+        }
+        if (e.key === "]") {
+          e.preventDefault();
+          nudgeRotation(5);
+        }
+        if (e.key === "0" && !e.metaKey && !e.ctrlKey) {
+          e.preventDefault();
+          resetRotation();
+        }
       }}
     >
-      {/* A Imagem da Assinatura - Z-Index 0 */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={signature.content}
-        alt="Assinatura"
+        alt=""
         draggable={false}
-        className="w-full h-full object-contain pointer-events-none select-none relative z-0"
+        className="relative z-0 h-full w-full object-contain pointer-events-none select-none"
       />
 
-      {/* Hitbox Layer - Z-Index 10 - Garante captura do clique em cima da imagem + Feedback Visual */}
-      <div className="absolute inset-0 z-10 bg-transparent hover:bg-black/5 transition-colors cursor-move rounded-sm" />
-
-      {/* Borda de Foco/Hover - Sempre visível em touch devices ou quando ativo */}
       <div
-        className={`absolute inset-0 border-2 border-primary rounded-md transition-opacity pointer-events-none z-20 ${isDragging || isResizing ? "opacity-100" : "opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"}`}
+        className={`absolute inset-0 z-10 rounded-sm transition-colors ${
+          showChrome ? "bg-primary/5" : "bg-transparent"
+        }`}
       />
 
-      {/* Botão de Remover - Sempre visível em touch devices */}
-      <button
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          removeSignature(signature.id);
-        }}
-        className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity shadow-md z-50 hover:bg-red-600 cursor-pointer"
-      >
-        <X className="h-3 w-3" />
-      </button>
+      <div
+        className={`pointer-events-none absolute inset-0 z-20 rounded-sm border-2 transition-opacity ${
+          showChrome
+            ? "border-primary opacity-100 shadow-[0_0_0_3px_rgba(15,118,110,0.15)]"
+            : "border-primary/70 opacity-0"
+        }`}
+      />
 
-      {/* Handle de Drag (Visual aid - Esquerda) */}
-      <div className="absolute -left-4 top-1/2 -translate-y-1/2 text-slate-400 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity pointer-events-none z-50">
-        <GripVertical className="h-4 w-4" />
+      {/* Page badge */}
+      <span
+        className={`pointer-events-none absolute -top-6 left-0 z-50 rounded bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground shadow-sm transition-opacity ${
+          showChrome ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {t("pageBadge", { page: signature.page })}
+      </span>
+
+      {/* Rotation stem + handle */}
+      <div
+        className={`pointer-events-none absolute left-1/2 z-40 flex -translate-x-1/2 flex-col items-center transition-opacity ${
+          showChrome ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ top: -40 }}
+      >
+        <HandleTooltip label={t("rotate")} hint={t("rotateHint")} side="top">
+          <div
+            data-handle="rotate"
+            role="button"
+            tabIndex={0}
+            aria-label={t("rotate")}
+            onPointerDown={startRotate}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerEnd}
+            onPointerCancel={handlePointerEnd}
+            className="pointer-events-auto flex h-8 w-8 cursor-grab items-center justify-center rounded-full border-2 border-primary bg-white text-primary shadow-md transition-all duration-150 hover:scale-110 hover:bg-primary hover:text-white hover:shadow-lg hover:ring-2 hover:ring-primary/30 active:scale-95 active:cursor-grabbing touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            <RotateCw className="h-3.5 w-3.5" />
+          </div>
+        </HandleTooltip>
+        <div className="h-3 w-0.5 bg-primary/80" />
       </div>
 
-      {/* Handle de Resize (Canto Inferior Direito) */}
+      {/* Live angle chip while rotating */}
+      {mode === "rotate" && (
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-md bg-foreground/90 px-2.5 py-1.5 text-xs font-semibold tabular-nums text-background shadow-lg">
+          <span className="block text-[9px] font-medium uppercase tracking-wide text-background/70">
+            {t("angleLabel")}
+          </span>
+          {rotation > 0 ? "+" : ""}
+          {rotation.toFixed(0)}°
+        </div>
+      )}
+
+      {/* Four corner resize handles */}
+      {(["nw", "ne", "sw", "se"] as Corner[]).map((corner) => (
+        <HandleTooltip
+          key={corner}
+          label={t("resize")}
+          hint={t("resizeHint")}
+          side={corner.startsWith("n") ? "top" : "bottom"}
+        >
+          <div
+            data-handle={`resize-${corner}`}
+            role="button"
+            tabIndex={0}
+            aria-label={t("resize")}
+            onPointerDown={startResize(corner)}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerEnd}
+            onPointerCancel={handlePointerEnd}
+            className={`absolute z-50 h-4 w-4 rounded-sm border-2 border-primary bg-white shadow-md transition-all duration-150 touch-none hover:scale-125 hover:bg-primary hover:shadow-lg hover:ring-2 hover:ring-primary/35 active:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+              CORNER_CLASS[corner]
+            } ${showChrome ? "opacity-100" : "opacity-0"}`}
+            style={{ cursor: CORNER_CURSOR[corner] }}
+          />
+        </HandleTooltip>
+      ))}
+
+      {/* Invisible hit-bridge: fills the dead zone between box and toolbar */}
       <div
-        onPointerDown={handleResizeStart}
-        onPointerMove={handleResizeMove}
-        onPointerUp={handleResizeEnd}
-        className="absolute -bottom-2 -right-2 w-6 h-6 bg-white border-2 border-primary rounded-full flex items-center justify-center cursor-nwse-resize z-50 shadow-sm opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity touch-none"
+        aria-hidden
+        data-handle="bridge"
+        className="absolute left-1/2 z-40 -translate-x-1/2"
+        style={{
+          top: "100%",
+          width: "min(140%, 280px)",
+          height: 56,
+        }}
+        onMouseEnter={handleHoverEnter}
+        onPointerEnter={handleHoverEnter}
+      />
+
+      {/* Floating transform toolbar */}
+      <div
+        data-handle="toolbar"
+        role="toolbar"
+        aria-label={t("aria")}
+        className={`absolute left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border bg-background/95 p-1 shadow-lg backdrop-blur transition-all duration-150 ${
+          showChrome
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-1 opacity-0"
+        }`}
+        style={{ bottom: -48 }}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          setSelectedSignatureId(signature.id);
+        }}
+        onMouseEnter={handleHoverEnter}
+        onPointerEnter={handleHoverEnter}
+        onClick={(e) => e.stopPropagation()}
       >
-        <Maximize2 className="h-3 w-3 text-primary rotate-90" />
+        <IconAction
+          label={t("rotateLeft")}
+          hint={t("rotateLeftHint")}
+          side="bottom"
+          size="sm"
+          onClick={() => nudgeRotation(-5)}
+        >
+          <RotateCcw className="h-3.5 w-3.5" />
+        </IconAction>
+        <IconAction
+          label={t("angleLabel")}
+          hint={t("resetRotationHint")}
+          side="bottom"
+          size="sm"
+          className="h-7 min-w-[3.4rem] w-auto rounded-full px-2 text-[11px] font-semibold tabular-nums"
+          onClick={resetRotation}
+        >
+          {rotation === 0 ? "0°" : `${rotation > 0 ? "+" : ""}${Math.round(rotation)}°`}
+        </IconAction>
+        <IconAction
+          label={t("rotateRight")}
+          hint={t("rotateRightHint")}
+          side="bottom"
+          size="sm"
+          onClick={() => nudgeRotation(5)}
+        >
+          <RotateCw className="h-3.5 w-3.5" />
+        </IconAction>
+        <div className="mx-0.5 h-4 w-px bg-border" aria-hidden />
+        <IconAction
+          label={t("resetRotation")}
+          hint={t("resetRotationHint")}
+          side="bottom"
+          size="sm"
+          variant="muted"
+          disabled={rotation === 0}
+          onClick={resetRotation}
+        >
+          <Undo2 className="h-3.5 w-3.5" />
+        </IconAction>
+        <div className="mx-0.5 h-4 w-px bg-border" aria-hidden />
+        <IconAction
+          label={t("remove")}
+          hint={t("removeHint")}
+          side="bottom"
+          size="sm"
+          variant="danger"
+          data-handle="delete"
+          onClick={() => removeSignature(signature.id)}
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+        </IconAction>
       </div>
     </div>
   );
 }
+

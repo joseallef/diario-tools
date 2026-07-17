@@ -45,11 +45,16 @@ export type AppLocale = (typeof routing.locales)[number];
 /** Absolute URL for a locale (default locale has no prefix). */
 export function getLocaleUrl(locale: string, path = ""): string {
   const normalized = path.startsWith("/") ? path : path ? `/${path}` : "";
-  const base =
-    locale === routing.defaultLocale
-      ? siteConfig.url
-      : `${siteConfig.url}/${locale}`;
-  return `${base}${normalized}`;
+
+  // Match Next.js / Search Console canonicals: homepage uses a trailing slash.
+  if (locale === routing.defaultLocale) {
+    if (!normalized || normalized === "/") {
+      return `${siteConfig.url}/`;
+    }
+    return `${siteConfig.url}${normalized}`;
+  }
+
+  return `${siteConfig.url}/${locale}${normalized}`;
 }
 
 /** hreflang map for alternates.languages */

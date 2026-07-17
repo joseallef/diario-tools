@@ -102,7 +102,41 @@
       "pagination": {
         "prev": "Anterior",
         "next": "Próxima",
-        "label": "Página {current} de {total}"
+        "label": "Página {current} de {total}",
+        "pageShort": "Pág. {page}"
+      },
+      "placement": {
+        "title": "Posicione a assinatura",
+        "hint": "Clique no local desejado da página. Depois você pode arrastar, redimensionar e girar.",
+        "clickHere": "Clique em qualquer lugar da página",
+        "toast": "Assinatura pronta",
+        "placed": "Assinatura posicionada! Arraste, redimensione ou gire para ajustar.",
+        "cancel": "Cancelar posicionamento"
+      },
+      "transform": {
+        "aria": "Assinatura — arraste para mover",
+        "pageBadge": "Pág. {page}",
+        "remove": "Remover assinatura",
+        "removeHint": "Apaga esta assinatura do documento",
+        "resize": "Redimensionar",
+        "resizeHint": "Arraste o canto para aumentar ou diminuir",
+        "rotate": "Girar assinatura",
+        "rotateHint": "Arraste para inclinar · Shift = 15°",
+        "rotateLeft": "Girar à esquerda",
+        "rotateLeftHint": "−5° · atalho [",
+        "rotateRight": "Girar à direita",
+        "rotateRightHint": "+5° · atalho ]",
+        "resetRotation": "Zerar inclinação",
+        "resetRotationHint": "Volta para 0° · atalho 0",
+        "angleLabel": "Inclinação atual",
+        "moveHint": "Arraste a assinatura para reposicionar"
+      },
+      "controls": {
+        "zoomOut": "Diminuir zoom",
+        "zoomIn": "Aumentar zoom",
+        "zoomLevel": "Zoom {level}%",
+        "cancelPlacement": "Cancelar posicionamento",
+        "cancelPlacementHint": "Descarta a assinatura pendente · Esc"
       }
     }
   },
@@ -122,14 +156,14 @@
   "SignatureModal": {
     "trigger": "Adicionar Assinatura",
     "title": "Criar Assinatura",
-    "description": "Escolha como deseja assinar o documento.",
+    "description": "Desenhe ou digite. Em seguida, clique no PDF para posicionar.",
     "tabs": {
       "draw": "Desenhar",
       "type": "Digitar"
     },
     "thickness": {
       "label": "Espessura:",
-      "hint": "Desenhe sua assinatura acima.",
+      "hint": "Desenhe com o mouse ou o dedo",
       "thin": "Fina",
       "medium": "Média",
       "thick": "Grossa"
@@ -141,12 +175,18 @@
     },
     "actions": {
       "cancel": "Cancelar",
-      "confirm": "Inserir Assinatura",
+      "confirm": "Usar assinatura",
       "clear": "Limpar"
     }
   },
   "LanguageSwitcher": {
     "label": "Alterar idioma"
+  },
+  "ThemeToggle": {
+    "toLight": "Tema claro",
+    "toLightHint": "Mudar para aparência clara",
+    "toDark": "Tema escuro",
+    "toDarkHint": "Mudar para aparência escura"
   },
   "Header": {
     "appName": "AssinarPDF",
