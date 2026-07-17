@@ -9,6 +9,7 @@ import {
   Kalam,
   Pacifico,
   Parisienne,
+  Roboto_Mono,
   Satisfy,
   Tinos,
 } from "next/font/google";
@@ -80,7 +81,7 @@ const print = Kalam({
   variable: "--font-sig-print",
 });
 
-/** Times New Roman–compatible serif for formal / document-style names. */
+/** Times New Roman–compatible serif (PDF24 Serif / document). */
 const documentFont = Tinos({
   weight: ["400", "700"],
   style: ["normal", "italic"],
@@ -98,7 +99,7 @@ const garamond = EB_Garamond({
   variable: "--font-sig-garamond",
 });
 
-/** Arial-compatible sans for modern typed names. */
+/** Arial-compatible sans (PDF24 Sans-serif / modern). */
 const sans = Arimo({
   weight: ["400", "700"],
   style: ["normal", "italic"],
@@ -107,7 +108,18 @@ const sans = Arimo({
   variable: "--font-sig-sans",
 });
 
+/** PDF24-style monospace typed name. */
+const mono = Roboto_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sig-mono",
+});
+
 export type SignatureFontId =
+  | "sansSerif"
+  | "serif"
+  | "monospace"
   | "elegant"
   | "allura"
   | "brush"
@@ -133,7 +145,29 @@ export type SignatureFontOption = {
 };
 
 export const SIGNATURE_FONTS: SignatureFontOption[] = [
-  // Cursivas — ordem aproximada de uso em e-signature (DocuSign, Adobe Sign, etc.)
+  // PDF24-style typed faces first
+  {
+    id: "sansSerif",
+    family: sans.style.fontFamily,
+    cssVar: "var(--font-sig-sans)",
+    previewScale: 0.88,
+    renderScale: 0.85,
+  },
+  {
+    id: "serif",
+    family: documentFont.style.fontFamily,
+    cssVar: "var(--font-sig-document)",
+    previewScale: 0.9,
+    renderScale: 0.86,
+  },
+  {
+    id: "monospace",
+    family: mono.style.fontFamily,
+    cssVar: "var(--font-sig-mono)",
+    previewScale: 0.82,
+    renderScale: 0.8,
+  },
+  // Cursivas — ordem aproximada de uso em e-signature
   {
     id: "script",
     family: script.style.fontFamily,
@@ -197,7 +231,7 @@ export const SIGNATURE_FONTS: SignatureFontOption[] = [
     previewScale: 0.95,
     renderScale: 0.95,
   },
-  // Digitadas / documento
+  // Digitadas / documento (itálico)
   {
     id: "document",
     family: documentFont.style.fontFamily,
@@ -228,11 +262,14 @@ export const SIGNATURE_FONTS: SignatureFontOption[] = [
 export const DEFAULT_SIGNATURE_FONT: SignatureFontId = "script";
 
 export function getSignatureFont(id: SignatureFontId): SignatureFontOption {
-  return SIGNATURE_FONTS.find((f) => f.id === id) ?? SIGNATURE_FONTS[0];
+  return SIGNATURE_FONTS.find((f) => f.id === id) ?? SIGNATURE_FONTS.find((f) => f.id === "script")!;
 }
 
 /** Only CSS variables — does not change the element's font-family. */
 export const signatureFontVariablesClassName = [
+  sans.variable,
+  documentFont.variable,
+  mono.variable,
   script.variable,
   elegant.variable,
   allura.variable,
@@ -242,7 +279,5 @@ export const signatureFontVariablesClassName = [
   classic.variable,
   casual.variable,
   print.variable,
-  documentFont.variable,
   garamond.variable,
-  sans.variable,
 ].join(" ");

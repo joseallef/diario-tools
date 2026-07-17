@@ -91,11 +91,17 @@ export function PdfViewer() {
     return () => observer.disconnect();
   }, [safeFileBuffer]);
 
-  // Keyboard: Escape cancels placement / Delete removes selected
+  // Keyboard: Escape cancels placement / clears selection; Delete removes selected
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && pendingSignature) {
-        setPendingSignature(null);
+      if (e.key === "Escape") {
+        if (pendingSignature) {
+          setPendingSignature(null);
+          return;
+        }
+        if (selectedSignatureId) {
+          setSelectedSignatureId(null);
+        }
       }
       if (
         (e.key === "Delete" || e.key === "Backspace") &&
@@ -108,7 +114,25 @@ export function PdfViewer() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [pendingSignature, selectedSignatureId, setPendingSignature]);
+  }, [pendingSignature, selectedSignatureId, setPendingSignature, setSelectedSignatureId]);
+
+  // Click/tap outside the signature (and its chrome) clears selection
+  useEffect(() => {
+    if (!selectedSignatureId) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest("[data-signature]")) return;
+      if (target.closest("[data-signature-chip]")) return;
+      if (target.closest('[role="dialog"]')) return;
+      if (target.closest("[data-radix-popper-content-wrapper]")) return;
+      setSelectedSignatureId(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [selectedSignatureId, setSelectedSignatureId]);
 
   const handleSignatureCreated = useCallback(
     (payload: { dataUrl: string; type: "draw" | "text"; aspectRatio: number }) => {
@@ -417,6 +441,7 @@ export function PdfViewer() {
               <button
                 key={sig.id}
                 type="button"
+                data-signature-chip
                 onClick={() => {
                   setCurrentPage(sig.page);
                   setSelectedSignatureId(sig.id);

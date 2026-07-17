@@ -2,9 +2,9 @@
 
 import { HandleTooltip, IconAction } from "@/components/ui/icon-action";
 import { Signature, useEditorStore } from "@/features/pdf-editor/store/editorStore";
-import { RotateCcw, RotateCw, Trash2, Undo2 } from "lucide-react";
+import { RotateCcw, RotateCw, Scaling, Trash2, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 type Corner = "nw" | "ne" | "sw" | "se";
 type TransformMode = "none" | "drag" | "resize" | "rotate";
@@ -24,12 +24,30 @@ const CORNER_CURSOR: Record<Corner, string> = {
   sw: "nesw-resize",
 };
 
-const CORNER_CLASS: Record<Corner, string> = {
-  nw: "-left-1.5 -top-1.5",
-  ne: "-right-1.5 -top-1.5",
-  sw: "-left-1.5 -bottom-1.5",
-  se: "-right-1.5 -bottom-1.5",
-};
+function useCoarsePointer() {
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse)");
+    const sync = () => setCoarse(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return coarse;
+}
+
+function cornerOffsetStyle(corner: Corner, outset: number): CSSProperties {
+  switch (corner) {
+    case "nw":
+      return { left: -outset, top: -outset };
+    case "ne":
+      return { right: -outset, top: -outset };
+    case "sw":
+      return { left: -outset, bottom: -outset };
+    case "se":
+      return { right: -outset, bottom: -outset };
+  }
+}
 
 function normalizeAngle(deg: number) {
   let a = deg % 360;
@@ -76,6 +94,8 @@ export function DraggableSignature({
   const [mode, setMode] = useState<TransformMode>("none");
   const [activeCorner, setActiveCorner] = useState<Corner | null>(null);
   const [justPlaced, setJustPlaced] = useState(true);
+  const [resizeMode, setResizeMode] = useState(false);
+  const isCoarsePointer = useCoarsePointer();
 
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const initialNormRef = useRef(norm);
@@ -112,12 +132,23 @@ export function DraggableSignature({
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (!isSelected) setResizeMode(false);
+  }, [isSelected]);
+
   const px = {
     x: norm.x * pageWidth,
     y: norm.y * pageHeight,
     width: norm.width * pageWidth,
     height: norm.height * pageHeight,
   };
+
+  const shortestSide = Math.min(px.width, px.height);
+  const isCompact = shortestSide < (isCoarsePointer ? 88 : 56);
+  /** On touch + compact boxes, corner handles steal the drag — gate behind explicit mode. */
+  const needsResizeGate = isCoarsePointer && isCompact;
+  const handleOutset = isCoarsePointer || isCompact ? 14 : 7;
+  const handleSize = isCoarsePointer ? 12 : 14;
 
   const clampNorm = (next: typeof norm) => {
     const width = Math.min(Math.max(next.width, 0.06), 0.95);
@@ -336,6 +367,7 @@ export function DraggableSignature({
 
   const showChrome =
     isSelected || isHovering || mode !== "none" || justPlaced;
+  const showResizeHandles = showChrome && (!needsResizeGate || resizeMode);
 
   return (
     <div
@@ -409,9 +441,11 @@ export function DraggableSignature({
       />
 
       <div
-        className={`pointer-events-none absolute inset-0 z-20 rounded-sm border-2 transition-opacity ${
+        className={`pointer-events-none absolute inset-0 z-20 rounded-sm border-2 transition-all ${
           showChrome
-            ? "border-primary opacity-100 shadow-[0_0_0_3px_rgba(15,118,110,0.15)]"
+            ? resizeMode
+              ? "border-primary border-dashed opacity-100 shadow-[0_0_0_3px_rgba(15,118,110,0.22)]"
+              : "border-primary opacity-100 shadow-[0_0_0_3px_rgba(15,118,110,0.15)]"
             : "border-primary/70 opacity-0"
         }`}
       />
@@ -461,30 +495,34 @@ export function DraggableSignature({
         </div>
       )}
 
-      {/* Four corner resize handles */}
-      {(["nw", "ne", "sw", "se"] as Corner[]).map((corner) => (
-        <HandleTooltip
-          key={corner}
-          label={t("resize")}
-          hint={t("resizeHint")}
-          side={corner.startsWith("n") ? "top" : "bottom"}
-        >
-          <div
-            data-handle={`resize-${corner}`}
-            role="button"
-            tabIndex={0}
-            aria-label={t("resize")}
-            onPointerDown={startResize(corner)}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerEnd}
-            onPointerCancel={handlePointerEnd}
-            className={`absolute z-50 h-4 w-4 rounded-sm border-2 border-primary bg-white shadow-md transition-all duration-150 touch-none hover:scale-125 hover:bg-primary hover:shadow-lg hover:ring-2 hover:ring-primary/35 active:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
-              CORNER_CLASS[corner]
-            } ${showChrome ? "opacity-100" : "opacity-0"}`}
-            style={{ cursor: CORNER_CURSOR[corner] }}
-          />
-        </HandleTooltip>
-      ))}
+      {/* Four corner resize handles — parked outside the box so drag stays free */}
+      {showResizeHandles &&
+        (["nw", "ne", "sw", "se"] as Corner[]).map((corner) => (
+          <HandleTooltip
+            key={corner}
+            label={t("resize")}
+            hint={t("resizeHint")}
+            side={corner.startsWith("n") ? "top" : "bottom"}
+          >
+            <div
+              data-handle={`resize-${corner}`}
+              role="button"
+              tabIndex={0}
+              aria-label={t("resize")}
+              onPointerDown={startResize(corner)}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerEnd}
+              onPointerCancel={handlePointerEnd}
+              className="absolute z-50 rounded-sm border-2 border-primary bg-white shadow-md transition-all duration-150 touch-none hover:scale-125 hover:bg-primary hover:shadow-lg hover:ring-2 hover:ring-primary/35 active:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              style={{
+                width: handleSize,
+                height: handleSize,
+                cursor: CORNER_CURSOR[corner],
+                ...cornerOffsetStyle(corner, handleOutset),
+              }}
+            />
+          </HandleTooltip>
+        ))}
 
       {/* Invisible hit-bridge: fills the dead zone between box and toolbar */}
       <div
@@ -519,6 +557,22 @@ export function DraggableSignature({
         onPointerEnter={handleHoverEnter}
         onClick={(e) => e.stopPropagation()}
       >
+        {needsResizeGate && (
+          <>
+            <IconAction
+              label={resizeMode ? t("resizeModeOn") : t("resizeMode")}
+              hint={resizeMode ? t("resizeModeOnHint") : t("resizeModeHint")}
+              side="bottom"
+              size="sm"
+              variant={resizeMode ? "accent" : "default"}
+              aria-pressed={resizeMode}
+              onClick={() => setResizeMode((v) => !v)}
+            >
+              <Scaling className="h-3.5 w-3.5" />
+            </IconAction>
+            <div className="mx-0.5 h-4 w-px bg-border" aria-hidden />
+          </>
+        )}
         <IconAction
           label={t("rotateLeft")}
           hint={t("rotateLeftHint")}
