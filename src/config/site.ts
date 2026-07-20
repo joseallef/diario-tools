@@ -3,6 +3,9 @@ import { routing } from "@/i18n/routing";
 export const siteConfig = {
   name: "AssinarPDF",
   org: "Lugar Certo",
+  /** Canal LGPD / direitos do titular — override with NEXT_PUBLIC_PRIVACY_EMAIL */
+  privacyEmail:
+    process.env.NEXT_PUBLIC_PRIVACY_EMAIL ?? "privacidade@lugarcerto.tec.br",
   url: (
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://assinarpdf.lugarcerto.tec.br"
   ).replace(/\/$/, ""),

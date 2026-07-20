@@ -282,34 +282,83 @@
         "ogDescription": "Seus PDFs ficam no seu aparelho: não enviamos o documento para nossos servidores."
       },
       "title": "Política de Privacidade",
-      "intro": "Esta política explica como o AssinarPDF (operado pela Lugar Certo) trata a privacidade. Em resumo: os PDFs que você assina ficam no seu navegador e não são enviados aos nossos servidores.",
+      "intro": "Esta política explica como o AssinarPDF (operado pela {org}) trata dados pessoais sob a LGPD. Em resumo: os PDFs que você assina ficam no seu navegador e não são enviados aos nossos servidores. Analytics só roda se você aceitar cookies de medição.",
       "updated": "Última atualização: julho de 2026",
       "sections": {
         "controller": {
-          "title": "Quem somos",
+          "title": "Controlador e identidade",
           "paragraphs": [
-            "O AssinarPDF é um serviço web de assinatura eletrônica de PDF oferecido pela Lugar Certo. O site está disponível em assinarpdf.lugarcerto.tec.br."
+            "O controlador do tratamento é a {org}, operadora do AssinarPDF. Site: {siteUrl}.",
+            "Razão social, CNPJ e demais dados societários podem ser complementados pela assessoria jurídica da {org}. Para direitos do titular, use o e-mail de privacidade abaixo."
           ]
         },
         "local": {
           "title": "Onde o seu PDF é assinado",
           "paragraphs": [
             "Quando você escolhe um PDF para assinar, o arquivo fica na memória do seu navegador. Abrir o documento e colocar a assinatura acontece no seu celular ou computador — nós não recebemos o conteúdo do arquivo.",
-            "Ao fechar ou recarregar a página, o arquivo some da memória. Não guardamos o conteúdo, o nome nem uma “impressão digital” dos PDFs assinados."
+            "Ao fechar ou recarregar a página, o arquivo some da memória. Não guardamos o conteúdo, o nome nem uma “impressão digital” dos PDFs assinados. A assinatura gerada é eletrônica simples (imagem); você é responsável pelo conteúdo processado no seu dispositivo."
           ]
         },
         "data": {
           "title": "Quais dados podemos tratar",
           "paragraphs": [
-            "O uso da ferramenta de assinatura não exige cadastro. Podemos receber dados técnicos habituais de acesso a sites (por exemplo, logs de servidor, endereço IP, tipo de navegador e páginas visitadas), necessários para operar, proteger e melhorar o serviço.",
-            "Usamos o Google Analytics 4 para medir audiência de forma agregada (páginas visitadas, origem do tráfego, tipo de dispositivo). Isso pode envolver cookies ou identificadores semelhantes do Google. O conteúdo do seu PDF continua sem ser enviado a nós — o Analytics não lê nem recebe o arquivo que você assina."
+            "O uso da ferramenta de assinatura não exige cadastro.",
+            "Podemos tratar dados técnicos de acesso (por exemplo logs do provedor de hospedagem: IP, user-agent, URL e horário) para operar, proteger e medir o serviço em nível de infraestrutura.",
+            "Se você aceitar cookies de analytics, o Google Analytics 4 poderá coletar dados agregados de audiência (páginas visitadas, origem do tráfego, tipo de dispositivo e identificadores/cookies). O Analytics não lê nem recebe o PDF que você assina.",
+            "No seu aparelho podemos guardar preferências locais (por exemplo tema claro/escuro e a sua escolha de cookies), sem enviar o conteúdo do PDF."
           ]
         },
-        "lgpd": {
-          "title": "LGPD e seus direitos",
+        "legalBases": {
+          "title": "Finalidades e bases legais",
           "paragraphs": [
-            "Como não armazenamos o conteúdo dos seus PDFs, não há retenção desses documentos do nosso lado. Em relação a dados pessoais eventualmente presentes em logs de acesso, você pode exercer direitos previstos na Lei Geral de Proteção de Dados (LGPD), como confirmação de tratamento e eliminação, quando aplicável.",
-            "Para solicitações relacionadas a privacidade, entre em contato pelos canais da Lugar Certo disponíveis no site institucional da organização."
+            "Tratamos dados com as seguintes finalidades e bases (art. 7º da LGPD), conforme o caso:"
+          ],
+          "list": [
+            "Logs de hospedagem: operar e proteger o site — legítimo interesse / execução de medidas relacionadas ao serviço.",
+            "Google Analytics 4: medir audiência e melhorar o produto — consentimento (você pode recusar ou revogar).",
+            "Preferência de cookies e tema no aparelho: lembrar suas escolhas — legítimo interesse / execução do serviço solicitado.",
+            "Conteúdo do PDF e assinatura: tratamento pelo titular no próprio dispositivo — o controlador não recebe esse conteúdo."
+          ]
+        },
+        "cookies": {
+          "title": "Cookies e armazenamento local",
+          "paragraphs": [
+            "Usamos categorias distintas. Cookies essenciais / necessários: operação do site, segurança e lembrar sua decisão de consentimento. Não pedimos opt-in para esses.",
+            "Cookies de analytics (Google Analytics 4, como _ga / _gid, quando aceitos): medição de audiência. Ficam desligados até o seu aceite no banner ou em “Preferências de cookies” no rodapé.",
+            "Retenção aproximada: a escolha de consentimento permanece no seu navegador até você alterá-la; cookies do Google seguem a política de retenção do Google Analytics (configurável na propriedade GA4). Logs de hospedagem seguem a retenção do provedor (ex.: Vercel).",
+            "Você pode Aceitar, Recusar analytics ou Personalizar no primeiro acesso, e mudar depois pelo link “Preferências de cookies” no rodapé."
+          ]
+        },
+        "international": {
+          "title": "Transferência internacional",
+          "paragraphs": [
+            "Operadores como Google (Analytics) e o provedor de hospedagem podem processar dados fora do Brasil. Nesses casos, observamos as salvaguardas e termos de tratamento disponibilizados por esses fornecedores e informamos o titular nesta política.",
+            "O conteúdo do seu PDF não é objeto dessa transferência, pois não é enviado aos nossos servidores."
+          ]
+        },
+        "rights": {
+          "title": "Seus direitos (LGPD)",
+          "paragraphs": [
+            "Como titular, você pode solicitar, quando aplicável:"
+          ],
+          "list": [
+            "Confirmação de que tratamos dados e acesso às informações disponíveis",
+            "Correção de dados incompletos ou desatualizados",
+            "Anonimização, bloqueio ou eliminação de dados desnecessários",
+            "Portabilidade, quando aplicável ao contexto",
+            "Informação sobre compartilhamentos com operadores",
+            "Revogação do consentimento de analytics (pelo banner/preferências ou pelo e-mail de privacidade)",
+            "Oposição a tratamentos baseados em legítimo interesse, nos termos da lei"
+          ],
+          "paragraphsAfter": [
+            "Importante: o PDF assinado no navegador não fica sob nossa custódia — para esse conteúdo, o “esquecimento” no nosso lado é automático ao fechar a aba. Pedidos sobre logs e Analytics serão tratados pelo canal abaixo."
+          ]
+        },
+        "contact": {
+          "title": "Canal de privacidade",
+          "paragraphs": [
+            "Para exercer direitos ou tirar dúvidas sobre privacidade, escreva para: {privacyEmail}.",
+            "Prazo-alvo de resposta: até 15 dias, conforme boa prática e orientação da ANPD. Pedidos podem exigir confirmação razoável de identidade."
           ]
         },
         "security": {
@@ -321,7 +370,7 @@
         "changes": {
           "title": "Alterações nesta política",
           "paragraphs": [
-            "Podemos atualizar este texto para refletir melhorias no produto ou exigências legais. A data de atualização aparece no topo da página. O uso continuado do serviço após mudanças relevantes constitui ciência da nova versão, quando aplicável."
+            "Podemos atualizar este texto para refletir melhorias no produto ou exigências legais. A data de atualização aparece no topo da página. Mudanças relevantes serão refletidas nesta página; para cookies de analytics, a sua escolha continua controlável nas preferências."
           ]
         }
       }
@@ -535,8 +584,25 @@
       "guideMobile": "Assinar no celular",
       "guideVs": "Eletrônica vs digital",
       "privacyPolicy": "Privacidade",
-      "terms": "Termos de uso"
+      "terms": "Termos de uso",
+      "cookies": "Preferências de cookies"
     },
     "rights": "Ferramenta gratuita de assinatura eletrônica de PDF."
+  },
+  "CookieConsent": {
+    "title": "Cookies e privacidade",
+    "manageTitle": "Preferências de cookies",
+    "description": "Usamos cookies necessários para o site funcionar e, somente se você aceitar, cookies de medição (Google Analytics) para entender o uso do AssinarPDF. Seu PDF continua sem ser enviado a nós. Detalhes na",
+    "privacyLink": "Política de Privacidade",
+    "necessaryTitle": "Necessários",
+    "necessaryDescription": "Operação do site, segurança e lembrar sua escolha de cookies. Sempre ativos.",
+    "analyticsTitle": "Analytics",
+    "analyticsDescription": "Google Analytics 4 — páginas visitadas, dispositivo e origem do tráfego. Opcional; desligado até você aceitar.",
+    "accept": "Aceitar todos",
+    "reject": "Só necessários",
+    "customize": "Personalizar",
+    "save": "Salvar preferências",
+    "cancel": "Cancelar",
+    "back": "Voltar"
   }
 }

@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -19,11 +20,31 @@ export const metadata: Metadata = {
   },
 };
 
+/** Google Consent Mode v2 — default denied before any analytics tag. */
+const CONSENT_DEFAULT_SCRIPT = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  analytics_storage: 'denied',
+  wait_for_update: 500
+});
+`;
+
 /** Root shell — html/body live in `[locale]/layout` for i18n. */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return (
+    <>
+      <Script id="ga-consent-default" strategy="beforeInteractive">
+        {CONSENT_DEFAULT_SCRIPT}
+      </Script>
+      {children}
+    </>
+  );
 }

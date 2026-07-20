@@ -11,6 +11,8 @@ export type ContentSection = {
   title: string;
   paragraphs: string[];
   list?: string[];
+  /** Optional paragraphs rendered after the list */
+  paragraphsAfter?: string[];
 };
 
 export type ContentFaqItem = {
@@ -119,6 +121,11 @@ export function ContentPage({
                   ))}
                 </ul>
               )}
+              {section.paragraphsAfter?.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)} className="text-base leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
             </section>
           ))}
 

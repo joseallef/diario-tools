@@ -5,7 +5,18 @@ import type { LegalPageKey } from "@/content/legal";
 import { getTranslations } from "next-intl/server";
 
 const SECTION_KEYS: Record<LegalPageKey, readonly string[]> = {
-  privacy: ["controller", "local", "data", "lgpd", "security", "changes"],
+  privacy: [
+    "controller",
+    "local",
+    "data",
+    "legalBases",
+    "cookies",
+    "international",
+    "rights",
+    "contact",
+    "security",
+    "changes",
+  ],
   terms: ["service", "acceptable", "disclaimer", "limits", "liability", "changes"],
 };
 
@@ -21,10 +32,30 @@ export async function LegalPageView({ locale, pageKey, path }: LegalPageViewProp
   const pageUrl = getLocaleUrl(locale, path);
   const inLanguage = locale === "en" ? "en-US" : "pt-BR";
 
-  const sections: ContentSection[] = SECTION_KEYS[pageKey].map((key) => ({
-    title: t(`sections.${key}.title`),
-    paragraphs: t.raw(`sections.${key}.paragraphs`) as string[],
-  }));
+  const interpolate = (value: string) =>
+    value
+      .replaceAll("{privacyEmail}", siteConfig.privacyEmail)
+      .replaceAll("{org}", siteConfig.org)
+      .replaceAll("{siteUrl}", siteConfig.url);
+
+  const sections: ContentSection[] = SECTION_KEYS[pageKey].map((key) => {
+    const paragraphs = (t.raw(`sections.${key}.paragraphs`) as string[]).map(interpolate);
+    const listRaw = t.has(`sections.${key}.list`)
+      ? (t.raw(`sections.${key}.list`) as string[])
+      : undefined;
+    const list = Array.isArray(listRaw) ? listRaw.map(interpolate) : undefined;
+    const afterRaw = t.has(`sections.${key}.paragraphsAfter`)
+      ? (t.raw(`sections.${key}.paragraphsAfter`) as string[])
+      : undefined;
+    const paragraphsAfter = Array.isArray(afterRaw) ? afterRaw.map(interpolate) : undefined;
+
+    return {
+      title: t(`sections.${key}.title`),
+      paragraphs,
+      list,
+      paragraphsAfter,
+    };
+  });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -54,7 +85,7 @@ export async function LegalPageView({ locale, pageKey, path }: LegalPageViewProp
           { label: t("title") },
         ]}
         title={t("title")}
-        intro={t("intro")}
+        intro={interpolate(t("intro"))}
         meta={t("updated")}
         sections={sections}
         ctaLabel={tNav("cta")}

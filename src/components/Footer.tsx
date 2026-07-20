@@ -1,12 +1,14 @@
 "use client";
 
 import { BrandLogo } from "@/components/brand/BrandLogo";
+import { useConsent } from "@/components/consent/ConsentProvider";
 import { siteConfig } from "@/config/site";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
   const t = useTranslations("Footer");
+  const { openPreferences } = useConsent();
   const year = new Date().getFullYear();
 
   return (
@@ -84,6 +86,13 @@ export function Footer() {
               >
                 {t("links.terms")}
               </Link>
+              <button
+                type="button"
+                onClick={openPreferences}
+                className="cursor-pointer text-left text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {t("links.cookies")}
+              </button>
             </div>
           </nav>
         </div>

@@ -12,9 +12,15 @@ Este roteiro foca em evolução incremental, priorizando estabilidade e feedback
 *   [x] **SEO Técnico:** Metatags e Sitemap para começar a indexar.
 *   [x] **Analytics Básico:** Google Analytics 4 via `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
 
+## 🛡️ Conformidade LGPD (transversal)
+**Documento:** [`LGPD.md`](./LGPD.md) — inventário, gaps e backlog priorizado (P0–P2).
+*   [ ] **P0:** Banner/CMP de cookies + GA só após consentimento.
+*   [ ] **P0:** Contato de privacidade e direitos do titular na política.
+*   [ ] **P1+:** Controles ao salvar assinatura em `localStorage`; checklist antes de Sentry/login/cloud.
+
 ## 🛠️ Fase 2: Versão Estável (Polimento & UX) - *Curto Prazo*
 **Objetivo:** Eliminar frustrações e aumentar a retenção (fazer o usuário voltar).
-*   **Persistência Local:** Salvar a assinatura do usuário no `localStorage` para ele não precisar desenhar toda vez que voltar.
+*   **Persistência Local:** Salvar a assinatura do usuário no `localStorage` para ele não precisar desenhar toda vez que voltar (exige aviso + “apagar dados salvos” — ver `LGPD.md`).
 *   **Redimensionamento:** Permitir aumentar/diminuir o tamanho da assinatura no PDF (atualmente é fixo/proporcional).
 *   **Campos de Texto/Data:** Permitir inserir data ou texto livre (muito comum em contratos).
 *   **Mobile Experience:** Refinar o toque/scroll em telas pequenas (evitar que a página role enquanto desenha).

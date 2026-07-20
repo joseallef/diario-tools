@@ -282,34 +282,83 @@
         "ogDescription": "Your PDFs stay on your device: we do not send the document to our servers."
       },
       "title": "Privacy Policy",
-      "intro": "This policy explains how AssinarPDF (operated by Lugar Certo) handles privacy. In short: PDFs you sign stay in your browser and are not sent to our servers.",
+      "intro": "This policy explains how AssinarPDF (operated by {org}) handles personal data under Brazil's LGPD. In short: PDFs you sign stay in your browser and are not sent to our servers. Analytics runs only if you accept measurement cookies.",
       "updated": "Last updated: July 2026",
       "sections": {
         "controller": {
-          "title": "Who we are",
+          "title": "Controller and identity",
           "paragraphs": [
-            "AssinarPDF is a web service for electronic PDF signatures offered by Lugar Certo. The site is available at assinarpdf.lugarcerto.tec.br."
+            "The controller is {org}, operator of AssinarPDF. Website: {siteUrl}.",
+            "Legal entity details (corporate name, tax ID) may be completed by {org}'s counsel. For data-subject rights, use the privacy email below."
           ]
         },
         "local": {
           "title": "Where your PDF is signed",
           "paragraphs": [
             "When you choose a PDF to sign, the file stays in your browser memory. Opening the document and placing the signature happen on your phone or computer — we do not receive the file contents.",
-            "Closing or reloading the page clears the file from memory. We do not store the content, filename, or a fingerprint of signed PDFs."
+            "Closing or reloading the page clears the file from memory. We do not store the content, filename, or a fingerprint of signed PDFs. The signature produced is a simple electronic signature (an image); you are responsible for content processed on your device."
           ]
         },
         "data": {
           "title": "What data we may process",
           "paragraphs": [
-            "Using the signing tool does not require an account. We may receive ordinary technical access data (for example server logs, IP address, browser type, and pages visited) needed to operate, protect, and improve the service.",
-            "We use Google Analytics 4 for aggregated audience measurement (pages visited, traffic source, device type). This may involve Google cookies or similar identifiers. Your PDF contents are still not sent to us — Analytics does not read or receive the file you sign."
+            "Using the signing tool does not require an account.",
+            "We may process technical access data (for example hosting logs: IP, user-agent, URL, and timestamp) to operate, protect, and run the service at infrastructure level.",
+            "If you accept analytics cookies, Google Analytics 4 may collect aggregated audience data (pages visited, traffic source, device type, and cookie identifiers). Analytics does not read or receive the PDF you sign.",
+            "On your device we may store local preferences (for example theme and your cookie choice) without sending PDF contents."
           ]
         },
-        "lgpd": {
-          "title": "LGPD and your rights",
+        "legalBases": {
+          "title": "Purposes and legal bases",
           "paragraphs": [
-            "Because we do not store your PDF content, there is no retention of those documents on our side. For personal data that may appear in access logs, you may exercise rights under Brazil's LGPD (and similar frameworks where applicable), such as confirmation of processing and deletion when relevant.",
-            "For privacy requests, contact Lugar Certo through the organization's available channels."
+            "We process data for the following purposes and legal bases (LGPD art. 7), as applicable:"
+          ],
+          "list": [
+            "Hosting logs: operate and protect the site — legitimate interest / measures related to the service.",
+            "Google Analytics 4: measure audience and improve the product — consent (you may refuse or withdraw).",
+            "Cookie choice and theme on device: remember your preferences — legitimate interest / performance of the requested service.",
+            "PDF contents and signature: processed by you on your own device — the controller does not receive that content."
+          ]
+        },
+        "cookies": {
+          "title": "Cookies and local storage",
+          "paragraphs": [
+            "We use distinct categories. Essential / necessary: site operation, security, and remembering your consent decision. We do not require opt-in for these.",
+            "Analytics cookies (Google Analytics 4, such as _ga / _gid when accepted): audience measurement. They stay off until you accept in the banner or under “Cookie preferences” in the footer.",
+            "Approximate retention: your consent choice stays in your browser until you change it; Google cookies follow Google Analytics retention (configurable in the GA4 property). Hosting logs follow the provider’s retention (e.g. Vercel).",
+            "You can Accept, Reject analytics, or Customize on first visit, and change later via “Cookie preferences” in the footer."
+          ]
+        },
+        "international": {
+          "title": "International transfers",
+          "paragraphs": [
+            "Operators such as Google (Analytics) and the hosting provider may process data outside Brazil. In those cases we rely on the safeguards and data-processing terms offered by those vendors and inform you in this policy.",
+            "Your PDF contents are not part of that transfer because they are not sent to our servers."
+          ]
+        },
+        "rights": {
+          "title": "Your rights (LGPD)",
+          "paragraphs": [
+            "As a data subject, you may request, where applicable:"
+          ],
+          "list": [
+            "Confirmation of processing and access to available information",
+            "Correction of incomplete or outdated data",
+            "Anonymization, blocking, or deletion of unnecessary data",
+            "Portability, when applicable",
+            "Information about sharing with operators",
+            "Withdrawal of analytics consent (via banner/preferences or the privacy email)",
+            "Objection to processing based on legitimate interest, as provided by law"
+          ],
+          "paragraphsAfter": [
+            "Important: a PDF signed in the browser is not held by us — for that content, erasure on our side is automatic when you close the tab. Requests about logs and Analytics are handled through the channel below."
+          ]
+        },
+        "contact": {
+          "title": "Privacy contact",
+          "paragraphs": [
+            "To exercise rights or ask privacy questions, email: {privacyEmail}.",
+            "Target response time: up to 15 days, aligned with good practice and ANPD guidance. Requests may require reasonable identity confirmation."
           ]
         },
         "security": {
@@ -321,7 +370,7 @@
         "changes": {
           "title": "Changes to this policy",
           "paragraphs": [
-            "We may update this text to reflect product improvements or legal requirements. The update date appears at the top of the page. Continued use of the service after material changes constitutes awareness of the new version where applicable."
+            "We may update this text to reflect product improvements or legal requirements. The update date appears at the top of the page. Material changes will be reflected here; for analytics cookies, your choice remains controllable in preferences."
           ]
         }
       }
@@ -535,8 +584,25 @@
       "guideMobile": "Sign on mobile",
       "guideVs": "Electronic vs digital",
       "privacyPolicy": "Privacy",
-      "terms": "Terms of use"
+      "terms": "Terms of use",
+      "cookies": "Cookie preferences"
     },
     "rights": "Free electronic PDF signature tool."
+  },
+  "CookieConsent": {
+    "title": "Cookies and privacy",
+    "manageTitle": "Cookie preferences",
+    "description": "We use necessary cookies for the site to work and, only if you accept, measurement cookies (Google Analytics) to understand AssinarPDF usage. Your PDF is still not sent to us. Details in the",
+    "privacyLink": "Privacy Policy",
+    "necessaryTitle": "Necessary",
+    "necessaryDescription": "Site operation, security, and remembering your cookie choice. Always on.",
+    "analyticsTitle": "Analytics",
+    "analyticsDescription": "Google Analytics 4 — pages visited, device, and traffic source. Optional; off until you accept.",
+    "accept": "Accept all",
+    "reject": "Necessary only",
+    "customize": "Customize",
+    "save": "Save preferences",
+    "cancel": "Cancel",
+    "back": "Back"
   }
 }

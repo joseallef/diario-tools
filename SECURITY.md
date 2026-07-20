@@ -28,11 +28,12 @@ Para garantir a estabilidade do navegador do usuário e evitar travamentos:
 
 ## 4. Conformidade (LGPD / GDPR)
 
-Como não coletamos, não processamos em nuvem e não armazenamos dados pessoais:
+O conteúdo do PDF **não** é enviado aos nossos servidores (local-first). Ainda assim, há tratamento de dados pessoais em **logs de acesso** e, quando habilitado, **Google Analytics 4** (cookies/identificadores).
 
-- **Consentimento:** Não é necessário banner de cookie complexo para rastreamento, pois não há rastreamento de uso documental.
-- **Direito ao Esquecimento:** É automático e imediato. Fechou a aba, os dados sumiram.
-- **Vazamento de Dados:** Risco arquitetural próximo de zero por parte da infraestrutura, pois a infraestrutura não detém os dados.
+- **Documentos:** O “direito ao esquecimento” do PDF no nosso lado é automático — fechou a aba, o arquivo some da memória. Nós nunca o detivemos.
+- **Analytics / cookies:** Com GA ativo, é necessário consentimento (CMP) e bloqueio do script até o aceite. Ver backlog completo em [`LGPD.md`](./LGPD.md).
+- **Vazamento do conteúdo do PDF via nossa infra:** risco arquitetural muito baixo, pois a infra não recebe o arquivo.
+- **Governança:** inventário, bases legais, canal do titular e features futuras (localStorage, Sentry, login, cloud) estão documentados em `LGPD.md`.
 
 ## 5. Validade Jurídica (Disclaimer)
 

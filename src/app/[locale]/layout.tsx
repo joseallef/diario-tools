@@ -1,3 +1,6 @@
+import { ConsentAnalytics } from "@/components/consent/ConsentAnalytics";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import { CookieBanner } from "@/components/consent/CookieBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/sonner";
@@ -7,7 +10,6 @@ import {
   getOgLocale,
   siteConfig,
 } from "@/config/site";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
@@ -16,7 +18,6 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
-const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export async function generateMetadata({
   params,
@@ -114,13 +115,16 @@ export default async function RootLayout({
       <body className={`${inter.className} antialiased min-h-screen flex flex-col`}>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-            <Header />
-            <div className="flex-1">{children}</div>
-            <Footer />
-            <Toaster />
+            <ConsentProvider>
+              <Header />
+              <div className="flex-1">{children}</div>
+              <Footer />
+              <Toaster />
+              <CookieBanner />
+              <ConsentAnalytics />
+            </ConsentProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
-        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>
   );
