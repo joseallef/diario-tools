@@ -10,7 +10,7 @@ Este roteiro foca em evolução incremental, priorizando estabilidade e feedback
 *   [x] **Processamento Local:** "Queimar" a assinatura no PDF usando `pdf-lib`.
 *   [x] **Download:** Baixar o arquivo final.
 *   [x] **SEO Técnico:** Metatags e Sitemap para começar a indexar.
-*   [ ] **Analytics Básico:** Instalar Vercel Analytics ou Google Analytics para medir acessos.
+*   [x] **Analytics Básico:** Google Analytics 4 via `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
 
 ## 🛠️ Fase 2: Versão Estável (Polimento & UX) - *Curto Prazo*
 **Objetivo:** Eliminar frustrações e aumentar a retenção (fazer o usuário voltar).

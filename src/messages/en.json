@@ -302,7 +302,7 @@
           "title": "What data we may process",
           "paragraphs": [
             "Using the signing tool does not require an account. We may receive ordinary technical access data (for example server logs, IP address, browser type, and pages visited) needed to operate, protect, and improve the service.",
-            "If audience measurement cookies or analytics are added later, that will be done proportionally and, when required, with appropriate notice or consent."
+            "We use Google Analytics 4 for aggregated audience measurement (pages visited, traffic source, device type). This may involve Google cookies or similar identifiers. Your PDF contents are still not sent to us — Analytics does not read or receive the file you sign."
           ]
         },
         "lgpd": {

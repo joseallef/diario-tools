@@ -302,7 +302,7 @@
           "title": "Quais dados podemos tratar",
           "paragraphs": [
             "O uso da ferramenta de assinatura não exige cadastro. Podemos receber dados técnicos habituais de acesso a sites (por exemplo, logs de servidor, endereço IP, tipo de navegador e páginas visitadas), necessários para operar, proteger e melhorar o serviço.",
-            "Se no futuro forem usados cookies ou analytics de medição de audiência, isso será feito de forma proporcional e, quando exigido, com as informações ou consentimentos cabíveis."
+            "Usamos o Google Analytics 4 para medir audiência de forma agregada (páginas visitadas, origem do tráfego, tipo de dispositivo). Isso pode envolver cookies ou identificadores semelhantes do Google. O conteúdo do seu PDF continua sem ser enviado a nós — o Analytics não lê nem recebe o arquivo que você assina."
           ]
         },
         "lgpd": {

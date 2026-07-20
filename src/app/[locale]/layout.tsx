@@ -7,6 +7,7 @@ import {
   getOgLocale,
   siteConfig,
 } from "@/config/site";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
@@ -15,6 +16,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export async function generateMetadata({
   params,
@@ -118,6 +120,7 @@ export default async function RootLayout({
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
+        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>
   );
