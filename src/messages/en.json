@@ -1,51 +1,51 @@
 {
   "HomePage": {
     "seo": {
-      "title": "Sign PDF Online Free | No Login & 100% Private",
-      "description": "Sign PDF online for free in your browser. No signup, no server uploads. Fast, secure and private e-signatures with AssinarPDF.",
-      "ogTitle": "Sign PDF Online Free — Fast, Secure & No Login",
-      "ogDescription": "Add your signature to any PDF right in the browser. 100% local processing: your files never leave your device."
+      "title": "Sign PDF Online Free | No Signup & File Stays on Your Device",
+      "description": "Sign a PDF online for free in your browser. No account, and your file is not sent over the internet — signing happens on your device. Fast, private, simple.",
+      "ogTitle": "Sign PDF Online Free — Your file never leaves your device",
+      "ogDescription": "Add your signature to any PDF in the browser. No signup. The document is not sent to our servers."
     },
     "howTo": {
       "title": "How to sign a PDF online for free",
-      "description": "With AssinarPDF you sign PDF documents in your browser — no software to install and no cloud uploads. Follow these 4 steps:",
+      "description": "In a few minutes you can sign a PDF in your browser — no software to install and no sending the file to the cloud. Just follow these steps:",
       "steps": {
         "step1": {
-          "title": "Upload the PDF:",
-          "description": "Drag and drop your file into the area above, or click to select it."
+          "title": "Choose the PDF:",
+          "description": "Drag the file into the area above, or click to pick it from your device."
         },
         "step2": {
           "title": "Create your signature:",
-          "description": "Draw with mouse or touch, or type your name to generate a signature."
+          "description": "Draw with your mouse or finger, or type your name to generate a signature."
         },
         "step3": {
-          "title": "Position on the document:",
-          "description": "Drag the signature to the right place on any page of the PDF."
+          "title": "Place it on the document:",
+          "description": "Click where the signature should appear, then resize or move it if needed."
         },
         "step4": {
           "title": "Download the signed PDF:",
-          "description": "Click \"Download Signed PDF\" and save the file to your device instantly."
+          "description": "Click \"Download Signed PDF\" and save the file to your device right away."
         }
       }
     },
     "features": {
-      "title": "Why sign PDFs with AssinarPDF?",
+      "title": "Why sign a PDF here?",
       "items": {
         "privacy": {
-          "title": "Total privacy",
-          "description": "Your files never leave your computer. All processing happens locally in the browser — zero uploads."
+          "title": "Your file is not sent over the internet",
+          "description": "Unlike many sites, we never receive your PDF. Signing happens in your browser, on your phone or computer — the document stays with you."
         },
         "noSignup": {
-          "title": "No registration",
-          "description": "We don't ask for email, login, or a credit card. Open, sign, and download. Done."
+          "title": "100% free, no account",
+          "description": "No email, no login, no credit card. Open the page, sign, and download. No surprises and no hidden fees."
         },
         "fast": {
-          "title": "Fast & lightweight",
-          "description": "Built to work instantly, even on slower connections or mobile networks."
+          "title": "Done in minutes",
+          "description": "Built to finish on the spot: contracts, authorizations, receipts, and forms — on desktop or mobile."
         },
         "compatibility": {
-          "title": "Works everywhere",
-          "description": "Chrome, Edge, Firefox, and Safari — on desktop or mobile, with nothing to install."
+          "title": "Nothing to install",
+          "description": "Works in Chrome, Edge, Firefox, and Safari. Open the site and sign — desktop, Android, or iPhone."
         }
       }
     },
@@ -53,39 +53,340 @@
       "title": "Frequently asked questions about signing PDFs",
       "items": {
         "free": {
-          "question": "Is AssinarPDF really free?",
-          "answer": "Yes. You can sign PDFs online 100% free for personal and professional use — no signup and no credit card."
+          "question": "Is it really free?",
+          "answer": "Yes. You can sign PDFs online for free for personal or work use — no account and no credit card."
         },
         "saved": {
-          "question": "Are my documents saved on your servers?",
-          "answer": "No. Our local-first approach means the file is never sent to our servers. The PDF is processed in your browser memory and discarded when you close the page."
+          "question": "Do you store or see my PDF?",
+          "answer": "No. The file stays in your browser while you sign. It is not sent to our servers. When you close the tab, it leaves your device memory."
         },
         "install": {
-          "question": "Do I need to install any software?",
-          "answer": "No. AssinarPDF runs entirely in the browser. Just open the site, load your PDF, sign, and download — no installs or extensions."
+          "question": "Do I need to download any software?",
+          "answer": "No. Everything happens on the web page. There is no required app or extension — just open the site, choose the PDF, sign, and download."
         },
         "mobile": {
           "question": "Can I sign a PDF on my phone?",
-          "answer": "Yes. The tool is responsive and works on smartphones and tablets. You can draw your signature with your finger on a touch screen."
+          "answer": "Yes. It works on smartphones and tablets. You can draw your signature with your finger."
         },
         "legal": {
-          "question": "Is the signature legally valid?",
-          "answer": "AssinarPDF creates a visual electronic signature on the PDF (an image of your signature). That covers many everyday workflows (internal contracts, receipts, authorizations). For acts that require a qualified digital certificate (e.g. ICP-Brasil in Brazil), use a certificate-based solution."
+          "question": "Does the signature work for contracts?",
+          "answer": "AssinarPDF adds a visual electronic signature to the PDF (like an image of your handwritten signature). That is often enough for everyday use: receipts, authorizations, and internal documents. If the law or contract requires a qualified digital certificate (e.g. ICP-Brasil in Brazil), use a certificate-based solution."
         },
         "size": {
           "question": "What is the maximum file size?",
-          "answer": "You can upload PDFs up to 50 MB. Larger files may take longer to render because all processing happens on your device."
+          "answer": "Up to 50 MB. Very large files may take longer because signing happens on your device, not on a cloud server."
+        }
+      }
+    },
+    "guides": {
+      "title": "Guides to sign a PDF",
+      "description": "Step-by-step on desktop and mobile, plus electronic vs digital signatures — in plain language.",
+      "readGuide": "Read guide"
+    }
+  },
+  "Guides": {
+    "cta": "Sign a PDF now",
+    "breadcrumbHome": "Home",
+    "breadcrumbGuides": "Guides",
+    "relatedTitle": "Other guides",
+    "faqTitle": "Quick answers",
+    "items": {
+      "como-assinar-pdf-online": {
+        "seo": {
+          "title": "How to sign a PDF online free with no signup",
+          "description": "Step-by-step guide to sign a PDF online for free in your browser. No login, no server uploads, nothing to install. AssinarPDF complete guide.",
+          "ogTitle": "How to sign a PDF online for free",
+          "ogDescription": "Sign a PDF in your browser in minutes: upload, sign, download. 100% private, no account."
+        },
+        "title": "How to sign a PDF online for free",
+        "intro": "Signing a PDF online does not require expensive software or sending the file to the cloud. With AssinarPDF you add your signature in the browser — no signup, nothing to install, and the file stays on your device.",
+        "description": "Practical guide to sign a PDF online with privacy.",
+        "sections": {
+          "what": {
+            "title": "What signing a PDF online means",
+            "paragraphs": [
+              "Signing a PDF online means placing a representation of your signature (drawing or styled text) on a PDF and generating a new signed file. In AssinarPDF this happens in your browser memory: the file is never sent to our servers.",
+              "This kind of visual electronic signature works well for internal contracts, receipts, authorizations, proposals, and everyday forms. For acts that require a qualified digital certificate (e.g. ICP-Brasil in Brazil), see our guide on electronic vs digital signatures."
+            ]
+          },
+          "steps": {
+            "title": "Step by step: sign a PDF with AssinarPDF",
+            "paragraphs": [
+              "The full flow takes a few minutes and works in Chrome, Edge, Firefox, and Safari."
+            ],
+            "list": [
+              "Open AssinarPDF and load the PDF (drag and drop or click to select).",
+              "Create your signature: draw with the mouse or type your name and pick a style.",
+              "Click the PDF page where the signature should appear; then drag, resize, or rotate if needed.",
+              "Download the signed PDF to your device. When you close the tab, the file leaves browser memory."
+            ]
+          },
+          "tips": {
+            "title": "Tips for a clean result",
+            "paragraphs": [
+              "Use zoom to place the signature precisely on small fields. On multi-page documents, navigate to the correct page before confirming the position.",
+              "Prefer light backgrounds and a high-contrast signature. If the PDF has a watermark or dark background, adjust the size so it stays readable when printed."
+            ]
+          },
+          "privacy": {
+            "title": "Why privacy matters",
+            "paragraphs": [
+              "Many tools ask you to “upload” a PDF and the file goes over the internet. With AssinarPDF, signing happens in your browser, on your phone or computer. That lowers leak risk and removes the need to create an account just to sign one file.",
+              "The current limit is 50 MB per file. Larger documents may take longer because all work runs on your device."
+            ]
+          }
+        },
+        "faq": {
+          "free": {
+            "question": "Do I need to pay or create an account?",
+            "answer": "No. You can sign a PDF online for free — no email, login, or credit card."
+          },
+          "offline": {
+            "question": "Does it work offline?",
+            "answer": "You need internet once to load the page. After that, PDF and signature processing happen locally in the browser."
+          },
+          "legal": {
+            "question": "Is it enough for any contract?",
+            "answer": "It covers many everyday workflows. For documents that require a qualified digital certificate (e.g. ICP-Brasil), use a certificate-based solution."
+          }
+        }
+      },
+      "assinar-pdf-no-celular": {
+        "seo": {
+          "title": "How to sign a PDF on your phone (Android & iPhone)",
+          "description": "Learn how to sign a PDF on your phone in the browser. Draw with your finger, no app, no cloud upload. AssinarPDF guide for Android and iPhone.",
+          "ogTitle": "Sign a PDF on your phone without an app",
+          "ogDescription": "Sign documents on your smartphone with your finger. Fast, private, no signup."
+        },
+        "title": "How to sign a PDF on your phone",
+        "intro": "Need to sign a contract, authorization, or receipt on your smartphone? With AssinarPDF you sign a PDF on your phone in the browser — draw with your finger, place the signature, and download the file, with nothing to install.",
+        "description": "Sign a PDF on Android or iPhone in the browser, privately.",
+        "sections": {
+          "why": {
+            "title": "Sign a PDF on mobile without an app",
+            "paragraphs": [
+              "Installing an app just to sign one document slows you down and often asks for permissions or an account. AssinarPDF runs in the browser on Android (Chrome) and iPhone (Safari or Chrome), with a touch-friendly responsive UI.",
+              "Your files stay on the device: there is no PDF upload to our servers."
+            ]
+          },
+          "steps": {
+            "title": "Step by step on a smartphone",
+            "paragraphs": [
+              "Use a stable connection only to open the site; the rest happens locally."
+            ],
+            "list": [
+              "Open AssinarPDF in your phone's browser.",
+              "Tap the upload area and choose the PDF from Files, Drive, WhatsApp, or email (depending on the device).",
+              "Under \"Add Signature\", draw with your finger or type your name.",
+              "Tap where the signature should go on the document; adjust by dragging or resizing.",
+              "Download the signed PDF and share it with any app you like."
+            ]
+          },
+          "tips": {
+            "title": "Tips for small screens",
+            "paragraphs": [
+              "Rotate to landscape if the signature field is narrow. Use the editor zoom to place accurately on dense forms.",
+              "On iPhone, if the file comes from WhatsApp or Mail, save it to Files first or use Share / Open in to send it to the browser, depending on iOS.",
+              "Avoid password-protected or very large PDFs (over 50 MB) on mobile — device memory can limit rendering."
+            ]
+          },
+          "privacy": {
+            "title": "Privacy on mobile",
+            "paragraphs": [
+              "Signing on a phone is riskier if the tool sends the file to the cloud. In AssinarPDF the PDF stays in the browser and leaves memory when you close the tab — same idea as on desktop."
+            ]
+          }
+        },
+        "faq": {
+          "android": {
+            "question": "Does it work on Android?",
+            "answer": "Yes. Use Chrome or another up-to-date browser, load the PDF, and draw your signature with your finger."
+          },
+          "iphone": {
+            "question": "Does it work on iPhone?",
+            "answer": "Yes. Safari and Chrome on iOS support the flow. You may need to save the PDF to Files before opening it in the browser."
+          },
+          "app": {
+            "question": "Do I need to install an app?",
+            "answer": "No. Everything happens in the browser. There is no required App Store or Play Store app."
+          }
+        }
+      },
+      "assinatura-eletronica-vs-digital": {
+        "seo": {
+          "title": "Electronic vs digital signature: differences",
+          "description": "Understand electronic signature vs digital signature (e.g. ICP-Brasil). When AssinarPDF is enough and when you need a certificate.",
+          "ogTitle": "Electronic signature vs digital signature",
+          "ogDescription": "What changes in practice, validity, and technology — without unnecessary jargon."
+        },
+        "title": "Electronic signature vs digital signature",
+        "intro": "\"Electronic signature\" and \"digital signature\" are often used interchangeably, but they are not the same — especially in Brazil. Knowing the difference helps you pick the right tool and clarifies what AssinarPDF provides.",
+        "description": "Practical differences between visual electronic signatures and certificate-based digital signatures.",
+        "sections": {
+          "electronic": {
+            "title": "What an electronic signature is",
+            "paragraphs": [
+              "Electronic signature is a broad term: any way to accept or sign a document electronically. It can be a click on \"I agree\", an SMS code, or an image of your handwritten signature placed on a PDF.",
+              "AssinarPDF creates a visual electronic signature: you draw or type it and it is burned into the PDF as an image. It is simple, fast, and suitable for many internal and informal workflows."
+            ]
+          },
+          "digital": {
+            "title": "What a digital signature is (e.g. ICP-Brasil)",
+            "paragraphs": [
+              "A digital signature, in the stricter technical sense used in Brazil, relies on cryptography and a digital certificate issued under the Brazilian Public Key Infrastructure (ICP-Brasil), such as e-CPF or e-CNPJ. It ties the signer's identity in a qualified way and can show whether the document changed after signing.",
+              "That level is often required for stricter legal acts, specific public bodies, or high-risk contracts. AssinarPDF does not issue or use ICP-Brasil certificates."
+            ]
+          },
+          "when": {
+            "title": "When to use each",
+            "paragraphs": [
+              "Use a visual electronic signature (AssinarPDF) when you need speed and the context accepts a digitized handwritten signature: receipts, authorizations, proposals, internal documents, registration forms."
+            ],
+            "list": [
+              "Visual electronic signature: convenience, local privacy, no certificate.",
+              "ICP-Brasil digital signature: when the law, notary, agency, or contract requires a qualified certificate.",
+              "If you need legal advice, consult a qualified professional — this guide is informational, not legal counsel."
+            ]
+          },
+          "privacy": {
+            "title": "Privacy and choosing a tool",
+            "paragraphs": [
+              "Even for simple signatures, documents may contain sensitive data. Preferring a tool where the file is not sent over the internet reduces risk: the PDF does not need to pass through third-party servers just to receive a signature image.",
+              "If your case requires ICP-Brasil, choose a qualified digital signature provider. For everyday use, AssinarPDF works in the browser — free and with no signup."
+            ]
+          }
+        },
+        "faq": {
+          "valid": {
+            "question": "Is an AssinarPDF signature legally valid?",
+            "answer": "It is a visual electronic signature useful in many everyday contexts. It does not replace a digital signature with an ICP-Brasil certificate when that is required."
+          },
+          "certificate": {
+            "question": "Does AssinarPDF use a digital certificate?",
+            "answer": "No. The tool does not request or apply e-CPF/e-CNPJ certificates. The result is a PDF with an image of your signature."
+          },
+          "choose": {
+            "question": "How do I choose between electronic and digital?",
+            "answer": "If the document or counterparty requires ICP-Brasil, use a qualified digital signature. Otherwise, a visual electronic signature is often enough for internal flows and simple acceptance."
+          }
+        }
+      }
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "seo": {
+        "title": "Privacy Policy",
+        "description": "How AssinarPDF handles privacy and data: PDFs processed only in the browser, with no upload to our servers. Policy aligned with LGPD principles.",
+        "ogTitle": "Privacy Policy — AssinarPDF",
+        "ogDescription": "Your PDFs stay on your device: we do not send the document to our servers."
+      },
+      "title": "Privacy Policy",
+      "intro": "This policy explains how AssinarPDF (operated by Lugar Certo) handles privacy. In short: PDFs you sign stay in your browser and are not sent to our servers.",
+      "updated": "Last updated: July 2026",
+      "sections": {
+        "controller": {
+          "title": "Who we are",
+          "paragraphs": [
+            "AssinarPDF is a web service for electronic PDF signatures offered by Lugar Certo. The site is available at assinarpdf.lugarcerto.tec.br."
+          ]
+        },
+        "local": {
+          "title": "Where your PDF is signed",
+          "paragraphs": [
+            "When you choose a PDF to sign, the file stays in your browser memory. Opening the document and placing the signature happen on your phone or computer — we do not receive the file contents.",
+            "Closing or reloading the page clears the file from memory. We do not store the content, filename, or a fingerprint of signed PDFs."
+          ]
+        },
+        "data": {
+          "title": "What data we may process",
+          "paragraphs": [
+            "Using the signing tool does not require an account. We may receive ordinary technical access data (for example server logs, IP address, browser type, and pages visited) needed to operate, protect, and improve the service.",
+            "If audience measurement cookies or analytics are added later, that will be done proportionally and, when required, with appropriate notice or consent."
+          ]
+        },
+        "lgpd": {
+          "title": "LGPD and your rights",
+          "paragraphs": [
+            "Because we do not store your PDF content, there is no retention of those documents on our side. For personal data that may appear in access logs, you may exercise rights under Brazil's LGPD (and similar frameworks where applicable), such as confirmation of processing and deletion when relevant.",
+            "For privacy requests, contact Lugar Certo through the organization's available channels."
+          ]
+        },
+        "security": {
+          "title": "Security",
+          "paragraphs": [
+            "We apply security practices in the app and hosting (including protective headers and a file size limit on your device). No system is risk-free; because the PDF does not come to our servers, document content is far less exposed on our side."
+          ]
+        },
+        "changes": {
+          "title": "Changes to this policy",
+          "paragraphs": [
+            "We may update this text to reflect product improvements or legal requirements. The update date appears at the top of the page. Continued use of the service after material changes constitutes awareness of the new version where applicable."
+          ]
+        }
+      }
+    },
+    "terms": {
+      "seo": {
+        "title": "Terms of Use",
+        "description": "AssinarPDF terms of use: free visual electronic PDF signature in the browser, limits, responsibilities, and legal notices.",
+        "ogTitle": "Terms of Use — AssinarPDF",
+        "ogDescription": "Clear conditions for using AssinarPDF responsibly."
+      },
+      "title": "Terms of Use",
+      "intro": "By using AssinarPDF, you agree to these terms. The service provides a free tool to place a visual electronic signature on PDF files in the browser.",
+      "updated": "Last updated: July 2026",
+      "sections": {
+        "service": {
+          "title": "Service description",
+          "paragraphs": [
+            "AssinarPDF lets you load a PDF, create a signature (draw or type), and download a new PDF with that signature embedded. Processing happens in your browser. We do not provide ICP-Brasil digital certificates or qualified signatures."
+          ]
+        },
+        "acceptable": {
+          "title": "Acceptable use",
+          "paragraphs": [
+            "You are responsible for the documents you process and for having authority to sign them. You may not use the service for unlawful purposes, to defraud others, or to violate intellectual property or privacy rights."
+          ]
+        },
+        "disclaimer": {
+          "title": "Nature of the signature and disclaimers",
+          "paragraphs": [
+            "The signature produced is a visual electronic signature (an image). It may suit many everyday uses, but it does not by itself replace a digital signature with an ICP-Brasil certificate when the law or context requires that level.",
+            "The service is provided \"as is\", without a guarantee of uninterrupted availability. We are not responsible for legal decisions made based on use of the tool; if in doubt, consult a qualified professional."
+          ]
+        },
+        "limits": {
+          "title": "Technical limits",
+          "paragraphs": [
+            "We may impose file size limits (currently up to 50 MB) and other technical restrictions to protect browser and service stability. Features may change over time; if a paid tier or additional limits appear, that will be communicated in the product."
+          ]
+        },
+        "liability": {
+          "title": "Limitation of liability",
+          "paragraphs": [
+            "To the maximum extent permitted by law, Lugar Certo and AssinarPDF are not liable for indirect damages, lost profits, or data loss arising from use or inability to use the service, especially given that PDFs are processed on the user's device."
+          ]
+        },
+        "changes": {
+          "title": "Changes and contact",
+          "paragraphs": [
+            "We may change these terms periodically. The update date will be shown on this page. Questions about the service can be sent through Lugar Certo's channels."
+          ]
         }
       }
     }
   },
   "PdfEditorPage": {
-    "title": "Sign PDF online",
+    "title": "Sign a PDF online for free",
+    "subtitle": "No signup. Your file is not sent over the internet — signing happens on your device.",
     "loading": "Loading editor...",
     "upload": {
-      "title": "Upload your document",
-      "description": "Your files are processed locally and never leave your device."
+      "title": "Choose the PDF to sign",
+      "description": "Drag the file here or click to select it. It stays in your browser only.",
+      "reassure": "We do not receive, store, or see the contents of your document."
     },
+    "editingHint": "This PDF is open only in this browser. It was not sent to our servers.",
     "remove": "Remove",
     "viewer": {
       "download": {
@@ -147,15 +448,20 @@
   "Dropzone": {
     "dragActive": "Drop the PDF here",
     "dragInactive": "Click or drag your PDF",
-    "maxSize": "Files up to 50MB",
-    "errorType": "Please upload only PDF files.",
-    "successUpload": "PDF uploaded successfully!",
-    "errorRead": "Error reading the file."
+    "maxSize": "Files up to 50 MB",
+    "errorType": "Please select PDF files only.",
+    "successUpload": "PDF ready to sign!",
+    "errorRead": "Could not read the file."
   },
-  "PrivacyBadge": {
-    "trigger": "100% Local Processing",
-    "title": "Privacy Guaranteed",
-    "description": "Your documents are never sent to any server. All processing happens in your browser memory."
+  "PrivacyTrust": {
+    "badge": "Your PDF stays on your device",
+    "popoverTitle": "Real privacy — in plain English",
+    "popoverBody": "Many sites ask you to “upload” a PDF and the file goes over the internet. Here it is different: signing happens in your browser, on your phone or computer.",
+    "points": [
+      "The file is not sent over the internet to us",
+      "Signing happens only in your browser",
+      "Closed the tab? The PDF leaves memory"
+    ]
   },
   "SignatureModal": {
     "trigger": "Add Signature",
@@ -213,16 +519,23 @@
   },
   "Header": {
     "appName": "AssinarPDF",
-    "description": "Sign PDFs online · free & secure"
+    "description": "Sign PDFs online · file stays with you"
   },
   "Footer": {
-    "tagline": "Sign PDFs online for free, with total privacy and no signup. 100% browser-side processing.",
-    "privacy": "Your documents are never uploaded to our servers.",
+    "tagline": "Sign PDFs online for free, with no signup. The file stays on your device — we do not send the document to the cloud.",
+    "privacy": "We do not receive or store the contents of your PDF.",
     "navLabel": "Footer navigation",
+    "guidesLabel": "Guides",
+    "legalLabel": "Legal",
     "links": {
       "howTo": "How to sign",
       "features": "Features",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "guideOnline": "Sign PDF online",
+      "guideMobile": "Sign on mobile",
+      "guideVs": "Electronic vs digital",
+      "privacyPolicy": "Privacy",
+      "terms": "Terms of use"
     },
     "rights": "Free electronic PDF signature tool."
   }

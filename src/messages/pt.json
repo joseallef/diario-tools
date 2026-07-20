@@ -1,51 +1,51 @@
 {
   "HomePage": {
     "seo": {
-      "title": "Assinar PDF Online Grátis | Sem Login e 100% Privado",
-      "description": "Assine PDF online grátis no navegador. Sem cadastro, sem upload para servidores. Assinatura eletrônica rápida, segura e privada com o AssinarPDF.",
-      "ogTitle": "Assinar PDF Online Grátis — Rápido, Seguro e Sem Login",
-      "ogDescription": "Coloque sua assinatura em qualquer PDF direto no navegador. Processamento 100% local: seus arquivos nunca saem do seu dispositivo."
+      "title": "Assinar PDF Online Grátis | Sem Cadastro e Sem Enviar Arquivo",
+      "description": "Assine PDF online grátis no navegador. Sem cadastro e sem enviar o arquivo pela internet — a assinatura acontece no seu aparelho. Rápido, privado e simples.",
+      "ogTitle": "Assinar PDF Online Grátis — Seu arquivo não sai do aparelho",
+      "ogDescription": "Coloque sua assinatura em qualquer PDF no navegador. Sem cadastro. O documento não é enviado para nossos servidores."
     },
     "howTo": {
       "title": "Como assinar um PDF online grátis",
-      "description": "Com o AssinarPDF você assina documentos PDF direto no navegador — sem instalar programas e sem enviar arquivos para a nuvem. Siga os 4 passos:",
+      "description": "Em poucos minutos você assina o PDF no próprio navegador — sem instalar programa e sem mandar o arquivo para a nuvem. É só seguir estes passos:",
       "steps": {
         "step1": {
-          "title": "Carregue o PDF:",
-          "description": "Arraste e solte seu arquivo na área indicada ou clique para selecionar."
+          "title": "Escolha o PDF:",
+          "description": "Arraste o arquivo para a área indicada ou clique para selecionar no seu aparelho."
         },
         "step2": {
           "title": "Crie sua assinatura:",
-          "description": "Desenhe com o mouse ou touch, ou digite seu nome para gerar a assinatura."
+          "description": "Desenhe com o mouse ou o dedo, ou digite seu nome para gerar a assinatura."
         },
         "step3": {
-          "title": "Posicione no documento:",
-          "description": "Arraste a assinatura para o local correto em qualquer página do PDF."
+          "title": "Coloque no documento:",
+          "description": "Clique onde a assinatura deve aparecer e ajuste o tamanho ou a posição se precisar."
         },
         "step4": {
           "title": "Baixe o PDF assinado:",
-          "description": "Clique em \"Baixar PDF Assinado\" e salve o arquivo no seu dispositivo na hora."
+          "description": "Clique em \"Baixar PDF Assinado\" e salve o arquivo no seu aparelho na hora."
         }
       }
     },
     "features": {
-      "title": "Por que assinar PDF com o AssinarPDF?",
+      "title": "Por que assinar PDF aqui?",
       "items": {
         "privacy": {
-          "title": "Privacidade total",
-          "description": "Seus arquivos nunca saem do seu computador. Todo o processamento acontece localmente no navegador — zero upload."
+          "title": "O arquivo não vai para a internet",
+          "description": "Ao contrário de vários sites, nós não recebemos o seu PDF. A assinatura é feita no seu navegador, no seu celular ou computador — o documento fica com você."
         },
         "noSignup": {
-          "title": "Sem cadastro",
-          "description": "Não pedimos e-mail, login nem cartão. Abra a página, assine e baixe. Pronto."
+          "title": "100% grátis e sem cadastro",
+          "description": "Sem e-mail, sem login e sem cartão. Abra a página, assine e baixe. Sem surpresa e sem cobrança escondida."
         },
         "fast": {
-          "title": "Rápido e leve",
-          "description": "Pensado para funcionar na hora, mesmo em conexões mais lentas ou no celular."
+          "title": "Pronto em minutos",
+          "description": "Feito para resolver na hora: contratos, autorizações, recibos e formulários — no computador ou no celular."
         },
         "compatibility": {
-          "title": "Funciona em qualquer lugar",
-          "description": "Chrome, Edge, Firefox e Safari — no computador ou no celular, sem instalar nada."
+          "title": "Sem instalar nada",
+          "description": "Funciona no Chrome, Edge, Firefox e Safari. Abra o site e assine — desktop, Android ou iPhone."
         }
       }
     },
@@ -53,39 +53,340 @@
       "title": "Perguntas frequentes sobre assinar PDF",
       "items": {
         "free": {
-          "question": "Assinar PDF no AssinarPDF é realmente grátis?",
-          "answer": "Sim. Você pode assinar PDFs online de forma 100% gratuita para uso pessoal e profissional, sem cadastro e sem cartão de crédito."
+          "question": "É realmente grátis?",
+          "answer": "Sim. Você pode assinar PDFs online de forma gratuita para uso pessoal ou do trabalho, sem criar conta e sem informar cartão de crédito."
         },
         "saved": {
-          "question": "Meus documentos ficam salvos no servidor?",
-          "answer": "Não. A tecnologia local-first garante que o arquivo nunca é enviado aos nossos servidores. O PDF é processado na memória do seu navegador e descartado quando você fecha a página."
+          "question": "Vocês guardam ou veem o meu PDF?",
+          "answer": "Não. O arquivo fica só no seu navegador enquanto você assina. Ele não é enviado para nossos servidores. Quando você fecha a aba, o documento some da memória do aparelho."
         },
         "install": {
-          "question": "Preciso instalar algum programa?",
-          "answer": "Não. O AssinarPDF funciona 100% no navegador. Basta abrir o site, carregar o PDF, assinar e baixar — sem downloads nem extensões."
+          "question": "Preciso baixar algum programa?",
+          "answer": "Não. Tudo acontece na página do navegador. Não há app nem extensão obrigatória — basta abrir o site, escolher o PDF, assinar e baixar."
         },
         "mobile": {
           "question": "Dá para assinar PDF no celular?",
-          "answer": "Sim. A ferramenta é responsiva e funciona em smartphones e tablets. Você pode desenhar a assinatura com o dedo na tela touch."
+          "answer": "Sim. Funciona em smartphones e tablets. Você pode desenhar a assinatura com o dedo na tela."
         },
         "legal": {
-          "question": "A assinatura tem validade jurídica?",
-          "answer": "O AssinarPDF gera uma assinatura eletrônica visual no PDF (imagem da sua assinatura). Isso atende muitos fluxos do dia a dia (contratos internos, recibos, autorizações). Para atos que exigem certificado ICP-Brasil (assinatura digital qualificada), use uma solução com certificado digital."
+          "question": "A assinatura vale para contratos?",
+          "answer": "O AssinarPDF coloca uma assinatura eletrônica visual no PDF (como a imagem da sua assinatura no papel). Isso costuma bastar para o dia a dia: recibos, autorizações e documentos internos. Se a lei ou o contrato pedirem certificado ICP-Brasil (assinatura digital qualificada), use uma solução com certificado digital."
         },
         "size": {
           "question": "Qual o tamanho máximo do arquivo?",
-          "answer": "Você pode carregar PDFs de até 50 MB. Arquivos maiores podem demorar mais para renderizar, pois todo o processamento ocorre no seu dispositivo."
+          "answer": "Até 50 MB. Arquivos muito grandes podem demorar mais porque a assinatura é feita no seu aparelho, não em um servidor na nuvem."
+        }
+      }
+    },
+    "guides": {
+      "title": "Guias para assinar PDF",
+      "description": "Passo a passo no computador e no celular, e a diferença entre assinatura eletrônica e digital — em linguagem simples.",
+      "readGuide": "Ler guia"
+    }
+  },
+  "Guides": {
+    "cta": "Assinar PDF agora",
+    "breadcrumbHome": "Início",
+    "breadcrumbGuides": "Guias",
+    "relatedTitle": "Outros guias",
+    "faqTitle": "Perguntas rápidas",
+    "items": {
+      "como-assinar-pdf-online": {
+        "seo": {
+          "title": "Como assinar PDF online grátis sem cadastro",
+          "description": "Passo a passo para assinar PDF online grátis no navegador. Sem login, sem upload para servidores e sem instalar programas. Guia completo do AssinarPDF.",
+          "ogTitle": "Como assinar um PDF online grátis",
+          "ogDescription": "Assine PDF no navegador em minutos: carregue, assine, baixe. 100% privado e sem cadastro."
+        },
+        "title": "Como assinar um PDF online grátis",
+        "intro": "Assinar um PDF online não precisa de software caro nem de mandar o arquivo para a nuvem. Com o AssinarPDF você coloca sua assinatura no documento direto no navegador — sem cadastro, sem instalar nada, e o arquivo fica no seu aparelho.",
+        "description": "Guia prático para assinar PDF online com privacidade.",
+        "sections": {
+          "what": {
+            "title": "O que significa assinar PDF online",
+            "paragraphs": [
+              "Assinar PDF online é inserir uma representação da sua assinatura (desenho ou texto estilizado) em um documento PDF e gerar um novo arquivo já assinado. No AssinarPDF, isso acontece na memória do seu navegador: o arquivo não é enviado para nossos servidores.",
+              "Esse tipo de assinatura eletrônica visual atende bem contratos internos, recibos, autorizações, propostas e formulários do dia a dia. Para atos que exigem certificado digital ICP-Brasil, veja nosso guia sobre assinatura eletrônica vs digital."
+            ]
+          },
+          "steps": {
+            "title": "Passo a passo: assinar PDF no AssinarPDF",
+            "paragraphs": [
+              "O fluxo completo leva poucos minutos e funciona em Chrome, Edge, Firefox e Safari."
+            ],
+            "list": [
+              "Abra o AssinarPDF e carregue o PDF (arraste o arquivo ou clique para selecionar).",
+              "Crie a assinatura: desenhe com o mouse ou digite seu nome e escolha um estilo.",
+              "Clique na página do PDF onde a assinatura deve aparecer; depois arraste, redimensione ou gire se precisar.",
+              "Baixe o PDF assinado para o seu dispositivo. Ao fechar a aba, o arquivo some da memória do navegador."
+            ]
+          },
+          "tips": {
+            "title": "Dicas para um resultado limpo",
+            "paragraphs": [
+              "Use zoom para posicionar a assinatura com precisão em campos pequenos. Em documentos com várias páginas, navegue até a página correta antes de confirmar a posição.",
+              "Prefira fundos claros e assinatura com contraste. Se o PDF tiver marca d'água ou fundo escuro, teste o tamanho da assinatura para ela continuar legível na impressão."
+            ]
+          },
+          "privacy": {
+            "title": "Por que a privacidade importa",
+            "paragraphs": [
+              "Muitas ferramentas pedem para “enviar” o PDF e o arquivo vai para a internet. No AssinarPDF a assinatura acontece no seu navegador, no seu celular ou computador. Isso reduz o risco de vazamento e elimina a necessidade de criar conta só para assinar um arquivo.",
+              "O limite atual é de 50 MB por arquivo. Documentos maiores podem demorar mais porque todo o trabalho acontece no seu aparelho."
+            ]
+          }
+        },
+        "faq": {
+          "free": {
+            "question": "Preciso pagar ou criar conta?",
+            "answer": "Não. Você pode assinar PDF online de forma gratuita, sem e-mail, login ou cartão."
+          },
+          "offline": {
+            "question": "Funciona offline?",
+            "answer": "É preciso carregar a página uma vez com internet. Depois disso, o processamento do PDF e da assinatura ocorre localmente no navegador."
+          },
+          "legal": {
+            "question": "Serve para qualquer contrato?",
+            "answer": "Serve para muitos fluxos cotidianos. Para documentos que exigem assinatura digital com certificado ICP-Brasil, use uma solução com certificado qualificado."
+          }
+        }
+      },
+      "assinar-pdf-no-celular": {
+        "seo": {
+          "title": "Como assinar PDF no celular (Android e iPhone)",
+          "description": "Aprenda a assinar PDF no celular pelo navegador. Desenhe com o dedo, sem app e sem enviar o arquivo para a nuvem. Guia AssinarPDF para Android e iPhone.",
+          "ogTitle": "Assinar PDF no celular sem instalar app",
+          "ogDescription": "Assine documentos no smartphone com o dedo. Rápido, privado e sem cadastro."
+        },
+        "title": "Como assinar um PDF no celular",
+        "intro": "Precisa assinar um contrato, autorização ou recibo pelo smartphone? No AssinarPDF você assina PDF no celular pelo próprio navegador — desenha com o dedo, posiciona a assinatura e baixa o arquivo, sem instalar aplicativo.",
+        "description": "Assine PDF no Android ou iPhone pelo navegador, com privacidade.",
+        "sections": {
+          "why": {
+            "title": "Assinar PDF no celular sem app",
+            "paragraphs": [
+              "Baixar um app só para assinar um documento atrasa o processo e muitas vezes pede permissões ou cadastro. O AssinarPDF roda no navegador do Android (Chrome) e do iPhone (Safari ou Chrome), com interface responsiva pensada para toque.",
+              "Seus arquivos continuam no aparelho: não há upload do PDF para nossos servidores."
+            ]
+          },
+          "steps": {
+            "title": "Passo a passo no smartphone",
+            "paragraphs": [
+              "Use uma conexão estável só para abrir o site; o restante acontece localmente."
+            ],
+            "list": [
+              "Abra o AssinarPDF no navegador do celular.",
+              "Toque na área de upload e escolha o PDF nos Arquivos, Drive, WhatsApp ou e-mail (conforme o aparelho).",
+              "Em \"Adicionar assinatura\", desenhe com o dedo ou digite o nome.",
+              "Toque no local do documento onde a assinatura deve ficar; ajuste arrastando ou redimensionando.",
+              "Baixe o PDF assinado e compartilhe pelo app que preferir."
+            ]
+          },
+          "tips": {
+            "title": "Dicas para telas pequenas",
+            "paragraphs": [
+              "Gire o aparelho para o modo paisagem se o campo de assinatura for estreito. Use o zoom do editor para acertar a posição em formulários densos.",
+              "No iPhone, se o arquivo vier do WhatsApp ou Mail, salve-o nos Arquivos antes ou use \"Abrir em\" / compartilhar para o navegador, conforme o fluxo do iOS.",
+              "Evite PDFs protegidos por senha ou muito pesados (acima de 50 MB) no celular — a memória do aparelho pode limitar a renderização."
+            ]
+          },
+          "privacy": {
+            "title": "Privacidade no mobile",
+            "paragraphs": [
+              "Assinar no celular aumenta o risco se a ferramenta enviar o arquivo para a nuvem. No AssinarPDF o PDF fica só no navegador e some da memória quando você fecha a aba — igual no computador."
+            ]
+          }
+        },
+        "faq": {
+          "android": {
+            "question": "Funciona no Android?",
+            "answer": "Sim. Use o Chrome ou outro navegador atualizado, carregue o PDF e desenhe a assinatura com o dedo."
+          },
+          "iphone": {
+            "question": "Funciona no iPhone?",
+            "answer": "Sim. Safari e Chrome no iOS suportam o fluxo. Pode ser necessário salvar o PDF nos Arquivos antes de abrir no navegador."
+          },
+          "app": {
+            "question": "Preciso instalar algum aplicativo?",
+            "answer": "Não. Tudo acontece no navegador. Não há app da App Store ou Play Store obrigatório."
+          }
+        }
+      },
+      "assinatura-eletronica-vs-digital": {
+        "seo": {
+          "title": "Assinatura eletrônica vs digital: diferenças",
+          "description": "Entenda a diferença entre assinatura eletrônica e assinatura digital (ICP-Brasil). Saiba quando o AssinarPDF é suficiente e quando você precisa de certificado.",
+          "ogTitle": "Assinatura eletrônica vs assinatura digital",
+          "ogDescription": "O que muda na prática, na validade e na tecnologia — sem juridiquês desnecessário."
+        },
+        "title": "Assinatura eletrônica vs assinatura digital",
+        "intro": "As expressões \"assinatura eletrônica\" e \"assinatura digital\" são usadas como sinônimos no dia a dia, mas no Brasil elas não são a mesma coisa. Entender a diferença evita escolher a ferramenta errada — e deixa claro o que o AssinarPDF oferece.",
+        "description": "Diferenças práticas entre assinatura eletrônica visual e digital com certificado.",
+        "sections": {
+          "electronic": {
+            "title": "O que é assinatura eletrônica",
+            "paragraphs": [
+              "Assinatura eletrônica é um termo amplo: qualquer forma de aceitar ou assinar um documento em meio eletrônico. Pode ser um clique em \"aceito\", um código por SMS, ou a imagem da sua assinatura manuscrita inserida em um PDF.",
+              "O AssinarPDF gera uma assinatura eletrônica visual: você desenha ou digita a assinatura e ela é \"queimada\" no PDF como imagem. É simples, rápida e adequada a muitos fluxos internos e informais."
+            ]
+          },
+          "digital": {
+            "title": "O que é assinatura digital (ICP-Brasil)",
+            "paragraphs": [
+              "Assinatura digital, no sentido técnico brasileiro, usa criptografia e um certificado digital emitido na Infraestrutura de Chaves Públicas Brasileira (ICP-Brasil), como e-CPF ou e-CNPJ. Ela vincula a identidade do signatário de forma qualificada e permite verificar se o documento foi alterado depois da assinatura.",
+              "Esse nível costuma ser exigido em atos com requisitos legais mais rígidos, órgãos públicos específicos ou contratos de alto risco. O AssinarPDF não emite nem usa certificado ICP-Brasil."
+            ]
+          },
+          "when": {
+            "title": "Quando usar cada uma",
+            "paragraphs": [
+              "Use assinatura eletrônica visual (AssinarPDF) quando precisar de agilidade e o contexto aceitar uma assinatura manuscrita digitalizada: recibos, autorizações, propostas, documentos internos, formulários cadastrais."
+            ],
+            "list": [
+              "Assinatura eletrônica visual: praticidade, privacidade local, sem certificado.",
+              "Assinatura digital ICP-Brasil: quando a lei, o cartório, o órgão ou o contrato exigirem certificado qualificado.",
+              "Em dúvida jurídica, consulte um profissional — este guia é informativo, não é aconselhamento legal."
+            ]
+          },
+          "privacy": {
+            "title": "Privacidade e escolha da ferramenta",
+            "paragraphs": [
+              "Mesmo em assinaturas simples, o documento pode ter dados sensíveis. Preferir uma ferramenta em que o arquivo não vá para a internet reduz o risco: o PDF não precisa passar por servidores de terceiros só para receber a imagem da sua assinatura.",
+              "Se o seu caso exigir ICP-Brasil, escolha um prestador de assinatura digital qualificada. Se o caso for do dia a dia, o AssinarPDF resolve no navegador, grátis e sem cadastro."
+            ]
+          }
+        },
+        "faq": {
+          "valid": {
+            "question": "A assinatura do AssinarPDF tem validade jurídica?",
+            "answer": "Ela é uma assinatura eletrônica visual útil em muitos contextos cotidianos. Não substitui assinatura digital com certificado ICP-Brasil quando este for obrigatório."
+          },
+          "certificate": {
+            "question": "O AssinarPDF usa certificado digital?",
+            "answer": "Não. A ferramenta não solicita nem aplica certificados e-CPF/e-CNPJ. O resultado é um PDF com a imagem da sua assinatura."
+          },
+          "choose": {
+            "question": "Como escolher entre eletrônica e digital?",
+            "answer": "Se o documento ou a contraparte exigir ICP-Brasil, use assinatura digital qualificada. Caso contrário, uma assinatura eletrônica visual costuma ser suficiente para fluxos internos e aceites simples."
+          }
+        }
+      }
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "seo": {
+        "title": "Política de Privacidade",
+        "description": "Como o AssinarPDF trata privacidade e dados: PDFs processados só no navegador, sem upload para nossos servidores. Política alinhada a LGPD.",
+        "ogTitle": "Política de Privacidade — AssinarPDF",
+        "ogDescription": "Seus PDFs ficam no seu aparelho: não enviamos o documento para nossos servidores."
+      },
+      "title": "Política de Privacidade",
+      "intro": "Esta política explica como o AssinarPDF (operado pela Lugar Certo) trata a privacidade. Em resumo: os PDFs que você assina ficam no seu navegador e não são enviados aos nossos servidores.",
+      "updated": "Última atualização: julho de 2026",
+      "sections": {
+        "controller": {
+          "title": "Quem somos",
+          "paragraphs": [
+            "O AssinarPDF é um serviço web de assinatura eletrônica de PDF oferecido pela Lugar Certo. O site está disponível em assinarpdf.lugarcerto.tec.br."
+          ]
+        },
+        "local": {
+          "title": "Onde o seu PDF é assinado",
+          "paragraphs": [
+            "Quando você escolhe um PDF para assinar, o arquivo fica na memória do seu navegador. Abrir o documento e colocar a assinatura acontece no seu celular ou computador — nós não recebemos o conteúdo do arquivo.",
+            "Ao fechar ou recarregar a página, o arquivo some da memória. Não guardamos o conteúdo, o nome nem uma “impressão digital” dos PDFs assinados."
+          ]
+        },
+        "data": {
+          "title": "Quais dados podemos tratar",
+          "paragraphs": [
+            "O uso da ferramenta de assinatura não exige cadastro. Podemos receber dados técnicos habituais de acesso a sites (por exemplo, logs de servidor, endereço IP, tipo de navegador e páginas visitadas), necessários para operar, proteger e melhorar o serviço.",
+            "Se no futuro forem usados cookies ou analytics de medição de audiência, isso será feito de forma proporcional e, quando exigido, com as informações ou consentimentos cabíveis."
+          ]
+        },
+        "lgpd": {
+          "title": "LGPD e seus direitos",
+          "paragraphs": [
+            "Como não armazenamos o conteúdo dos seus PDFs, não há retenção desses documentos do nosso lado. Em relação a dados pessoais eventualmente presentes em logs de acesso, você pode exercer direitos previstos na Lei Geral de Proteção de Dados (LGPD), como confirmação de tratamento e eliminação, quando aplicável.",
+            "Para solicitações relacionadas a privacidade, entre em contato pelos canais da Lugar Certo disponíveis no site institucional da organização."
+          ]
+        },
+        "security": {
+          "title": "Segurança",
+          "paragraphs": [
+            "Adotamos práticas de segurança no aplicativo e na hospedagem (incluindo cabeçalhos de proteção e limite de tamanho do arquivo no seu aparelho). Nenhum sistema é 100% livre de risco; como o PDF não vem para nossos servidores, o conteúdo do documento fica muito menos exposto do nosso lado."
+          ]
+        },
+        "changes": {
+          "title": "Alterações nesta política",
+          "paragraphs": [
+            "Podemos atualizar este texto para refletir melhorias no produto ou exigências legais. A data de atualização aparece no topo da página. O uso continuado do serviço após mudanças relevantes constitui ciência da nova versão, quando aplicável."
+          ]
+        }
+      }
+    },
+    "terms": {
+      "seo": {
+        "title": "Termos de Uso",
+        "description": "Termos de uso do AssinarPDF: serviço gratuito de assinatura eletrônica visual de PDF no navegador, limites, responsabilidades e avisos legais.",
+        "ogTitle": "Termos de Uso — AssinarPDF",
+        "ogDescription": "Condições para usar o AssinarPDF com clareza e responsabilidade."
+      },
+      "title": "Termos de Uso",
+      "intro": "Ao usar o AssinarPDF, você concorda com estes termos. O serviço oferece uma ferramenta gratuita para inserir uma assinatura eletrônica visual em arquivos PDF no navegador.",
+      "updated": "Última atualização: julho de 2026",
+      "sections": {
+        "service": {
+          "title": "Descrição do serviço",
+          "paragraphs": [
+            "O AssinarPDF permite carregar um PDF, criar uma assinatura (desenho ou texto) e baixar um novo PDF com essa assinatura incorporada. O processamento ocorre no seu navegador. Não fornecemos certificado digital ICP-Brasil nem assinatura qualificada."
+          ]
+        },
+        "acceptable": {
+          "title": "Uso aceitável",
+          "paragraphs": [
+            "Você é responsável pelo conteúdo dos documentos que processa e por ter autorização para assiná-los. É proibido usar o serviço para fins ilícitos, para fraudar terceiros ou para violar direitos de propriedade intelectual ou privacidade de outras pessoas."
+          ]
+        },
+        "disclaimer": {
+          "title": "Natureza da assinatura e isenções",
+          "paragraphs": [
+            "A assinatura gerada é eletrônica visual (imagem). Ela pode ser adequada a muitos usos cotidianos, mas não substitui, por si só, assinatura digital com certificado ICP-Brasil quando a lei ou o contexto exigirem esse nível.",
+            "O serviço é oferecido \"como está\", sem garantia de disponibilidade ininterrupta. Não nos responsabilizamos por decisões jurídicas tomadas com base no uso da ferramenta; em dúvidas, consulte um profissional habilitado."
+          ]
+        },
+        "limits": {
+          "title": "Limites técnicos",
+          "paragraphs": [
+            "Podemos impor limites de tamanho de arquivo (atualmente até 50 MB) e outras restrições técnicas para proteger a estabilidade do navegador e do serviço. Recursos podem mudar ao longo do tempo; quando houver versão paga ou limites adicionais, isso será comunicado no produto."
+          ]
+        },
+        "liability": {
+          "title": "Limitação de responsabilidade",
+          "paragraphs": [
+            "Na máxima extensão permitida pela lei, a Lugar Certo e o AssinarPDF não respondem por danos indiretos, lucros cessantes ou perda de dados decorrentes do uso ou da impossibilidade de uso do serviço, especialmente considerando que os PDFs são processados no dispositivo do usuário."
+          ]
+        },
+        "changes": {
+          "title": "Alterações e contato",
+          "paragraphs": [
+            "Podemos alterar estes termos periodicamente. A data de atualização será indicada nesta página. Questões sobre o serviço podem ser encaminhadas pelos canais da Lugar Certo."
+          ]
         }
       }
     }
   },
   "PdfEditorPage": {
-    "title": "Assinar PDF online",
+    "title": "Assinar PDF online grátis",
+    "subtitle": "Sem cadastro. Seu arquivo não é enviado pela internet — a assinatura acontece no seu aparelho.",
     "loading": "Carregando editor...",
     "upload": {
-      "title": "Carregue seu documento",
-      "description": "Seus arquivos são processados localmente e nunca saem do seu dispositivo."
+      "title": "Escolha o PDF para assinar",
+      "description": "Arraste o arquivo ou clique para selecionar. Ele fica só no seu navegador.",
+      "reassure": "Nós não recebemos, não guardamos e não vemos o conteúdo do seu documento."
     },
+    "editingHint": "Este PDF está aberto só neste navegador. Ele não foi enviado para nossos servidores.",
     "remove": "Remover",
     "viewer": {
       "download": {
@@ -147,15 +448,20 @@
   "Dropzone": {
     "dragActive": "Solte o PDF aqui",
     "dragInactive": "Clique ou arraste seu PDF",
-    "maxSize": "Arquivos de até 50MB",
-    "errorType": "Por favor, envie apenas arquivos PDF.",
-    "successUpload": "PDF carregado com sucesso!",
-    "errorRead": "Erro ao ler o arquivo."
+    "maxSize": "Arquivos de até 50 MB",
+    "errorType": "Por favor, selecione apenas arquivos PDF.",
+    "successUpload": "PDF pronto para assinar!",
+    "errorRead": "Não foi possível ler o arquivo."
   },
-  "PrivacyBadge": {
-    "trigger": "Processamento 100% Local",
-    "title": "Privacidade Garantida",
-    "description": "Seus documentos não são enviados para nenhum servidor. Todo o processamento acontece na memória do seu navegador."
+  "PrivacyTrust": {
+    "badge": "Seu PDF fica no seu aparelho",
+    "popoverTitle": "Privacidade de verdade — em português claro",
+    "popoverBody": "Muitos sites pedem para “enviar” o PDF e o arquivo vai para a internet. Aqui é diferente: a assinatura é feita no seu navegador, no seu celular ou computador.",
+    "points": [
+      "O arquivo não é enviado pela internet para nós",
+      "A assinatura acontece só no seu navegador",
+      "Fechou a aba? O PDF some da memória"
+    ]
   },
   "SignatureModal": {
     "trigger": "Adicionar Assinatura",
@@ -213,16 +519,23 @@
   },
   "Header": {
     "appName": "AssinarPDF",
-    "description": "Assine PDF online · grátis e seguro"
+    "description": "Assine PDF online · sem enviar o arquivo"
   },
   "Footer": {
-    "tagline": "Assine PDFs online grátis, com privacidade total e sem cadastro. Processamento 100% no seu navegador.",
-    "privacy": "Seus documentos nunca são enviados para nossos servidores.",
+    "tagline": "Assine PDFs online grátis, sem cadastro. O arquivo fica no seu aparelho — não enviamos o documento para a nuvem.",
+    "privacy": "Nós não recebemos nem guardamos o conteúdo do seu PDF.",
     "navLabel": "Navegação do rodapé",
+    "guidesLabel": "Guias",
+    "legalLabel": "Legal",
     "links": {
       "howTo": "Como assinar",
       "features": "Recursos",
-      "faq": "Perguntas frequentes"
+      "faq": "Perguntas frequentes",
+      "guideOnline": "Assinar PDF online",
+      "guideMobile": "Assinar no celular",
+      "guideVs": "Eletrônica vs digital",
+      "privacyPolicy": "Privacidade",
+      "terms": "Termos de uso"
     },
     "rights": "Ferramenta gratuita de assinatura eletrônica de PDF."
   }

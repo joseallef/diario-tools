@@ -1,6 +1,8 @@
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getLanguageAlternates, getLocaleUrl, siteConfig } from "@/config/site";
+import { guides } from "@/content/guides";
 import { PdfEditorPage } from "@/features/pdf-editor/components/PdfEditorPage";
+import { Link } from "@/i18n/routing";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
@@ -38,6 +40,7 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "HomePage" });
+  const tGuides = await getTranslations({ locale, namespace: "Guides" });
   const pageUrl = getLocaleUrl(locale);
 
   const faqEntities = FAQ_KEYS.map((key) => ({
@@ -88,9 +91,11 @@ export default async function Home({
       },
       featureList: [
         locale === "en" ? "Electronic PDF signature" : "Assinatura eletrônica de PDF",
-        locale === "en" ? "Local browser processing" : "Processamento local no navegador",
-        locale === "en" ? "No login required" : "Sem login",
-        locale === "en" ? "Zero file upload" : "Zero upload de arquivos",
+        locale === "en"
+          ? "Signing happens on your device — file not sent to our servers"
+          : "Assinatura no seu aparelho — arquivo não enviado aos nossos servidores",
+        locale === "en" ? "No signup required" : "Sem cadastro",
+        locale === "en" ? "Free to use" : "Grátis para usar",
         locale === "en" ? "Draw or type signature" : "Desenhar ou digitar assinatura",
       ],
       publisher: {
@@ -162,16 +167,20 @@ export default async function Home({
 
             <div id="recursos" className="scroll-mt-24 space-y-4">
               <h2 className="text-2xl font-bold text-foreground">{t("features.title")}</h2>
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 {(["privacy", "noSignup", "fast", "compatibility"] as const).map((key) => (
                   <article
                     key={key}
-                    className="rounded-lg border border-border bg-card p-4"
+                    className={`rounded-lg border p-5 ${
+                      key === "privacy"
+                        ? "border-emerald-200 bg-emerald-50/60 dark:border-emerald-800 dark:bg-emerald-950/30"
+                        : "border-border bg-card"
+                    }`}
                   >
                     <h3 className="mb-2 font-semibold text-foreground">
                       {t(`features.items.${key}.title`)}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       {t(`features.items.${key}.description`)}
                     </p>
                   </article>
@@ -213,6 +222,31 @@ export default async function Home({
                   </details>
                 ))}
               </div>
+            </div>
+
+            <div id="guias" className="scroll-mt-24 space-y-4">
+              <h2 className="text-2xl font-bold text-foreground">{t("guides.title")}</h2>
+              <p className="text-base leading-relaxed">{t("guides.description")}</p>
+              <ul className="grid gap-3 sm:grid-cols-3">
+                {guides.map((guide) => (
+                  <li key={guide.slug}>
+                    <Link
+                      href={guide.path}
+                      className="flex h-full flex-col rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40 hover:bg-primary/5"
+                    >
+                      <span className="font-semibold text-foreground">
+                        {tGuides(`items.${guide.slug}.title`)}
+                      </span>
+                      <span className="mt-2 text-sm text-muted-foreground">
+                        {tGuides(`items.${guide.slug}.description`)}
+                      </span>
+                      <span className="mt-3 text-sm font-medium text-primary">
+                        {t("guides.readGuide")}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
